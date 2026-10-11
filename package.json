@@ -1,6 +1,6 @@
 {
   "name":"daria-exe",
-  "version":"3.5.0-gameplay-validation",
+  "version":"3.6.0-consumer-home",
   "private":true,
   "type":"module",
   "scripts":{
