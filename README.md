@@ -1,5 +1,7 @@
 # DARIA.EXE v3.6 — Consumer Game Opening
 
+**Live:** https://dokarpov.github.io/daria-exe/
+
 A reasoning game for making better calls under uncertainty.
 
 ## v3.6 focus
