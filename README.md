@@ -1,52 +1,32 @@
-# DARIA.EXE v3.7 — Actual Game Loop
-
-[![Browser validation](https://github.com/dokarpov/daria-exe/actions/workflows/browser-validation.yml/badge.svg)](https://github.com/dokarpov/daria-exe/actions/workflows/browser-validation.yml)
-
-**A consumer reasoning game about making decisions under uncertainty.**
+# DARIA.EXE v4.0 — Animated Decision Game
 
 [Play it live →](https://dokarpov.github.io/daria-exe/)
 
-DARIA.EXE is deliberately different from the systems/enterprise projects in this portfolio. It tests whether decision quality can become a **playable interaction**, not another dashboard or productivity tool.
+DARIA.EXE is a short browser game about decision-making under uncertainty.
 
-## Product loop
+## What is actually playable
 
-### Quick Play
+### Quick incident
+A four-move incident arc. Every choice changes visible system state:
+- health;
+- risk;
+- signal quality;
+- system-node status;
+- the next situation.
 
-Quick Play is a real case-board loop rather than a quiz:
+The loop is **observe → act → see consequence → adapt**. The strongest path is not simply the fastest action.
 
-- four plausible actions;
-- three-move budget;
-- every action reveals a clue and changes the situation;
-- no “correct answer” hints before choosing;
-- actions cannot be repeated;
-- the player can decide early or keep investigating;
-- final calls are judged only in the debrief.
+### Investigate
+A separate evidence game:
+- scan a source;
+- route the evidence to the hypothesis it actually bears on;
+- watch hypotheses strengthen or weaken;
+- make a call once the evidence discriminates enough.
 
-### Investigation
+The interaction is deliberately different from Quick Play so this feels like a second game mode rather than the same quiz with more text.
 
-The deeper mode keeps the five-move hypothesis/evidence loop, swipe/tap classification, contradictions and early-call option.
+## Honest evidence boundary
 
-## Evidence today
+This repository demonstrates a working interactive game loop, branching state, animation, responsive browser behavior and automated UI checks. It does **not** claim retention, learning impact, monetisation or product-market fit yet.
 
-| Evidence | Status |
-|---|---|
-| Playable public product | live |
-| Quick Play state loop | implemented |
-| Investigation loop | implemented |
-| No pre-choice answer-quality hints | covered by browser tests |
-| Chromium / WebKit / iPhone / Android / iPad browser validation | passing |
-| Retention / repeat play | **not yet proven** |
-| Learning or decision-quality improvement | **not claimed** |
-| Monetisation | **not claimed** |
-
-The current proof is therefore **interaction quality + working game mechanics**, not consumer traction. The next meaningful product test is whether people voluntarily complete, replay and share cases.
-
-For the next player-evidence stage and the boundary between engagement and learning claims, see [`VALIDATION.md`](VALIDATION.md).
-
-## Why it belongs in the portfolio
-
-It demonstrates a different product muscle from the agentic/control-plane work: consumer interaction design, stateful game mechanics, information pacing and designing uncertainty without leaking the “right” answer through the UI.
-
----
-
-Built by **Daria Karpova** · Product Systems · AI · 0→1 · [dokarpov](https://github.com/dokarpov)
+Built by **Daria Karpova**.
