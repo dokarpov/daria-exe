@@ -151,7 +151,7 @@ function startQuick(c=null){
 function quickActionValue(a){
  const x=qCase.actions[a];
  const quality=x.quality==='high'?2:x.quality==='medium'?1:0;
- const novelty=qClues.some(c=>c.target===x.target)?.0:1;
+ const novelty=qClues.some(c=>c.target===x.target)?0:1;
  return quality+novelty;
 }
 function renderQuick(reveal=null){
