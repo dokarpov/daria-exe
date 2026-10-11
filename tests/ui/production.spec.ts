@@ -5,8 +5,29 @@ async function reset(page:Page,xp=220){await page.goto(u);await page.evaluate(({
 async function noOverflow(page:Page){const x=await page.evaluate(()=>({w:innerWidth,sw:document.documentElement.scrollWidth,bw:document.body.scrollWidth}));expect(Math.max(x.sw,x.bw)).toBeLessThanOrEqual(x.w+1)}
 async function goodQuick(page:Page){await page.goto(u);await page.getByRole('button',{name:/Quick Play/}).click();for(let i=0;i<3;i++){await page.locator('.choice').filter({hasText:/Could materially change/}).first().click();await expect(page.getByText(/WHAT YOU LEARNED/)).toBeVisible();await page.getByRole('button',{name:i===2?/Make the call/:/Next move/}).click()}}
 
-test('production is really served over HTTP',async({page})=>{const r=await page.goto(u);expect(r?.ok()).toBeTruthy();expect(new URL(page.url()).protocol).toBe('http:');await expect(page.locator('meta[name="daria-build"]')).toHaveAttribute('content','3.5.0')});
-test('home explains the two modes',async({page})=>{await page.goto(u);await expect(page.getByRole('button',{name:/Quick Play/})).toBeVisible();await expect(page.getByRole('button',{name:/Investigation/})).toBeVisible()});
+test('production is really served over HTTP',async({page})=>{const r=await page.goto(u);expect(r?.ok()).toBeTruthy();expect(new URL(page.url()).protocol).toBe('http:');await expect(page.locator('meta[name="daria-build"]')).toHaveAttribute('content','3.6.0')});
+test('home is a game opening, not a progression dashboard',async({page})=>{
+  await page.goto(u);
+  await expect(page.getByRole('button',{name:/Quick Play/})).toBeVisible();
+  await expect(page.getByRole('button',{name:/Investigation/})).toBeVisible();
+  await expect(page.getByText(/Reasoning skill/)).toHaveCount(0);
+  await expect(page.getByText(/XP/)).toHaveCount(0);
+  await expect(page.getByText(/Compare · 80 XP/)).toHaveCount(0);
+  await expect(page.locator('#homeCaseTitle')).toHaveText(/.+/);
+});
+test('mobile first viewport contains the primary play action',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(u);
+  const b=await page.getByRole('button',{name:/Quick Play/}).boundingBox();
+  expect(b).toBeTruthy();
+  expect(b!.y+b!.height).toBeLessThanOrEqual(844);
+});
+test('home case continues into the selected mode',async({page})=>{
+  await page.goto('/?case=activation');
+  await expect(page.locator('#homeCaseTitle')).toHaveText('Everyone blames onboarding');
+  await page.getByRole('button',{name:/Quick Play/}).click();
+  await expect(page.locator('#quickTitle')).toHaveText('Everyone blames onboarding');
+});
 test('corrupted history does not brick boot',async({page})=>{await page.addInitScript(()=>localStorage.setItem('daria.game.history','{broken'));await page.goto(u);await expect(page.getByRole('button',{name:/Quick Play/})).toBeVisible()});
 test('ideal Quick Play completes and scores',async({page})=>{await reset(page);await goodQuick(page);await expect(page.getByText(/Clean investigation/)).toBeVisible();await expect(page.getByText('3/3')).toBeVisible()});
 test('bad Quick Play move is visibly costly',async({page})=>{await reset(page);await page.goto(u);await page.getByRole('button',{name:/Quick Play/}).click();await page.locator('.choice').filter({hasText:/Commits before/}).first().click();await expect(page.getByText(/High commitment · low information/)).toBeVisible()});
@@ -23,4 +44,4 @@ for(const [name,w,h] of [['320',320,700],['360',360,780],['390',390,844],['430',
 test('mobile buttons meet 44px target',async({page})=>{await page.setViewportSize({width:390,height:844});await page.goto(u);const hs=await page.locator('button:visible').evaluateAll(es=>es.map((e:any)=>e.getBoundingClientRect().height));for(const h of hs)expect.soft(h).toBeGreaterThanOrEqual(44)});
 test('reduced motion disables reveal animation',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await page.goto(u);await page.getByRole('button',{name:/Quick Play/}).click();await page.locator('.choice').first().click();const d=await page.locator('.reveal').evaluate(e=>parseFloat(getComputedStyle(e).animationDuration)||0);expect(d).toBeLessThan(.01)});
 test('keyboard focus is visible',async({page})=>{await page.goto(u);await page.keyboard.press('Tab');const ok=await page.evaluate(()=>{const e=document.activeElement as HTMLElement;return e?.tagName==='BUTTON'&&getComputedStyle(e).outlineStyle!=='none'});expect(ok).toBeTruthy()});
-test('capture canonical visual states',async({page})=>{await reset(page);await page.goto(u);await page.screenshot({path:'artifacts/v35-home.png',fullPage:true});await page.getByRole('button',{name:/Investigation/}).click();await page.getByRole('button',{name:'Ask',exact:true}).click();await page.screenshot({path:'artifacts/v35-investigation-evidence.png',fullPage:true})});
+test('capture canonical visual states',async({page})=>{await reset(page);await page.goto(u);await page.screenshot({path:'artifacts/v36-home.png',fullPage:true});await page.getByRole('button',{name:/Investigation/}).click();await page.getByRole('button',{name:'Ask',exact:true}).click();await page.screenshot({path:'artifacts/v36-investigation-evidence.png',fullPage:true})});
