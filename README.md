@@ -41,6 +41,8 @@ The deeper mode keeps the five-move hypothesis/evidence loop, swipe/tap classifi
 
 The current proof is therefore **interaction quality + working game mechanics**, not consumer traction. The next meaningful product test is whether people voluntarily complete, replay and share cases.
 
+For the next player-evidence stage and the boundary between engagement and learning claims, see [`VALIDATION.md`](VALIDATION.md).
+
 ## Why it belongs in the portfolio
 
 It demonstrates a different product muscle from the agentic/control-plane work: consumer interaction design, stateful game mechanics, information pacing and designing uncertainty without leaking the “right” answer through the UI.
