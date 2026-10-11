@@ -1,11 +1,33 @@
 name: Browser validation
 on:
   pull_request:
+    paths:
+      - 'index.html'
+      - 'app/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'playwright.config.*'
+      - 'package*.json'
+      - '.github/workflows/browser-validation.yml'
   push:
     branches: [main]
+    paths:
+      - 'index.html'
+      - 'app/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'playwright.config.*'
+      - 'package*.json'
+      - '.github/workflows/browser-validation.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: daria-browser-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   real-browser-e2e:
     runs-on: ubuntu-latest
