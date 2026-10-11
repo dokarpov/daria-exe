@@ -1,29 +1,16 @@
-# DARIA.EXE v3.5 — Gameplay Validation & Polish
+# DARIA.EXE v3.6 — Consumer Game Opening
 
 A reasoning game for making better calls under uncertainty.
 
-## Core game modes
+## v3.6 focus
 
-- **Quick Play** — a 30–90 second case: choose → reveal → choose → call → debrief.
-- **Investigation** — a deeper case with competing explanations, a five-move research budget, evidence classification and an explicit `Make a call` decision.
+The first screen is now a game opening rather than a product dashboard:
 
-The modes share the same 24-case library, progression, Daria feedback and reasoning patterns.
+- one dominant **Play a case** action;
+- Daria and the current case are visible immediately;
+- Investigation remains available without competing with the primary action;
+- XP thresholds, tool inventory, “reasoning skill”, and empty history machinery are removed from Home;
+- the shown case feeds directly into Quick Play or Investigation;
+- progression stays in the game loop and debrief instead of being exposed as setup data.
 
-## v3.5 release goal
-
-v3.5 does not add another product subsystem. It hardens v3.4 as a real game:
-
-- real HTTP-served Playwright E2E specification;
-- Chromium + WebKit CI matrix;
-- iPhone, Android and iPad profiles;
-- reload/persistence and corrupted-state recovery;
-- swipe evidence classification and exhausted-move paths;
-- 320/360/390/430px, landscape and short-height checks;
-- 44px touch-target gate;
-- keyboard-focus and reduced-motion checks;
-- 200% zoom stress;
-- service-worker registration check;
-- canonical visual captures;
-- schema/consistency validation for all 24 cases.
-
-See `VALIDATION_STATUS.md` for the distinction between tests executed in the build container and the authoritative browser CI gate.
+The underlying v3.5 browser-validated gameplay, persistence, evidence gating, swipe/tap classification, contradiction logic and cross-browser tests remain intact.
