@@ -1,6 +1,6 @@
 {
   "name":"daria-exe",
-  "version":"3.6.0-consumer-home",
+  "version":"3.7.0-actual-game-loop",
   "private":true,
   "type":"module",
   "scripts":{

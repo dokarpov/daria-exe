@@ -1,18 +1,23 @@
-# DARIA.EXE v3.6 — Consumer Game Opening
+# DARIA.EXE v3.7 — Actual Game Loop
 
-**Live:** https://dokarpov.github.io/daria-exe/
+DARIA.EXE is a reasoning game about making decisions under uncertainty.
 
-A reasoning game for making better calls under uncertainty.
+## Quick Play
 
-## v3.6 focus
+Quick Play is now a real case-board loop rather than a quiz:
 
-The first screen is now a game opening rather than a product dashboard:
+- four plausible actions;
+- three-move budget;
+- every action reveals a clue and changes the situation;
+- no "correct answer" hints before choosing;
+- actions cannot be repeated;
+- the player can decide early or keep investigating;
+- final calls are judged only in the debrief.
 
-- one dominant **Play a case** action;
-- Daria and the current case are visible immediately;
-- Investigation remains available without competing with the primary action;
-- XP thresholds, tool inventory, “reasoning skill”, and empty history machinery are removed from Home;
-- the shown case feeds directly into Quick Play or Investigation;
-- progression stays in the game loop and debrief instead of being exposed as setup data.
+## Investigation
 
-The underlying v3.5 browser-validated gameplay, persistence, evidence gating, swipe/tap classification, contradiction logic and cross-browser tests remain intact.
+The deeper mode keeps the five-move hypothesis/evidence loop, swipe/tap classification, contradictions and early-call option.
+
+## Validation
+
+The release uses real HTTP-served Playwright E2E on Chromium, WebKit, iPhone, Android and iPad profiles. v3.7 adds explicit checks that Quick Play contains no pre-choice answer-quality hints and that clue/action-state mechanics work.
