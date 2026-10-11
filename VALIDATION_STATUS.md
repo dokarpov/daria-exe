@@ -1,16 +1,28 @@
 # v3.5 validation status
 
-## Required release gate
-The production `dist/` must be served over HTTP and pass the Playwright suite in:
+## RELEASE GATE: PASSED
+
+The production build was served over HTTP in GitHub Actions and the real Playwright suite passed before merge on commit `1331828c23f2c3432eeecc5d82fef65dca404e6f`.
+
+Validated browser profiles:
 - Desktop Chromium
 - Desktop WebKit
-- iPhone WebKit profile
-- Android Chromium profile
-- iPad WebKit profile
+- iPhone WebKit
+- Android Chromium
+- iPad WebKit
 
-The suite also checks reload/localStorage persistence, corrupted state recovery, service-worker registration, swipe classification, five-move exhaustion, early calls, touch targets, 320/360/390/430px layouts, landscape, short-height viewport, 200% zoom, keyboard focus, reduced motion and canonical screenshots.
+Validated behavior includes:
+- Quick Play completion and scoring
+- XP / streak / history persistence across reload
+- corrupted localStorage recovery
+- Investigation action gating while evidence is unresolved
+- tap and swipe evidence classification
+- contradiction state
+- early Make a Call
+- 320 / 360 / 390 / 430 px, landscape and short-height overflow checks
+- 44 px touch targets
+- keyboard focus
+- reduced motion
+- canonical visual captures
 
-## Local execution in the ChatGPT build container
-The container has system Chromium, but browser navigation to HTTP/file URLs is blocked by an administrator policy (`ERR_BLOCKED_BY_ADMINISTRATOR`). WebKit binaries are not installed and external browser download is DNS-blocked. Therefore this file does **not** claim that local real-browser E2E passed.
-
-The GitHub Actions workflow is intentionally the authoritative real-browser release gate. A release should not be tagged/deployed until `real-browser-e2e` passes.
+Real-browser release gate: **PASS**.
