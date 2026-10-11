@@ -1,7 +1,7 @@
 import {test,expect,Page} from '@playwright/test';
 
 const u='/?case=career_offer';
-async function reset(page:Page,xp=220){await page.addInitScript(({xp})=>{localStorage.clear();localStorage.setItem('daria.game.xp',String(xp));localStorage.setItem('daria.game.streak','0');localStorage.setItem('daria.game.history','[]')},{xp})}
+async function reset(page:Page,xp=220){await page.goto(u);await page.evaluate(({xp})=>{localStorage.clear();localStorage.setItem('daria.game.xp',String(xp));localStorage.setItem('daria.game.streak','0');localStorage.setItem('daria.game.history','[]')},{xp});await page.reload()}
 async function noOverflow(page:Page){const x=await page.evaluate(()=>({w:innerWidth,sw:document.documentElement.scrollWidth,bw:document.body.scrollWidth}));expect(Math.max(x.sw,x.bw)).toBeLessThanOrEqual(x.w+1)}
 async function goodQuick(page:Page){await page.goto(u);await page.getByRole('button',{name:/Quick Play/}).click();for(let i=0;i<3;i++){await page.locator('.choice').filter({hasText:/Could materially change/}).first().click();await expect(page.getByText(/WHAT YOU LEARNED/)).toBeVisible();await page.getByRole('button',{name:i===2?/Make the call/:/Next move/}).click()}}
 
