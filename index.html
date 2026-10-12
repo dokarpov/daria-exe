@@ -64,11 +64,11 @@ function roomAt(x,y){return rooms.find(r=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)}
 function collides(x,y){if(x<34||x>1166||y<34||y>726)return true;for(const w of walls){if(x>w[0]-13&&x<w[0]+w[2]+13&&y>w[1]-13&&y<w[1]+w[3]+13)return true}return false}
 function award(id,title,body){if(done[id])return;done[id]=true;scoreEl.textContent=Object.values(done).filter(Boolean).length;showToast(title,body);screenShake=9;if(Object.values(done).every(Boolean))setTimeout(()=>document.getElementById('ending').classList.add('show'),1200)}
 function showToast(a,b){clearTimeout(toastTimer);toast.innerHTML='<b>'+a+'</b><div>'+b+'</div>';toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),2400)}
-function spawnSignal(x,y,type){if(state.signals.has(type)||state.signalOrbs.some(s=>s.type===type))return;state.signalOrbs.push({x,y,type,t:0})}
+function spawnSignal(x,y,type){if(state.signals.has(type)||state.signalOrbs.some(s=>s.type===type))return;state.signalOrbs.push({x,y,type,t:0,ttl:4})}
 function updateUsers(t){users.forEach((u,i)=>{u.x=u.hx+Math.sin(t*.0011+u.ph)*46;u.y=u.hy+Math.cos(t*.0014+u.ph)*25;const f=friction[i];if(Math.hypot(u.x-f.x,u.y-f.y)<40&&Math.sin(t*.003+u.ph)>.92)spawnSignal(u.x+16,u.y-8,f.type)})}
-function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit)}
+function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;s.ttl-=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit&&s.ttl>0)}
 function updateAnalytics(){pads[0].active=Math.hypot(player.x-pads[0].x,player.y-pads[0].y)<32;pads[1].active=Math.hypot(player.x-pads[1].x,player.y-pads[1].y)<32;if(pads[0].active&&pads[1].active&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You repaired the bottleneck by tracing the system, not by staring at the top-line metric.')}}
-function spawnRequest(){const pool=[['Fix import',true],['Reduce steps',true],['Dark theme',false],['AI avatar',false],['Add confetti',false],['Fix verify',true]];const p=pool[Math.floor(Math.random()*pool.length)];state.requests.push({x:90+Math.random()*320,y:490,label:p[0],good:p[1],vx:55+Math.random()*45,vy:0,held:false})}
+const requestDeck=[['Fix import',true],['Dark theme',false],['Reduce steps',true],['AI avatar',false],['Fix verify',true],['Add confetti',false]];let requestIx=0;function spawnRequest(){const p=requestDeck[requestIx++%requestDeck.length];state.requests.push({x:90+((requestIx*61)%320),y:490,label:p[0],good:p[1],vx:70,vy:0,held:false})}
 function updateRoadmap(dt){state.requestTimer-=dt;if(state.requestTimer<=0&&state.requests.length<5){spawnRequest();state.requestTimer=.9+Math.random()*1.2}for(const r of state.requests){if(r.held){r.x=player.x+18*player.dir;r.y=player.y-6;continue}r.x+=r.vx*dt;if(r.x>455){r.x=70;r.y=490+Math.random()*170}}}
 function nearestInteractable(){
 let best=null,d=999;
@@ -87,19 +87,19 @@ near.obj.held=true;
 if(near.type==='ship'){
 const carried=state.requests.find(x=>x.held);if(!carried)return;
 if(carried.good){state.goodShipped++;showToast('Evidence-backed work shipped',state.goodShipped+' / 2 useful items');state.requests=state.requests.filter(x=>x!==carried);if(state.goodShipped>=2)award('roadmap','Focus defender','You protected the roadmap from attractive noise.')}
-else{state.badShipped++;carried.held=false;carried.x=70;showToast('Noise shipped','That request was loud, not evidenced. Put it back in the queue.')}
+else{state.badShipped++;state.requests=state.requests.filter(x=>x!==carried);showToast('Noise rejected','That request was loud, not evidenced. Capacity stays protected.')}
 }
 if(near.type==='switch'){state.experiment=state.experiment===near.obj.id?null:near.obj.id;showToast('Experiment rig',state.experiment?'One variable armed. Keep it clean.':'No variable selected.')}
-if(near.type==='launch'){if(!state.experiment){showToast('Rig locked','Arm exactly one variable.');return}state.launched=true;state.resultTimer=3;award('experiment','Clean experiment','One variable changed. The outcome can teach you something.')}
-if(near.type==='result'){if(!state.resultReady){showToast('Nothing to read yet','Let the test run first.');return}if(!state.resultCollected){state.resultCollected=true;award('learn','Closed loop','You returned to evidence after launch instead of declaring victory at shipment.')}}
+if(near.type==='launch'){if(!(done.research&&done.analytics&&done.roadmap)){showToast('Not enough evidence','Research, repair the funnel and protect the roadmap before testing a change.');return}if(!state.experiment){showToast('Rig locked','Arm exactly one variable.');return}state.launched=true;state.resultTimer=3;showToast('Experiment running','One variable is isolated. Read the outcome before claiming success.')}
+if(near.type==='result'){if(!state.resultReady){showToast('Nothing to read yet','Let the test run first.');return}if(!state.resultCollected){state.resultCollected=true;award('experiment','Clean experiment','You isolated one variable and waited for evidence.');award('learn','Closed loop','You returned to evidence after launch instead of declaring victory at shipment.')}}
 }
 function updateMission(){
 const r=roomAt(player.x,player.y);roomChip.textContent=r?r.name:'Hallway';
-if(!r){chapter.textContent='Office';mission.textContent='Choose your next room.';hint.textContent='The office is the level select. Open rooms can be completed in any order.';return}
+if(!r){chapter.textContent='Office';mission.textContent='Choose your next room.';hint.textContent='Follow the evidence loop: Research → Analytics → Roadmap → Experiment → Launch.';return}
 if(r.id==='research'){chapter.textContent='Research Lab';mission.textContent='Catch 3 behaviour signals.';hint.textContent='Follow moving users. When friction happens, a signal drops into the room. Run through it before it fades. '+state.signals.size+'/3 collected.'}
 if(r.id==='analytics'){chapter.textContent='Analytics';mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Trace the moving packets. The broken stage only stabilises when both pressure points are covered.'}
 if(r.id==='roadmap'){chapter.textContent='Roadmap Room';mission.textContent='Ship evidence, reject noise.';hint.textContent='Grab moving requests and carry only evidence-backed ones into the release chute. '+state.goodShipped+'/2 useful items shipped.'}
-if(r.id==='experiment'){chapter.textContent='Experiment Bay';mission.textContent='Change one thing.';hint.textContent='Arm exactly one lever, then run the test. More changes make the result unreadable.'}
+if(r.id==='experiment'){chapter.textContent='Experiment Bay';mission.textContent='Change one thing.';hint.textContent=(done.research&&done.analytics&&done.roadmap)?'Arm exactly one lever, then run the test. More changes make the result unreadable.':'The rig is waiting for upstream evidence: complete Research, Analytics and Roadmap first.'}
 if(r.id==='learn'){chapter.textContent='Launch Room';mission.textContent='Read the outcome.';hint.textContent=state.resultReady?'The result is ready. Go collect it.':'The board stays dark until an experiment has actually run.'}
 }
 function update(dt,t){
@@ -143,7 +143,7 @@ rr(838,78,310,112,16,'#122019','#365344');experimentSwitches.forEach(s=>{const o
 rr(947,214,108,58,14,state.launched?'#1b3725':'#2b2419',state.launched?'#5f8b67':'#7b6844');label(state.launched?'RUNNING':'LAUNCH',1001,248,10,state.launched?'#9ceb73':'#ffcf69',950,'center');
 
 rr(760,510,340,160,18,'#121d25','#30434f');label('OUTCOME BOARD',785,540,9,'#7f919d',900);
-if(state.resultReady){const vals=[38,44,49,58,66];ctx.strokeStyle='#9ceb73';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*56,y=640-v*1.2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();dot(955,590,14,state.resultCollected?'#52705a':'#9ceb73',state.resultCollected?0:18);label('+18% activation',790,620,12,'#9ceb73',900)}else label(state.launched?'TEST RUNNING...':'NO TEST YET',930,595,11,'#748793',900,'center');
+if(state.resultReady){const outcome=state.experiment==='steps'?{vals:[38,44,49,58,66],label:'+18% activation'}:state.experiment==='copy'?{vals:[38,40,43,42,45],label:'+4% activation'}:{vals:[38,36,34,31,29],label:'-9% activation'};const vals=outcome.vals;ctx.strokeStyle='#9ceb73';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*56,y=640-v*1.2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();dot(955,590,14,state.resultCollected?'#52705a':'#9ceb73',state.resultCollected?0:18);label(outcome.label,790,620,12,outcome.label[0]==='-'?'#ff7f86':'#9ceb73',900)}else label(state.launched?'TEST RUNNING...':'NO TEST YET',930,595,11,'#748793',900,'center');
 
 drawPlayer();ctx.restore();
 }
@@ -153,7 +153,7 @@ addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;
 document.getElementById('act').onclick=act;
 const stick=document.getElementById('stick'),nub=document.getElementById('nub');let stickOn=false;
 function moveStick(e){if(!stickOn)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),max=34;if(m>max){dx=dx/m*max;dy=dy/m*max}nub.style.transform='translate('+dx+'px,'+dy+'px)';keys.ArrowLeft=dx<-9;keys.ArrowRight=dx>9;keys.ArrowUp=dy<-9;keys.ArrowDown=dy>9}
-stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);stick.addEventListener('pointerup',()=>{stickOn=false;nub.style.transform='';keys.ArrowLeft=keys.ArrowRight=keys.ArrowUp=keys.ArrowDown=false});
+stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);function resetInput(){stickOn=false;nub.style.transform='';keys={}}stick.addEventListener('pointerup',resetInput);stick.addEventListener('pointercancel',resetInput);stick.addEventListener('lostpointercapture',resetInput);addEventListener('blur',resetInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)resetInput()});
 document.getElementById('start').onclick=()=>{document.getElementById('intro').classList.add('hidden');playing=true;last=performance.now();requestAnimationFrame(loop)};
 document.getElementById('controls').onclick=()=>showToast('Controls','WASD / arrows to move. E or Space to interact. On mobile use the stick and ACT.');
 document.getElementById('again').onclick=()=>location.reload();
