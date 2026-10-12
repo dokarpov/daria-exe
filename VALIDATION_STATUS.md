@@ -1,28 +1,23 @@
-# v3.5 validation status
+# DARIA.EXE validation status
 
-## RELEASE GATE: PASSED
+## Current stable browser build
 
-The production build was served over HTTP in GitHub Actions and the real Playwright suite passed before merge on commit `1331828c23f2c3432eeecc5d82fef65dca404e6f`.
+**Version:** 4.1.0  
+**Branch:** `main`  
+**Commit:** `dee5965a12357d1fba421e864a59deb44d94950c`
 
-Validated browser profiles:
-- Desktop Chromium
-- Desktop WebKit
-- iPhone WebKit
-- Android Chromium
-- iPad WebKit
+## Status
 
-Validated behavior includes:
-- Quick Play completion and scoring
-- XP / streak / history persistence across reload
-- corrupted localStorage recovery
-- Investigation action gating while evidence is unresolved
-- tap and swipe evidence classification
-- contradiction state
-- early Make a Call
-- 320 / 360 / 390 / 430 px, landscape and short-height overflow checks
-- 44 px touch targets
-- keyboard focus
-- reduced motion
-- canonical visual captures
+The current Product Office build is the stable rollback baseline, but it does **not** currently have a passing Product Office-specific browser regression suite.
 
-Real-browser release gate: **PASS**.
+Historical browser validation exists for earlier v3.x builds, but those tests covered the previous Quick Play / Investigation product and do not validate the current office gameplay.
+
+## Active validation tracks
+
+- `feature/product-office-tested` — Product Office browser UX tests. Current CI status: failing; not releasable.
+- `unity/research-lab` — Unity Research Lab R&D. Current Unity RC workflow status: failing at EditMode tests; WebGL build did not run.
+- `unity/research-lab-testing` — isolated Unity gameplay/graphics testing.
+
+## Promotion rule
+
+Do not merge experimental browser or Unity work into `main` until its own relevant CI gate passes and the playable experience has been explicitly reviewed.
