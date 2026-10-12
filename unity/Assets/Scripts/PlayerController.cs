@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace DariaExe
 {
@@ -21,22 +20,22 @@ namespace DariaExe
 
         void Update()
         {
-            var keyboard = Keyboard.current;
-            if (keyboard == null) { move = Vector2.zero; return; }
-
             move = Vector2.zero;
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) move.x -= 1f;
-            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) move.x += 1f;
-            if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) move.y -= 1f;
-            if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) move.y += 1f;
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) move.x -= 1f;
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) move.x += 1f;
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) move.y -= 1f;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) move.y += 1f;
             move = Vector2.ClampMagnitude(move, 1f);
 
-            if ((keyboard.eKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame)
+            if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
                 && ResearchLabGame.Instance != null)
                 ResearchLabGame.Instance.TryInteract();
         }
 
-        void FixedUpdate() => body.velocity = move * speed;
+        void FixedUpdate()
+        {
+            if (body != null) body.velocity = move * speed;
+        }
 
         void OnDisable()
         {
