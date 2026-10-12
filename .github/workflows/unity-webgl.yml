@@ -18,7 +18,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      license_ready: ${{ steps.license.outputs.ready }}
+    steps:
+      - id: license
+        name: Check Unity activation
+        shell: bash
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          if [ -n "$UNITY_LICENSE" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "Unity license file secret is configured."
+          elif [ -n "$UNITY_EMAIL" ] && [ -n "$UNITY_PASSWORD" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "Unity account credentials are configured."
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::error title=Unity activation missing::Configure UNITY_LICENSE, or UNITY_EMAIL + UNITY_PASSWORD, before running Unity tests/builds."
+            exit 1
+          fi
+
   test-and-build:
+    needs: preflight
+    if: needs.preflight.outputs.license_ready == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
