@@ -3,284 +3,181 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07080b">
-<meta name="daria-build" content="4.0.0">
-<title>DARIA.EXE — Decision Game</title>
+<meta name="theme-color" content="#0b0d12">
+<title>DARIA.EXE — Product Office</title>
 <style>
-:root{--bg:#07080b;--ink:#f4f2f7;--muted:#9f9aa9;--line:#2b2932;--panel:#0d0e13;--violet:#9d82ff;--cyan:#7ce8ff;--pink:#ff6fbd;--red:#ff6d73;--green:#8df0a8;--amber:#ffd36a}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100dvh;background:radial-gradient(circle at 16% -10%,#8e6cff18,transparent 28%),radial-gradient(circle at 96% 0,#56dfff10,transparent 26%),var(--bg);overflow-x:hidden}button{font:inherit;color:inherit}button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}.app{max-width:1180px;margin:auto;min-height:100dvh;padding:14px 18px 28px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:900;letter-spacing:.16em}.mark{width:29px;height:29px;border:1px solid #3b3549;border-radius:9px;display:grid;place-items:center;background:#0f0d16}.topMeta{font-size:11px;color:var(--muted);display:flex;gap:8px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 9px;background:#0c0c10}.screen{display:none}.screen.active{display:block}.shell{min-height:calc(100dvh - 70px);border:1px solid #24232a;border-radius:28px;background:linear-gradient(155deg,#0d0d12,#08090c 70%);position:relative;overflow:hidden;box-shadow:0 28px 90px #0008}.gridbg{position:absolute;inset:0;opacity:.16;pointer-events:none;background-image:linear-gradient(#fff0 27px,#ffffff07 28px),linear-gradient(90deg,#fff0 27px,#ffffff06 28px);background-size:28px 28px;mask-image:linear-gradient(#000,transparent 92%)}.home{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;min-height:calc(100dvh - 70px);gap:28px;padding:56px}.hero{display:flex;flex-direction:column;justify-content:center}.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:900}.hero h1{font-size:clamp(48px,7vw,82px);line-height:.9;letter-spacing:-.065em;margin:14px 0 18px}.hero p{max-width:600px;font-size:18px;line-height:1.5;color:#c3bdca;margin:0}.modes{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}.primary,.secondary,.actionBtn,.chipBtn,.scanBtn,.callBtn{cursor:pointer;border-radius:14px;transition:.16s transform,.16s border-color,.16s background}.primary{border:0;background:#f4f0ff;color:#0b0910;padding:14px 18px;font-weight:900}.secondary{border:1px solid #36323f;background:#111117;padding:14px 18px;font-weight:850}.primary:hover,.secondary:hover,.actionBtn:hover,.chipBtn:hover,.scanBtn:hover,.callBtn:hover{transform:translateY(-2px)}.heroMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;color:var(--muted);font-size:12px}.heroMeta span{border:1px solid var(--line);padding:6px 9px;border-radius:999px}.preview{display:flex;align-items:center;justify-content:center;position:relative}.preview svg{width:100%;height:auto;max-height:520px}.wire{fill:none;stroke:#45404f;stroke-width:2;stroke-dasharray:5 8;animation:dash 6s linear infinite}.wire.hot{stroke:#8b6cff}.n{fill:#0e0e14;stroke:#3d3847;stroke-width:2}.n.hot{stroke:#9d82ff;filter:drop-shadow(0 0 10px #9d82ff55)}.n.bad{stroke:#ff6d73;filter:drop-shadow(0 0 8px #ff6d7344)}.packet{fill:#7ce8ff;filter:drop-shadow(0 0 8px #7ce8ff99);animation:packet 4s ease-in-out infinite}.packet.p2{animation-delay:1.2s}.packet.p3{animation-delay:2.4s}@keyframes dash{to{stroke-dashoffset:-100}}@keyframes packet{0%{transform:translate(0,0);opacity:.2}45%{opacity:1}100%{transform:translate(160px,105px);opacity:.15}}.game{position:relative;z-index:2;padding:20px 24px 28px}.gameTop{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-bottom:16px}.back{border:1px solid var(--line);background:#0d0d12;border-radius:12px;padding:9px 11px;cursor:pointer}.progress{height:5px;background:#23212a;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--pink));transition:.35s width}.score{font-size:12px;color:var(--muted);white-space:nowrap}.scene{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr);gap:18px;min-height:600px}.playfield{min-height:600px;border:1px solid #24232b;border-radius:24px;background:#090a0e;position:relative;overflow:hidden}.playfield svg{position:absolute;inset:0;width:100%;height:100%}.hud{position:absolute;left:16px;right:16px;top:14px;display:flex;justify-content:space-between;align-items:flex-start;z-index:4}.hudTitle{max-width:62%}.hudTitle strong{font-size:20px;display:block;letter-spacing:-.02em}.hudTitle small{color:var(--muted);line-height:1.35}.meters{display:flex;gap:8px}.meter{width:58px}.meter b{font-size:10px;color:var(--muted);display:block;margin-bottom:5px}.bar{height:5px;background:#22202a;border-radius:99px;overflow:hidden}.bar i{height:100%;display:block;transition:.35s width}.bar.health i{background:var(--green)}.bar.risk i{background:var(--red)}.bar.signal i{background:var(--cyan)}.toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%) translateY(15px);background:#121119;border:1px solid #3a3547;border-radius:999px;padding:10px 14px;font-size:12px;opacity:0;transition:.25s opacity,.25s transform;z-index:6;max-width:86%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.panel{padding:10px 2px;display:flex;flex-direction:column}.panel .eyebrow{font-size:10px;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;font-weight:900}.panel h2{font-size:32px;line-height:1.02;letter-spacing:-.04em;margin:10px 0 10px}.panel p{font-size:15px;line-height:1.48;color:#bbb5c5;margin:0 0 16px}.turn{font-size:12px;color:var(--muted);margin-bottom:10px}.actions{display:flex;flex-direction:column;gap:9px}.actionBtn{border:1px solid #34313c;background:#111117;padding:14px 14px;text-align:left}.actionBtn strong{display:block;font-size:15px;margin-bottom:4px}.actionBtn small{color:#96909e;line-height:1.35}.actionBtn:disabled{opacity:.35;cursor:default;transform:none}.impact{margin-top:auto;border-top:1px solid #24222b;padding-top:15px;font-size:12px;color:#96909e;line-height:1.45}.impact b{color:#e9e5ef}.node{transition:.35s transform,.35s opacity,.35s filter}.node text{fill:#cfc8d8;font-size:12px}.node circle{fill:#0e0f15;stroke:#3e3948;stroke-width:2}.node.hot circle{stroke:#9d82ff;filter:drop-shadow(0 0 9px #9d82ff66)}.node.bad circle{stroke:#ff6d73;filter:drop-shadow(0 0 9px #ff6d7355)}.node.good circle{stroke:#8df0a8;filter:drop-shadow(0 0 9px #8df0a855)}.link{stroke:#403b49;stroke-width:2;fill:none;transition:.3s stroke,.3s opacity}.link.flow{stroke-dasharray:5 8;animation:dash 5s linear infinite}.link.bad{stroke:#a04d5e}.link.good{stroke:#5d9f72}.shock{fill:none;stroke:#ff6d73;stroke-width:3;opacity:0}.shock.fire{animation:shock .55s ease-out}@keyframes shock{0%{opacity:.95;transform:scale(.2);transform-origin:center}100%{opacity:0;transform:scale(1.8);transform-origin:center}}.scanRing{fill:none;stroke:#7ce8ff;stroke-width:2;opacity:0}.scanRing.fire{animation:scan 1.05s ease-out}@keyframes scan{0%{opacity:.9;r:10}100%{opacity:0;r:180}}.evidenceBubble{position:absolute;left:50%;top:55%;transform:translate(-50%,-50%) scale(.88);width:min(82%,420px);background:#11121a;border:1px solid #4b4560;border-radius:22px;padding:18px;z-index:5;opacity:0;pointer-events:none;transition:.25s opacity,.25s transform;box-shadow:0 18px 60px #0009}.evidenceBubble.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}.evidenceBubble b{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--cyan)}.evidenceBubble p{margin:9px 0 0;color:#ddd8e4;line-height:1.45}.routeRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.chipBtn{border:1px solid #3a3643;background:#0b0b10;padding:10px 7px;font-size:12px}.scanBtn,.callBtn{border:1px solid #3b3745;background:#111118;padding:12px 14px;font-weight:850}.scanBtn{margin-top:8px}.callBtn{margin-top:8px;background:#171221;border-color:#5c4d75}.hypList{display:flex;flex-direction:column;gap:8px;margin:12px 0}.hypo{border:1px solid #2d2a34;border-radius:14px;padding:11px 12px;background:#0d0d12;transition:.3s border-color,.3s opacity,.3s transform}.hypo strong{display:block;font-size:13px}.hypo small{color:#96909f}.hypo.leading{border-color:#8f76ff;transform:translateX(4px)}.hypo.dead{opacity:.35;text-decoration:line-through}.final{display:none;position:relative;z-index:2;min-height:calc(100dvh - 70px);padding:54px}.final.active{display:flex;flex-direction:column;justify-content:center}.final h2{font-size:clamp(40px,6vw,70px);line-height:.94;letter-spacing:-.055em;margin:12px 0}.final p{font-size:18px;line-height:1.5;color:#c4bdca;max-width:720px}.resultGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:760px;margin:24px 0}.resultCell{border:1px solid var(--line);background:#0d0d12;border-radius:16px;padding:14px}.resultCell b{display:block;font-size:26px}.resultCell small{color:var(--muted)}.hidden{display:none}.ending{border-left:2px solid var(--pink);padding-left:14px;color:#b8b0bf;margin-top:8px;max-width:760px}.ending strong{color:#f0ebf5}
-@media(max-width:820px){.home{grid-template-columns:1fr;padding:32px 24px 24px}.preview{min-height:270px}.hero h1{font-size:55px}.scene{grid-template-columns:1fr}.playfield{min-height:450px}.scene{min-height:0}.panel{padding-top:0}.game{padding:14px}.gameTop{grid-template-columns:auto 1fr}.score{grid-column:1/-1}.resultGrid{grid-template-columns:1fr}.final{padding:34px 24px}}
-@media(max-width:480px){.app{padding:10px}.shell{border-radius:20px}.home{padding:26px 18px}.hero h1{font-size:44px}.hero p{font-size:16px}.modes{display:grid}.modes button{width:100%}.preview{min-height:220px}.playfield{min-height:410px}.hudTitle{max-width:56%}.meters{gap:5px}.meter{width:44px}.panel h2{font-size:28px}.game{padding:12px}.routeRow{grid-template-columns:1fr}.evidenceBubble{width:90%}}
+:root{--bg:#0b0d12;--panel:#11141b;--ink:#f7f5fb;--muted:#9ba0ad;--line:#292e39;--violet:#9f86ff;--cyan:#6de7ff;--pink:#ff79bd;--green:#88e49f;--amber:#ffd46b;--red:#ff737a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;color:inherit}
+body{overflow-x:hidden;background:radial-gradient(circle at 10% -10%,#8f72ff18,transparent 28%),var(--bg)}
+.wrap{max-width:1280px;margin:auto;padding:12px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.brand{font-weight:900;letter-spacing:.12em;font-size:12px}.status{display:flex;gap:8px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#10131a;border-radius:999px;padding:6px 9px;font-size:11px;color:#c6c9d3}
+.shell{border:1px solid #242934;border-radius:24px;overflow:hidden;background:#0d1016;box-shadow:0 28px 90px #0008;position:relative}
+.home{min-height:calc(100dvh - 66px);display:grid;grid-template-columns:1fr .95fr;gap:28px;padding:54px;align-items:center}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:900}.home h1{font-size:clamp(48px,7vw,86px);line-height:.9;letter-spacing:-.06em;margin:12px 0 18px}.home p{font-size:18px;line-height:1.48;color:#c1c5cf;max-width:620px}
+.cta{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.primary,.ghost,.interact,.modal button{border-radius:14px;cursor:pointer;transition:.15s transform,.15s background,.15s border-color}.primary{border:0;background:#f5f2ff;color:#111018;padding:14px 18px;font-weight:900}.ghost{border:1px solid #353a47;background:#151922;padding:14px 18px;font-weight:800}.primary:hover,.ghost:hover,.interact:hover,.modal button:hover{transform:translateY(-2px)}
+.preview{position:relative;min-height:470px}.miniOffice{position:absolute;inset:0;border:1px solid #2b3140;border-radius:26px;background:linear-gradient(#ffffff04,#ffffff00),#11151d;overflow:hidden}.miniRoom{position:absolute;border:1px solid #343b4b;border-radius:16px;background:#151a23;box-shadow:inset 0 0 0 1px #ffffff03}.miniRoom span{position:absolute;left:12px;top:10px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#7f8798}.r1{left:5%;top:8%;width:42%;height:38%}.r2{right:5%;top:8%;width:42%;height:38%}.r3{left:5%;bottom:8%;width:42%;height:38%}.r4{right:5%;bottom:8%;width:42%;height:38%}.miniAvatar{position:absolute;width:24px;height:24px;border-radius:8px;background:var(--violet);left:48%;top:47%;box-shadow:0 0 24px #9f86ff88;animation:roam 7s ease-in-out infinite}.token{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px #6de7ffaa;animation:pulse 1.7s ease-in-out infinite}.t1{left:21%;top:28%}.t2{right:18%;top:28%;animation-delay:.4s}.t3{left:20%;bottom:25%;animation-delay:.8s}.t4{right:20%;bottom:22%;animation-delay:1.2s}@keyframes pulse{50%{transform:scale(1.45);opacity:.65}}@keyframes roam{0%,100%{transform:translate(-20px,-10px)}25%{transform:translate(80px,-80px)}50%{transform:translate(90px,85px)}75%{transform:translate(-70px,70px)}}
+.game{display:none}.game.active{display:block}.home.hidden{display:none}
+.gameGrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;min-height:calc(100dvh - 66px)}.stage{position:relative;background:#090b10;min-height:720px;overflow:hidden}.stage canvas{display:block;width:100%;height:100%}.side{border-left:1px solid var(--line);padding:20px;display:flex;flex-direction:column;background:#10131a}.side h2{font-size:28px;line-height:1;letter-spacing:-.035em;margin:9px 0}.side p{color:#aeb3bf;line-height:1.45;font-size:14px}.roomName{font-size:10px;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;font-weight:900}.mission{border:1px solid #2d3340;background:#141821;border-radius:16px;padding:13px;margin-top:10px}.mission strong{display:block;font-size:13px;margin-bottom:4px}.mission small{color:#8f96a6;line-height:1.35}.mission.done{border-color:#456a52;background:#101a14}.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.badge{width:44px;height:44px;border:1px solid #343a47;border-radius:12px;display:grid;place-items:center;color:#596171;background:#11151c;font-size:20px}.badge.on{color:#0c1012;border-color:#6de7ff;background:var(--cyan);box-shadow:0 0 16px #6de7ff33}.hint{margin-top:auto;border-top:1px solid #242936;padding-top:14px;color:#8f96a5;font-size:12px;line-height:1.45}.interact{width:100%;border:1px solid #454c5d;background:#181d27;padding:12px 14px;font-weight:850;margin-top:10px}.interact.ready{border-color:#7b68d6;background:#211b31}.controls{display:flex;gap:7px;margin-top:10px}.key{border:1px solid #3b414f;border-radius:8px;padding:5px 7px;font-size:11px;color:#b8bdc7}
+.toast{position:absolute;left:50%;bottom:22px;transform:translate(-50%,14px);opacity:0;z-index:8;background:#141923;border:1px solid #3b4354;border-radius:999px;padding:10px 14px;font-size:12px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.modalWrap{position:absolute;inset:0;background:#06080cb8;backdrop-filter:blur(7px);display:none;place-items:center;z-index:10;padding:20px}.modalWrap.show{display:grid}.modal{width:min(620px,100%);border:1px solid #3a4150;border-radius:22px;background:#11151d;padding:22px;box-shadow:0 26px 90px #000}.modal .eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--cyan);font-weight:900}.modal h3{font-size:28px;margin:8px 0 8px;letter-spacing:-.035em}.modal p{color:#aeb4c0;line-height:1.45}.taskArea{margin-top:16px}.taskRow{display:flex;gap:10px;flex-wrap:wrap}.modal button{border:1px solid #3b4251;background:#171c26;padding:11px 13px}.modal button.good{border-color:#527d5f;background:#142019}.modal button.warn{border-color:#805a61;background:#21161a}.slider{width:100%}.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.fstep{height:72px;border:1px solid #343b49;border-radius:12px;background:#151a22;display:grid;place-items:center;text-align:center;font-size:12px;color:#aeb4c0;position:relative;overflow:hidden}.fstep i{position:absolute;left:0;bottom:0;height:5px;background:var(--cyan)}.fstep.bad{border-color:#7c4d57}.fstep.bad i{background:var(--red)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.zone{min-height:96px;border:1px dashed #434a59;border-radius:12px;padding:9px}.zone b{font-size:11px;color:#8890a1}.card{border:1px solid #3a4150;background:#181d27;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;cursor:pointer}.card.sel{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet) inset}.experiment{display:grid;grid-template-columns:1fr 1fr;gap:10px}.variant{border:1px solid #343b49;border-radius:14px;padding:14px;background:#151a22}.variant.active{border-color:var(--violet)}.variant strong{display:block;margin-bottom:8px}.switches{display:flex;gap:7px;flex-wrap:wrap}.ending{display:none;position:absolute;inset:0;z-index:20;background:#0b0d12;padding:40px;align-items:center}.ending.show{display:flex}.ending h2{font-size:clamp(42px,7vw,78px);line-height:.92;letter-spacing:-.055em;margin:10px 0}.ending p{max-width:760px;color:#bdc2cc;font-size:18px;line-height:1.5}
+.dpad{display:none;position:absolute;left:16px;bottom:16px;z-index:9;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px 46px;gap:4px}.dpad button{border:1px solid #49505f;background:#151a22dd;border-radius:12px;font-size:18px}.dpad .u{grid-column:2}.dpad .l{grid-column:1;grid-row:2}.dpad .d{grid-column:2;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.tapAct{display:none;position:absolute;right:16px;bottom:18px;z-index:9;width:64px;height:64px;border-radius:50%;border:1px solid #6f61c5;background:#261f3add;font-weight:900}
+@media(max-width:900px){.home{grid-template-columns:1fr;padding:30px 22px}.preview{min-height:330px}.gameGrid{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}.stage{min-height:62dvh}.dpad,.tapAct{display:grid}.tapAct{place-items:center}.controls{display:none}}
+@media(max-width:520px){.wrap{padding:8px}.shell{border-radius:18px}.home h1{font-size:48px}.home p{font-size:16px}.preview{min-height:270px}.side{padding:16px}.funnel,.board,.experiment{grid-template-columns:1fr 1fr}.stage{min-height:58dvh}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="wrap">
   <div class="top">
-    <div class="brand"><div class="mark">D</div>DARIA.EXE</div>
-    <div class="topMeta"><span class="pill">decision game</span><span class="pill">v4.0</span></div>
+    <div class="brand">DARIA.EXE / PRODUCT OFFICE</div>
+    <div class="status"><span class="pill" id="xpPill">0 XP</span><span class="pill" id="achPill">0 / 4 achievements</span></div>
   </div>
 
-  <section id="home" class="screen active shell">
-    <div class="gridbg"></div>
-    <div class="home">
-      <div class="hero">
-        <div class="kicker">You are on call. The system is not.</div>
-        <h1>Fix it before you make it worse.</h1>
-        <p>A short decision game about uncertainty, bad signals, AI confidence and the expensive instinct to act too early.</p>
-        <div class="modes">
-          <button class="primary" id="startQuick">Quick incident · 60 sec</button>
-          <button class="secondary" id="startInvestigate">Investigate · 2 min</button>
-        </div>
-        <div class="heroMeta"><span>branching consequences</span><span>visible system state</span><span>hidden ending</span></div>
+  <div class="shell">
+    <section class="home" id="home">
+      <div>
+        <div class="kicker">Learn product by doing product</div>
+        <h1>Your first day is already on fire.</h1>
+        <p>Run through the office, find what is actually happening, make product calls and earn achievements. No quiz screen. No abstract logic puzzle. The office itself is the game board.</p>
+        <div class="cta"><button class="primary" id="start">Enter the office</button><button class="ghost" id="how">How it plays</button></div>
       </div>
       <div class="preview">
-        <svg viewBox="0 0 520 430" aria-hidden="true">
-          <path class="wire hot" d="M85 110 C160 70 210 130 260 180 S365 290 445 245"/>
-          <path class="wire" d="M85 310 C155 270 190 230 260 180 S350 80 440 105"/>
-          <circle class="n hot" cx="85" cy="110" r="38"/><circle class="n" cx="85" cy="310" r="38"/><circle class="n hot" cx="260" cy="180" r="45"/><circle class="n" cx="440" cy="105" r="38"/><circle class="n bad" cx="445" cy="245" r="38"/>
-          <circle class="packet" cx="85" cy="110" r="5"/><circle class="packet p2" cx="85" cy="110" r="5"/><circle class="packet p3" cx="85" cy="110" r="5"/>
-          <text x="64" y="115" fill="#d8d2df" font-size="12">users</text><text x="55" y="315" fill="#d8d2df" font-size="12">support</text><text x="236" y="185" fill="#d8d2df" font-size="12">router</text><text x="419" y="110" fill="#d8d2df" font-size="12">AI</text><text x="420" y="250" fill="#ff9ba0" font-size="12">prod</text>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <section id="quick" class="screen shell">
-    <div class="gridbg"></div>
-    <div class="game">
-      <div class="gameTop">
-        <button class="back" data-home>←</button>
-        <div class="progress"><i id="qProgress"></i></div>
-        <div class="score">system integrity <b id="qScore">74</b>%</div>
-      </div>
-      <div class="scene">
-        <div class="playfield">
-          <div class="hud">
-            <div class="hudTitle"><strong id="qSceneTitle">Checkout is failing</strong><small id="qSceneSub">Orders spike, dashboards disagree, support is guessing.</small></div>
-            <div class="meters">
-              <div class="meter"><b>health</b><div class="bar health"><i id="qHealth"></i></div></div>
-              <div class="meter"><b>risk</b><div class="bar risk"><i id="qRisk"></i></div></div>
-              <div class="meter"><b>signal</b><div class="bar signal"><i id="qSignal"></i></div></div>
-            </div>
-          </div>
-          <svg id="qMap" viewBox="0 0 650 520" aria-hidden="true">
-            <path id="l1" class="link flow" d="M105 250 C180 190 230 185 315 220"/>
-            <path id="l2" class="link flow" d="M315 220 C400 170 450 165 540 205"/>
-            <path id="l3" class="link flow" d="M315 220 C400 280 455 300 540 340"/>
-            <path id="l4" class="link" d="M105 385 C185 335 235 290 315 220"/>
-            <g id="nUsers" class="node hot"><circle cx="105" cy="250" r="42"/><text x="84" y="255">users</text></g>
-            <g id="nSupport" class="node"><circle cx="105" cy="385" r="42"/><text x="80" y="390">support</text></g>
-            <g id="nRouter" class="node hot"><circle cx="315" cy="220" r="48"/><text x="289" y="225">router</text></g>
-            <g id="nAi" class="node"><circle cx="540" cy="205" r="42"/><text x="528" y="210">AI</text></g>
-            <g id="nProd" class="node bad"><circle cx="540" cy="340" r="42"/><text x="525" y="345">prod</text></g>
-            <circle id="qShock" class="shock" cx="540" cy="340" r="25"/>
-          </svg>
-          <div id="qToast" class="toast"></div>
+        <div class="miniOffice">
+          <div class="miniRoom r1"><span>research</span></div><div class="miniRoom r2"><span>analytics</span></div>
+          <div class="miniRoom r3"><span>priorities</span></div><div class="miniRoom r4"><span>experiment</span></div>
+          <div class="miniAvatar"></div><i class="token t1"></i><i class="token t2"></i><i class="token t3"></i><i class="token t4"></i>
         </div>
-        <aside class="panel">
-          <div class="eyebrow">Quick incident</div>
-          <h2 id="qPrompt">What do you do first?</h2>
-          <p id="qDesc">You have enough information to be dangerous, not enough to be right.</p>
-          <div class="turn" id="qTurn">Move 1 of 4</div>
-          <div id="qActions" class="actions"></div>
-          <div class="impact"><b>Rule:</b> every move changes the system. Some damage is reversible; some is not.</div>
+      </div>
+    </section>
+
+    <section class="game" id="game">
+      <div class="gameGrid">
+        <div class="stage" id="stage">
+          <canvas id="c"></canvas>
+          <div class="toast" id="toast"></div>
+          <div class="modalWrap" id="modalWrap"><div class="modal" id="modal"></div></div>
+          <div class="dpad">
+            <button class="u" data-dir="up">↑</button><button class="l" data-dir="left">←</button><button class="d" data-dir="down">↓</button><button class="r" data-dir="right">→</button>
+          </div>
+          <button class="tapAct" id="tapAct">E</button>
+          <div class="ending" id="ending">
+            <div><div class="kicker">Promotion unlocked</div><h2>You shipped judgement, not features.</h2><p>You observed behavior, found the real leak, cut work that did not earn its way in, and designed an experiment that could teach you something. That is the core loop: <b>observe → frame → choose → test → learn.</b></p><div class="cta"><button class="primary" id="replay">Replay office</button></div></div>
+          </div>
+        </div>
+        <aside class="side">
+          <div class="roomName" id="roomName">Lobby</div>
+          <h2 id="sideTitle">Find the four product rooms.</h2>
+          <p id="sideText">Walk into a room, get close to its workstation and interact. Each room teaches one product habit through a different mechanic.</p>
+          <div class="mission" id="m1"><strong>Research · Evidence hunter</strong><small>Observe users before accepting requests.</small></div>
+          <div class="mission" id="m2"><strong>Analytics · Funnel medic</strong><small>Find the actual leak, not the loudest metric.</small></div>
+          <div class="mission" id="m3"><strong>Priorities · Ruthless cut</strong><small>Protect the outcome from feature gravity.</small></div>
+          <div class="mission" id="m4"><strong>Experiment · Clean test</strong><small>Change one thing so the result can teach you.</small></div>
+          <div class="badges"><div class="badge" id="b1">◉</div><div class="badge" id="b2">⌁</div><div class="badge" id="b3">✂</div><div class="badge" id="b4">⚗</div></div>
+          <button class="interact" id="interact">Nothing to interact with</button>
+          <div class="controls"><span class="key">WASD / arrows</span><span class="key">E / space</span></div>
+          <div class="hint" id="hint">Blue pulses are workstations. Walk up to one. Rooms unlock in any order.</div>
         </aside>
       </div>
-    </div>
-  </section>
-
-  <section id="investigate" class="screen shell">
-    <div class="gridbg"></div>
-    <div class="game">
-      <div class="gameTop">
-        <button class="back" data-home>←</button>
-        <div class="progress"><i id="iProgress"></i></div>
-        <div class="score">evidence quality <b id="iScore">0</b>/4</div>
-      </div>
-      <div class="scene">
-        <div class="playfield">
-          <div class="hud">
-            <div class="hudTitle"><strong>Why did conversion collapse?</strong><small>Three explanations are plausible. Your job is not to guess; it is to eliminate.</small></div>
-            <div class="meters">
-              <div class="meter"><b>signal</b><div class="bar signal"><i id="iSignal"></i></div></div>
-              <div class="meter"><b>noise</b><div class="bar risk"><i id="iNoise"></i></div></div>
-            </div>
-          </div>
-          <svg viewBox="0 0 650 520" aria-hidden="true">
-            <path class="link" d="M325 245 C245 175 185 165 115 185"/><path class="link" d="M325 245 C405 175 475 165 545 185"/><path class="link" d="M325 245 C325 320 325 350 325 410"/>
-            <g id="hA" class="node"><circle cx="115" cy="185" r="52"/><text x="79" y="182">traffic mix</text><text x="88" y="198">changed</text></g>
-            <g id="hB" class="node"><circle cx="545" cy="185" r="52"/><text x="515" y="182">pricing</text><text x="505" y="198">friction</text></g>
-            <g id="hC" class="node"><circle cx="325" cy="410" r="52"/><text x="295" y="407">tracking</text><text x="294" y="423">broke</text></g>
-            <g class="node hot"><circle cx="325" cy="245" r="46"/><text x="300" y="250">evidence</text></g>
-            <circle id="scanRing" class="scanRing" cx="325" cy="245" r="10"/>
-          </svg>
-          <div id="evidenceBubble" class="evidenceBubble">
-            <b id="eType">New evidence</b>
-            <p id="eText"></p>
-            <div class="routeRow">
-              <button class="chipBtn" data-route="A">traffic mix</button>
-              <button class="chipBtn" data-route="B">pricing friction</button>
-              <button class="chipBtn" data-route="C">tracking broke</button>
-            </div>
-          </div>
-          <div id="iToast" class="toast"></div>
-        </div>
-        <aside class="panel">
-          <div class="eyebrow">Investigate</div>
-          <h2>Build the explanation, not the story.</h2>
-          <p>Scan one source at a time. Route the evidence to the hypothesis it actually bears on. Wrong routing increases noise.</p>
-          <div class="hypList">
-            <div id="hypA" class="hypo"><strong>A · Traffic mix changed</strong><small id="hypATxt">unresolved</small></div>
-            <div id="hypB" class="hypo"><strong>B · Pricing friction</strong><small id="hypBTxt">unresolved</small></div>
-            <div id="hypC" class="hypo"><strong>C · Tracking broke</strong><small id="hypCTxt">unresolved</small></div>
-          </div>
-          <button class="scanBtn" id="scanBtn">Scan next source</button>
-          <button class="callBtn" id="callBtn" disabled>Make the call</button>
-          <div class="impact"><b>Tip:</b> a strong player can finish early once one explanation dominates.</div>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <section id="final" class="screen shell">
-    <div class="gridbg"></div>
-    <div class="final active">
-      <div class="kicker" id="finalKicker">Incident closed</div>
-      <h2 id="finalTitle">You fixed the system.</h2>
-      <p id="finalText"></p>
-      <div class="resultGrid">
-        <div class="resultCell"><b id="r1">—</b><small id="r1l">system</small></div>
-        <div class="resultCell"><b id="r2">—</b><small id="r2l">signal</small></div>
-        <div class="resultCell"><b id="r3">—</b><small id="r3l">style</small></div>
-      </div>
-      <div class="ending" id="ending"></div>
-      <div class="modes"><button class="primary" id="again">Play another</button><button class="secondary" id="deep">Investigate</button></div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 <script>
 (function(){
-var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.from(document.querySelectorAll(s))};
-var screens=['home','quick','investigate','final'];
-function show(id){screens.forEach(function(x){$('#'+x).classList.toggle('active',x===id)});window.scrollTo(0,0)}
-$$('[data-home]').forEach(function(b){b.onclick=function(){show('home')}});
-
-var quickState={turn:0,health:74,risk:62,signal:28,integrity:74,path:[]};
-var quickTurns=[
- {title:'Checkout is failing',sub:'Orders spike, dashboards disagree, support is guessing.',prompt:'What do you do first?',desc:'You have enough information to be dangerous, not enough to be right.',
- actions:[
-  {label:'Rollback the last release',hint:'Fast, visible, emotionally satisfying.',d:{health:5,risk:-4,signal:-4},fx:'bad',msg:'Rollback lands. Failure rate barely moves. You changed production without improving certainty.'},
-  {label:'Contain checkout traffic',hint:'Reduce blast radius while preserving evidence.',d:{health:8,risk:-14,signal:7},fx:'good',msg:'Traffic is throttled. Damage slows and the failure pattern becomes easier to read.'},
-  {label:'Ask the AI for root cause',hint:'Useful if treated as a lead, dangerous as an answer.',d:{health:0,risk:5,signal:4},fx:'ai',msg:'AI proposes a payment timeout. Plausible, not yet verified.'}
- ]},
- {title:'The failure pattern shifts',sub:'Mobile EU orders fail 3× more often. Web US is mostly fine.',prompt:'Now what?',desc:'The incident is becoming asymmetric. Generic fixes are getting more expensive.',
- actions:[
-  {label:'Split traffic by region + device',hint:'Turn one incident into comparable cohorts.',d:{health:6,risk:-8,signal:14},fx:'good',msg:'The asymmetry sharpens: EU mobile routes through one degraded provider.'},
-  {label:'Increase global retries',hint:'May hide symptoms while multiplying load.',d:{health:-6,risk:13,signal:-2},fx:'bad',msg:'Retries create a queue storm. Health drops; the root cause is still unclear.'},
-  {label:'Page the payment vendor',hint:'External dependency now has concrete evidence.',d:{health:2,risk:-4,signal:8},fx:'vendor',msg:'Vendor confirms elevated EU mobile latency. You now have an external anchor.'}
- ]},
- {title:'AI is confident now',sub:'It predicts the provider is the root cause with 92% confidence.',prompt:'Do you trust the confidence?',desc:'Confidence is not evidence. But ignoring a useful model can also waste time.',
- actions:[
-  {label:'Fail over EU mobile only',hint:'Narrow intervention matched to the observed pattern.',d:{health:13,risk:-11,signal:8},fx:'good',msg:'EU mobile recovers. Other cohorts stay stable. The intervention validates the hypothesis.'},
-  {label:'Fail over everything',hint:'Maximum action, maximum collateral.',d:{health:5,risk:7,signal:1},fx:'bad',msg:'Conversion improves in EU but drops elsewhere. You solved one problem by creating another.'},
-  {label:'Wait for perfect certainty',hint:'No change is still a decision.',d:{health:-7,risk:8,signal:5},fx:'wait',msg:'More evidence arrives, but so do more failed orders. Certainty had a cost.'}
- ]},
- {title:'Recovery is visible',sub:'Failure rate is falling. Support wants to announce “fixed”.',prompt:'Close the incident?',desc:'The last move decides whether this becomes a lesson or just a lucky recovery.',
- actions:[
-  {label:'Close it now',hint:'Fast closure, no verification window.',d:{health:4,risk:5,signal:-2},fx:'bad',msg:'A small residual cohort keeps failing. “Fixed” was premature.'},
-  {label:'Hold a verification window',hint:'Watch the affected cohort before closure.',d:{health:7,risk:-9,signal:9},fx:'good',msg:'The cohort stays stable. Residual failures reveal one secondary bug, contained before closure.'},
-  {label:'Write the postmortem first',hint:'Documentation before certainty.',d:{health:1,risk:0,signal:3},fx:'doc',msg:'Useful notes, but the system is still live. Verification should precede narrative.'}
- ]}
+const $=s=>document.querySelector(s), canvas=$('#c'),ctx=canvas.getContext('2d'), stage=$('#stage');
+const home=$('#home'),game=$('#game'),modalWrap=$('#modalWrap'),modal=$('#modal'),toast=$('#toast');
+let W=900,H=720,keys={},running=false,last=0,xp=0,near=null;
+const done={research:false,analytics:false,priority:false,experiment:false};
+const player={x:450,y:360,r:13,s:210};
+const rooms=[
+ {id:'research',name:'Research Lab',x:40,y:40,w:380,h:275,color:'#17222a',station:{x:220,y:155},door:{x:405,y:175}},
+ {id:'analytics',name:'Analytics',x:480,y:40,w:380,h:275,color:'#1d1b2a',station:{x:670,y:155},door:{x:495,y:175}},
+ {id:'priority',name:'Priorities',x:40,y:405,w:380,h:275,color:'#241b22',station:{x:220,y:545},door:{x:405,y:500}},
+ {id:'experiment',name:'Experiment Bay',x:480,y:405,w:380,h:275,color:'#18231c',station:{x:670,y:545},door:{x:495,y:500}}
 ];
-function clamp(n){return Math.max(0,Math.min(100,n))}
-function renderQuick(){
- var t=quickTurns[quickState.turn];
- $('#qProgress').style.width=(quickState.turn/4*100)+'%';
- $('#qScore').textContent=Math.round(quickState.integrity);
- $('#qHealth').style.width=quickState.health+'%';$('#qRisk').style.width=quickState.risk+'%';$('#qSignal').style.width=quickState.signal+'%';
- $('#qSceneTitle').textContent=t.title;$('#qSceneSub').textContent=t.sub;$('#qPrompt').textContent=t.prompt;$('#qDesc').textContent=t.desc;$('#qTurn').textContent='Move '+(quickState.turn+1)+' of 4';
- $('#qActions').innerHTML=t.actions.map(function(a,i){return '<button class="actionBtn" data-a="'+i+'"><strong>'+a.label+'</strong><small>'+a.hint+'</small></button>'}).join('');
- $$('[data-a]').forEach(function(b){b.onclick=function(){takeQuick(+b.dataset.a)}});
- updateMap();
-}
-function updateMap(){
- var bad=quickState.risk>65, good=quickState.health>80, signal=quickState.signal>55;
- $('#nProd').setAttribute('class','node '+(bad?'bad':good?'good':''));
- $('#nRouter').setAttribute('class','node '+(signal?'good':'hot'));
- $('#nAi').setAttribute('class','node '+(quickState.turn>=2?'hot':''));
- $('#l3').setAttribute('class','link flow '+(bad?'bad':good?'good':''));
- $('#l1').setAttribute('class','link flow '+(signal?'good':''));
-}
-function toast(el,msg){el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show')},1800)}
-function takeQuick(i){
- var t=quickTurns[quickState.turn],a=t.actions[i];
- $$('#qActions button').forEach(function(b){b.disabled=true});
- quickState.path.push(i);
- quickState.health=clamp(quickState.health+a.d.health);quickState.risk=clamp(quickState.risk+a.d.risk);quickState.signal=clamp(quickState.signal+a.d.signal);
- quickState.integrity=clamp((quickState.health+(100-quickState.risk)+quickState.signal)/3);
- $('#qHealth').style.width=quickState.health+'%';$('#qRisk').style.width=quickState.risk+'%';$('#qSignal').style.width=quickState.signal+'%';$('#qScore').textContent=Math.round(quickState.integrity);
- $('#qShock').setAttribute('class','shock fire');setTimeout(function(){$('#qShock').setAttribute('class','shock')},600);
- updateMap();toast($('#qToast'),a.msg);
- setTimeout(function(){quickState.turn++;if(quickState.turn>=4){finishQuick()}else{renderQuick()}},1900)
-}
-function finishQuick(){
- var x=Math.round(quickState.integrity),hidden=quickState.path.join(',')==='1,0,0,1';
- $('#finalKicker').textContent=hidden?'Hidden ending unlocked':'Incident closed';
- $('#finalTitle').textContent=x>=72?'You reduced uncertainty before increasing action.':x>=55?'You recovered, but paid for certainty.':'The system survived you.';
- $('#finalText').textContent=x>=72?'You contained blast radius, created comparable evidence, intervened narrowly and verified recovery. The game rewards decision quality, not theatrical action.':x>=55?'Some choices improved the system and others created avoidable risk. Recovery happened, but the path was noisier than it needed to be.':'You acted faster than the evidence improved. The failure became harder to reason about because your interventions changed too much at once.';
- $('#r1').textContent=x+'%';$('#r1l').textContent='system integrity';$('#r2').textContent=quickState.signal+'%';$('#r2l').textContent='signal';$('#r3').textContent=quickState.risk<35?'controlled':quickState.risk<60?'mixed':'reactive';$('#r3l').textContent='decision style';
- $('#ending').innerHTML=hidden?'<strong>Hidden ending:</strong> you never chased certainty. You bought just enough of it, then acted proportionally.':'<strong>Replay hint:</strong> the strongest path is not the fastest-looking path.';
- show('final')
-}
-function startQuick(){quickState={turn:0,health:74,risk:62,signal:28,integrity:74,path:[]};show('quick');renderQuick()}
-$('#startQuick').onclick=startQuick;
-
-var evidence=[
- {text:'Paid traffic mix is almost unchanged week over week.',route:'A',effect:'weakens'},
- {text:'Drop begins exactly after the new pricing modal ships.',route:'B',effect:'supports'},
- {text:'Server-side purchases are stable while client analytics reports a collapse.',route:'C',effect:'supports'},
- {text:'Users who never see the pricing modal convert normally.',route:'B',effect:'supports'}
+const furniture=[
+ [90,95,120,52],[250,95,110,52],[525,92,120,58],[680,92,120,58],
+ [90,470,115,55],[260,470,105,55],[525,470,118,55],[690,470,110,55]
 ];
-var inv={idx:0,good:0,noise:0,score:{A:0,B:0,C:0},seen:0};
-function renderInv(){
- $('#iProgress').style.width=(inv.seen/4*100)+'%';$('#iScore').textContent=inv.good;$('#iSignal').style.width=(inv.good*24)+'%';$('#iNoise').style.width=Math.min(100,inv.noise*25)+'%';
- ['A','B','C'].forEach(function(k){
-   var s=inv.score[k],el=$('#hyp'+k),txt=$('#hyp'+k+'Txt');
-   el.className='hypo'+(s>=2?' leading':'')+(s<=-1?' dead':'');
-   txt.textContent=s>=2?'leading explanation':s===1?'gaining support':s<=-1?'weakened':'unresolved';
+function fit(){const r=stage.getBoundingClientRect(); const d=Math.min(2,devicePixelRatio||1); canvas.width=r.width*d; canvas.height=r.height*d; canvas.style.width=r.width+'px';canvas.style.height=r.height+'px';ctx.setTransform(d,0,0,d,0,0);W=r.width;H=r.height}
+addEventListener('resize',fit);fit();
+function sx(v){return v/900*W} function sy(v){return v/720*H}
+function worldX(px){return px/900*W} function worldY(py){return py/720*H}
+function reset(){player.x=450;player.y=360;xp=0;Object.keys(done).forEach(k=>done[k]=false);updateUI()}
+function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
+function updateUI(){
+ const n=Object.values(done).filter(Boolean).length;$('#xpPill').textContent=xp+' XP';$('#achPill').textContent=n+' / 4 achievements';
+ ['research','analytics','priority','experiment'].forEach((k,i)=>{$('#m'+(i+1)).classList.toggle('done',done[k]);$('#b'+(i+1)).classList.toggle('on',done[k])});
+ if(n===4)setTimeout(()=>$('#ending').classList.add('show'),500);
+}
+function roomAt(x,y){return rooms.find(r=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)}
+function canMove(nx,ny){
+ if(nx<18||nx>882||ny<18||ny>702)return false;
+ for(const f of furniture){if(nx>f[0]-16&&nx<f[0]+f[2]+16&&ny>f[1]-16&&ny<f[1]+f[3]+16)return false}
+ return true
+}
+function update(dt){
+ let dx=0,dy=0;if(keys.ArrowLeft||keys.a)dx--;if(keys.ArrowRight||keys.d)dx++;if(keys.ArrowUp||keys.w)dy--;if(keys.ArrowDown||keys.s)dy++;
+ if(dx||dy){const m=Math.hypot(dx,dy);dx/=m;dy/=m;const nx=player.x+dx*player.s*dt,ny=player.y+dy*player.s*dt;if(canMove(nx,player.y))player.x=nx;if(canMove(player.x,ny))player.y=ny}
+ let best=null,dist=999;
+ rooms.forEach(r=>{const d=Math.hypot(player.x-r.station.x,player.y-r.station.y);if(d<dist){dist=d;best=r}});
+ near=dist<72?best:null;
+ const rm=roomAt(player.x,player.y);$('#roomName').textContent=rm?rm.name:'Lobby';
+ if(near){$('#interact').textContent=(done[near.id]?'Replay ':'Start ')+near.name;$('#interact').classList.add('ready')}else{$('#interact').textContent='Nothing to interact with';$('#interact').classList.remove('ready')}
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);ctx.save();ctx.scale(W/900,H/720);
+ ctx.fillStyle='#090b10';ctx.fillRect(0,0,900,720);
+ ctx.strokeStyle='#181d26';ctx.lineWidth=1;for(let x=0;x<900;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,720);ctx.stroke()}for(let y=0;y<720;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(900,y);ctx.stroke()}
+ rooms.forEach(r=>{
+   ctx.fillStyle=r.color;round(r.x,r.y,r.w,r.h,18,true);ctx.strokeStyle='#343b49';ctx.lineWidth=2;round(r.x,r.y,r.w,r.h,18,false);
+   ctx.fillStyle='#7f8798';ctx.font='700 12px Inter, sans-serif';ctx.fillText(r.name.toUpperCase(),r.x+18,r.y+26);
+   const pulse=18+Math.sin(performance.now()/350)*4;ctx.strokeStyle=done[r.id]?'#88e49f':'#6de7ff';ctx.globalAlpha=.35;ctx.lineWidth=3;ctx.beginPath();ctx.arc(r.station.x,r.station.y,pulse,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
+   ctx.fillStyle=done[r.id]?'#88e49f':'#6de7ff';ctx.beginPath();ctx.arc(r.station.x,r.station.y,7,0,Math.PI*2);ctx.fill();
  });
- $('#callBtn').disabled=inv.seen<2;
+ furniture.forEach((f,i)=>{ctx.fillStyle=i<4?'#202630':'#25212a';round(f[0],f[1],f[2],f[3],10,true);ctx.strokeStyle='#353c49';round(f[0],f[1],f[2],f[3],10,false)});
+ ctx.fillStyle='#131821';round(420,0,60,720,0,true);round(0,315,900,90,0,true);
+ ctx.fillStyle='#2c3441';round(427,328,46,64,8,true);
+ // avatar
+ ctx.shadowColor='#9f86ff';ctx.shadowBlur=18;ctx.fillStyle='#9f86ff';round(player.x-14,player.y-14,28,28,9,true);ctx.shadowBlur=0;ctx.fillStyle='#10131a';ctx.fillRect(player.x-5,player.y-2,3,3);ctx.fillRect(player.x+3,player.y-2,3,3);
+ if(near){ctx.strokeStyle='#9f86ff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(player.x,player.y,23+Math.sin(performance.now()/180)*2,0,Math.PI*2);ctx.stroke()}
+ ctx.restore()
 }
-function scan(){
- if(inv.idx>=evidence.length){toast($('#iToast'),'No more sources. Make the call.');return}
- $('#scanRing').setAttribute('class','scanRing fire');setTimeout(function(){$('#scanRing').setAttribute('class','scanRing')},1100);
- var e=evidence[inv.idx];$('#eText').textContent=e.text;$('#evidenceBubble').classList.add('show');$('#scanBtn').disabled=true;
+function round(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);fill?ctx.fill():ctx.stroke()}
+function loop(t){const dt=Math.min(.03,(t-last)/1000||0);last=t;if(running){update(dt);draw();requestAnimationFrame(loop)}}
+function interact(){if(near)openTask(near.id)}
+$('#interact').onclick=interact;$('#tapAct').onclick=interact;
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if((k==='e'||k===' ')&&running){e.preventDefault();interact()}});
+addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
+document.querySelectorAll('[data-dir]').forEach(b=>{const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'},k=map[b.dataset.dir];b.addEventListener('pointerdown',()=>keys[k]=true);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false))});
+function openTask(id){
+ modalWrap.classList.add('show');
+ if(id==='research')researchTask();if(id==='analytics')analyticsTask();if(id==='priority')priorityTask();if(id==='experiment')experimentTask()
 }
-$('#scanBtn').onclick=scan;
-$$('[data-route]').forEach(function(b){b.onclick=function(){routeEvidence(b.dataset.route)}});
-function routeEvidence(k){
- var e=evidence[inv.idx],correct=k===e.route;
- inv.seen++; if(correct){inv.good++;inv.score[e.route]+=e.effect==='weakens'?-1:1;toast($('#iToast'),'Good routing. This evidence changes '+e.route+'.')}else{inv.noise++;inv.score[k]-=.5;toast($('#iToast'),'Misrouted evidence. Noise increased.')}
- inv.idx++;$('#evidenceBubble').classList.remove('show');$('#scanBtn').disabled=false;renderInv();
- if(inv.idx>=evidence.length){$('#scanBtn').textContent='No more sources';$('#scanBtn').disabled=true}
+function close(){modalWrap.classList.remove('show')}
+function award(id,points,msg){if(!done[id]){done[id]=true;xp+=points;updateUI();showToast(msg)}close()}
+function researchTask(){
+ modal.innerHTML='<div class="eyebrow">Research Lab · live session</div><h3>Watch first. Ask second.</h3><p>A user is trying to submit an invoice. Follow the cursor trail and collect the <b>three hesitation moments</b> before you ask what feature they want.</p><div class="taskArea" id="trail" style="height:210px;position:relative;border:1px solid #303746;border-radius:16px;background:#0d1118;overflow:hidden"></div><button id="rDone" disabled>Finish observation</button>';
+ const area=$('#trail');let found=0;const pts=[[16,25],[70,20],[54,72],[25,68],[80,63]];pts.forEach((p,i)=>{const el=document.createElement('button');el.textContent=i<3?'·':'×';el.style.cssText='position:absolute;left:'+p[0]+'%;top:'+p[1]+'%;width:44px;height:44px;border-radius:50%;padding:0;'+(i<3?'border-color:#6de7ff':'');el.onclick=()=>{if(i<3&&!el.dataset.hit){el.dataset.hit=1;el.textContent='✓';found++;if(found===3)$('#rDone').disabled=false}else if(i>=3){el.classList.add('warn')}};area.appendChild(el)});
+ $('#rDone').onclick=()=>award('research',120,'Achievement: Evidence hunter +120 XP')
 }
-function finishInvestigation(){
- var best='A';['B','C'].forEach(function(k){if(inv.score[k]>inv.score[best])best=k});
- var right=best==='B',quality=inv.good-inv.noise;
- $('#finalKicker').textContent='Investigation complete';
- $('#finalTitle').textContent=right?'You found the cause without guessing.':'You built a coherent story. It was the wrong one.';
- $('#finalText').textContent=right?'The pricing modal is the only explanation supported by both timing and cohort behavior. The tracking anomaly was real, but it described measurement error—not the conversion drop itself.':'The strongest evidence points to pricing friction. A convincing narrative is not the same as a discriminating explanation.';
- $('#r1').textContent=inv.good+'/4';$('#r1l').textContent='evidence routed';$('#r2').textContent=inv.noise;$('#r2l').textContent='noise';$('#r3').textContent=right?'pricing':'misread';$('#r3l').textContent='final call';
- $('#ending').innerHTML=quality>=3?'<strong>Investigator bonus:</strong> you separated “what changed the metric” from “what changed the world”.':'<strong>Replay hint:</strong> ask which evidence would look different if each hypothesis were true.';
- show('final')
+function analyticsTask(){
+ modal.innerHTML='<div class="eyebrow">Analytics · live funnel</div><h3>Find where reality breaks.</h3><p>Do not stare at the headline conversion number. Inspect the stages and patch the single leak.</p><div class="taskArea funnel"><div class="fstep" data-v="100">Visit<i style="width:100%"></i></div><div class="fstep" data-v="82">Start<i style="width:82%"></i></div><div class="fstep bad" id="leak" data-v="31">Verify<i style="width:31%"></i></div><div class="fstep" data-v="27">Pay<i style="width:27%"></i></div></div><div class="taskRow" style="margin-top:12px"><button data-f="visit">Patch Visit</button><button data-f="verify">Patch Verify</button><button data-f="pay">Patch Pay</button></div>';
+ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{if(b.dataset.f==='verify')award('analytics',140,'Achievement: Funnel medic +140 XP');else{b.classList.add('warn');showToast('You changed a stage that was not leaking.')}})
 }
-$('#callBtn').onclick=finishInvestigation;
-function startInvestigate(){
- inv={idx:0,good:0,noise:0,score:{A:0,B:0,C:0},seen:0};
- $('#scanBtn').textContent='Scan next source';$('#scanBtn').disabled=false;$('#evidenceBubble').classList.remove('show');show('investigate');renderInv()
+function priorityTask(){
+ modal.innerHTML='<div class="eyebrow">Priorities · release train</div><h3>Make room for the outcome.</h3><p>You can ship only <b>two</b> things. Select two cards, then commit. One is noise, one is vanity, two directly attack the activation problem.</p><div class="taskArea board"><div class="zone"><b>ITEMS</b><div class="card" data-c="onboard">Shorter onboarding</div><div class="card" data-c="import">CSV import fix</div></div><div class="zone"><b>ITEMS</b><div class="card" data-c="theme">New dark theme</div><div class="card" data-c="ai">AI avatar generator</div></div><div class="zone"><b>SHIP</b><div id="shipCount" style="margin-top:10px;color:#9ba0ad;font-size:12px">0 / 2 selected</div></div></div><button id="commitP" style="margin-top:12px" disabled>Commit release</button>';
+ let sel=[];document.querySelectorAll('[data-c]').forEach(c=>c.onclick=()=>{const id=c.dataset.c;if(sel.includes(id)){sel=sel.filter(x=>x!==id);c.classList.remove('sel')}else if(sel.length<2){sel.push(id);c.classList.add('sel')}$('#shipCount').textContent=sel.length+' / 2 selected';$('#commitP').disabled=sel.length!==2});
+ $('#commitP').onclick=()=>{const ok=sel.includes('onboard')&&sel.includes('import');if(ok)award('priority',160,'Achievement: Ruthless cut +160 XP');else{showToast('Release is full, but activation is still broken.');document.querySelectorAll('[data-c].sel').forEach(x=>x.classList.remove('sel'));sel=[];$('#shipCount').textContent='0 / 2 selected';$('#commitP').disabled=true}}
 }
-$('#startInvestigate').onclick=startInvestigate;$('#deep').onclick=startInvestigate;$('#again').onclick=startQuick;
+function experimentTask(){
+ modal.innerHTML='<div class="eyebrow">Experiment Bay · A/B rig</div><h3>Build a test that can teach you.</h3><p>Variant B currently changes three things at once. Turn off two changes so only one causal difference remains, then launch.</p><div class="taskArea experiment"><div class="variant"><strong>A · Control</strong><span>Current onboarding</span></div><div class="variant active"><strong>B · Variant</strong><div class="switches"><button class="good active" data-s="steps">2 fewer steps</button><button class="active" data-s="copy">new copy</button><button class="active" data-s="color">new color</button></div></div></div><button id="launch" style="margin-top:12px" disabled>Launch clean test</button>';
+ let on=new Set(['steps','copy','color']);const refresh=()=>{$('#launch').disabled=on.size!==1};document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const k=b.dataset.s;if(on.has(k)){on.delete(k);b.classList.remove('active');b.style.opacity=.4}else{on.add(k);b.classList.add('active');b.style.opacity=1}refresh()});$('#launch').onclick=()=>{if(on.size===1)award('experiment',180,'Achievement: Clean test +180 XP')}
+}
+modalWrap.addEventListener('click',e=>{if(e.target===modalWrap)close()});
+$('#start').onclick=()=>{home.classList.add('hidden');game.classList.add('active');running=true;fit();last=performance.now();requestAnimationFrame(loop)};
+$('#how').onclick=()=>alert('Move with WASD / arrow keys. Walk to a pulsing workstation and press E or Space. On mobile use the on-screen controls. Finish all four rooms to complete the day.');
+$('#replay').onclick=()=>{$('#ending').classList.remove('show');reset();showToast('New day. Same office. Better judgement.')};
+reset();
 })();
 </script>
 </body>
