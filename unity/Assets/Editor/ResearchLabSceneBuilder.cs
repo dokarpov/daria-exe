@@ -36,10 +36,10 @@ namespace DariaExe.Editor
             cameraGo.tag = "MainCamera";
             cameraGo.transform.position = new Vector3(0, 0, -10);
 
-            CreateArtSlot("ART_Background", 10);
-            CreateArtSlot("ART_Environment", 5);
-            CreateArtSlot("ART_Foreground", -5);
-            CreateArtSlot("ART_EmissiveFX", -10);
+            CreateArtSlot("ART_Background", -20);
+            CreateArtSlot("ART_Environment", -10);
+            CreateArtSlot("ART_Foreground", 20);
+            CreateArtSlot("ART_EmissiveFX", 30);
 
             var player = new GameObject("Player");
             player.transform.position = new Vector3(-5.2f, -2.1f, 0);
