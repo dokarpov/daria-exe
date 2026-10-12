@@ -1,11 +1,13 @@
 {
   "name":"daria-exe",
-  "version":"4.0.0",
+  "version":"3.7.0-actual-game-loop",
   "private":true,
   "type":"module",
   "scripts":{
     "preview":"python3 -m http.server 4173 --bind 127.0.0.1 --directory .",
     "test:ui":"playwright test"
   },
-  "devDependencies":{"@playwright/test":"^1.63.0"}
+  "devDependencies":{
+    "@playwright/test":"^1.63.0"
+  }
 }
