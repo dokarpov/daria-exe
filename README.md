@@ -2,18 +2,20 @@
 
 [Play it live →](https://dokarpov.github.io/daria-exe/)
 
-A small browser-game prototype about learning product judgement by moving through an office and doing product work.
+A browser-game prototype for learning product judgement through an explorable office rather than quizzes or slide-like tasks.
 
-## Current playable slice
+## Current playable loop
 
-You can:
-- walk through a top-down office with keyboard or touch controls;
-- enter four product rooms in any order;
-- interact with animated workstations;
-- complete four different mini-mechanics around research, analytics, prioritisation and experimentation;
-- earn XP and achievements;
-- finish the office-day loop.
+Walk freely between rooms. The office itself is the menu.
 
-The current build is intentionally a **playable prototype**, not a claim that the learning design is validated. It does not yet demonstrate learning impact, retention or product-market fit.
+- **Research Lab** — shadow moving users and collect friction signals.
+- **Analytics** — follow the live funnel and repair the actual leak.
+- **Roadmap Room** — physically carry evidence-backed work into the release zone and reject noise.
+- **Experiment Bay** — configure a one-variable experiment and launch it.
+- **Launch Room** — inspect the outcome and close the learning loop.
+
+The build has keyboard controls, mobile movement controls, room-specific interactions, persistent achievements, animated NPCs/data flow and a compact minimap.
+
+This is still a **gameplay prototype**. It demonstrates the intended learning loop and interaction model; it does not claim validated learning impact, retention or product-market fit.
 
 Built by **Daria Karpova**.
