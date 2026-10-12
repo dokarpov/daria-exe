@@ -6,15 +6,17 @@
 <meta name="theme-color" content="#081017">
 <title>DARIA.EXE — Product Office</title>
 <style>
-:root{--bg:#081017;--ink:#f6f8fb;--muted:#8ea0ad;--line:#22313b;--accent:#7ce7ff;--good:#9ceb73;--warn:#ffcf69;--bad:#ff7f86}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button{font:inherit}.shell{height:100dvh;display:grid;grid-template-rows:50px 1fr;background:radial-gradient(circle at 50% -20%,#1b334433,transparent 38%),#081017}
-.top{display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #1b2a34;background:#0a131be8;backdrop-filter:blur(12px);z-index:12}.brand{font-size:11px;font-weight:950;letter-spacing:.14em}.hud{display:flex;gap:7px}.chip{border:1px solid #263743;border-radius:999px;padding:6px 9px;background:#0d1922;color:#b8c7d1;font-size:11px}.chip strong{color:#fff}
+:root{--bg:#0b0d14;--ink:#f8f2df;--muted:#a6a1a8;--line:#343346;--accent:#62d9ff;--good:#8ce071;--warn:#ffd166;--bad:#ff6b6b;--violet:#a98bff;--floor:#161925}
+*{image-rendering:pixelated}
+
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+button{font:inherit}.shell{height:100dvh;display:grid;grid-template-rows:42px 1fr;background:#0b0d14}
+.top{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:3px solid #242638;background:#10131d;z-index:12}.brand{font-size:10px;font-weight:900;letter-spacing:.08em;color:#f8f2df}.hud{display:flex;gap:6px}.chip{border:2px solid #34374a;border-radius:0;padding:5px 8px;background:#171a26;color:#b9b3bf;font-size:10px;box-shadow:2px 2px 0 #05060a}.chip strong{color:#fff}
 .stage{position:relative;min-height:0}.stage canvas{width:100%;height:100%;display:block;touch-action:none}
-.panel{position:absolute;z-index:8;left:14px;top:14px;width:min(350px,calc(100% - 28px));padding:13px 14px;border:1px solid #263844;border-radius:16px;background:#0a151ecc;backdrop-filter:blur(11px);pointer-events:none}.eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:950}.panel strong{display:block;margin-top:4px;font-size:15px}.panel span{display:block;margin-top:4px;color:#98aab5;font-size:12px;line-height:1.4}
-.prompt{position:absolute;z-index:9;left:50%;bottom:18px;transform:translate(-50%,12px);opacity:0;border:1px solid #39505f;border-radius:999px;background:#0b1822e8;padding:10px 14px;font-size:12px;white-space:nowrap;transition:.18s}.prompt.show{opacity:1;transform:translate(-50%,0)}.prompt b{color:white}
-.toast{position:absolute;z-index:10;right:14px;top:14px;width:min(310px,calc(100% - 28px));padding:12px 14px;border:1px solid #344a59;border-radius:15px;background:#0d1922ef;opacity:0;transform:translateY(-10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:none}.toast b{font-size:12px}.toast div{margin-top:3px;font-size:11px;color:#9aabb7}
-.intro,.ending{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(135deg,#071017f2,#071017df)}.intro.hidden{display:none}.ending{display:none}.ending.show{display:grid}.card{width:min(760px,calc(100% - 28px));padding:34px;border:1px solid #29404f;border-radius:28px;background:#0b1720;box-shadow:0 30px 100px #0009}.card h1,.card h2{margin:12px 0 16px;font-size:clamp(42px,7vw,82px);line-height:.92;letter-spacing:-.06em}.card p{max-width:650px;color:#b5c3cc;font-size:16px;line-height:1.5}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.primary,.secondary{padding:13px 16px;border-radius:14px;font-weight:900;cursor:pointer}.primary{border:0;background:#eef5f8;color:#071017}.secondary{border:1px solid #344b5b;background:#10202b;color:#dbe5ea}
+.panel{position:absolute;z-index:8;left:12px;top:12px;width:min(340px,calc(100% - 24px));padding:10px 12px;border:2px solid #3b3e55;border-radius:0;background:#10131df0;box-shadow:4px 4px 0 #05060a;pointer-events:none}.eyebrow{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:900}.panel strong{display:block;margin-top:4px;font-size:13px}.panel span{display:block;margin-top:4px;color:#a9a4ae;font-size:10px;line-height:1.4}
+.prompt{position:absolute;z-index:9;left:50%;bottom:18px;transform:translate(-50%,8px);opacity:0;border:2px solid #f8f2df;border-radius:0;background:#11131de8;padding:8px 10px;font-size:10px;white-space:nowrap;transition:.12s;box-shadow:3px 3px 0 #05060a}.prompt.show{opacity:1;transform:translate(-50%,0)}.prompt b{color:#ffd166}
+.toast{position:absolute;z-index:10;right:12px;top:12px;width:min(300px,calc(100% - 24px));padding:10px 12px;border:2px solid #4d526c;border-radius:0;background:#151823f2;box-shadow:4px 4px 0 #05060a;opacity:0;transform:translateY(-8px);transition:.12s;pointer-events:none}.toast.show{opacity:1;transform:none}.toast b{font-size:10px;color:#ffd166}.toast div{margin-top:3px;font-size:9px;color:#b7b1bd}
+.intro,.ending{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(#070810bb,#070810e8)}.intro.hidden{display:none}.ending{display:none}.ending.show{display:grid}.card{width:min(650px,calc(100% - 26px));padding:26px;border:3px solid #f8f2df;border-radius:0;background:#11131eea;box-shadow:8px 8px 0 #05060a;position:relative}.card:before{content:"";position:absolute;inset:6px;border:1px solid #3b3e55;pointer-events:none}.card h1,.card h2{margin:10px 0 12px;font-size:clamp(34px,6vw,68px);line-height:.9;letter-spacing:-.06em;text-transform:uppercase;text-shadow:3px 3px 0 #342b66}.card p{max-width:560px;color:#c0bac5;font-size:12px;line-height:1.6}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.primary,.secondary{padding:10px 12px;border-radius:0;font-weight:900;cursor:pointer;font-family:inherit;text-transform:uppercase;font-size:10px;box-shadow:3px 3px 0 #05060a}.primary{border:2px solid #f8f2df;background:#ffd166;color:#17131a}.secondary{border:2px solid #5d6078;background:#1a1d2b;color:#e6e0e8}
 .mobile{display:none;position:absolute;z-index:11;left:12px;right:12px;bottom:12px;pointer-events:none}.stick{width:108px;height:108px;border:1px solid #344a59;border-radius:50%;background:#0d1922aa;position:relative;pointer-events:auto}.nub{position:absolute;left:34px;top:34px;width:40px;height:40px;border-radius:50%;background:#e4edf2}.act{position:absolute;right:0;bottom:14px;width:70px;height:70px;border:1px solid #536a78;border-radius:50%;background:#eef5f8;color:#071017;font-weight:950;pointer-events:auto}
 @media(max-width:760px){.hud .chip:first-child{display:none}.panel{top:10px;left:10px;width:calc(100% - 20px)}.mobile{display:block}.prompt{bottom:94px}.card{padding:25px}.card p{font-size:15px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -28,7 +30,7 @@ button{font:inherit}.shell{height:100dvh;display:grid;grid-template-rows:50px 1f
 <div class="panel"><div class="eyebrow" id="chapter">Day one</div><strong id="mission">Enter the office.</strong><span id="hint">Move through the rooms. Product judgement is learned by doing, not by answering quiz cards.</span></div>
 <div class="prompt" id="prompt"></div><div class="toast" id="toast"></div>
 <div class="mobile"><div class="stick" id="stick"><div class="nub" id="nub"></div></div><button class="act" id="act">ACT</button></div>
-<section class="intro" id="intro"><div class="card"><div class="eyebrow">Playable product-management adventure</div><h1>Your first day is already on fire.</h1><p>Walk the office, watch real behaviour, catch evidence, repair a broken funnel, defend the roadmap, run a clean experiment and inspect the outcome. No multiple choice. No text puzzles. The rooms themselves are the lessons.</p><div class="actions"><button class="primary" id="start">Enter office</button><button class="secondary" id="controls">Controls</button></div></div></section>
+<section class="intro" id="intro"><div class="card"><div class="eyebrow">DAY 01 / PRODUCT OFFICE</div><h1>DARIA.EXE</h1><p>The office is the level. Run room to room, collect evidence, fix the funnel, defend focus, run a clean test and close the loop. Earn all five badges before the day ends.</p><div class="actions"><button class="primary" id="start">▶ START SHIFT</button><button class="secondary" id="controls">? CONTROLS</button></div></div></section>
 <section class="ending" id="ending"><div class="card"><div class="eyebrow">Day one complete</div><h2>You shipped less. You learned more.</h2><p>The loop is the point: observe behaviour, trace the system, protect focus, isolate a test, then return to evidence. That is the skill the game is training.</p><div class="actions"><button class="primary" id="again">Play again</button></div></div></section>
 </main></div>
 <script>
@@ -55,10 +57,10 @@ const users=[
 ];
 const friction=[{x:145,y:90,type:'delay'},{x:320,y:236,type:'rage'},{x:112,y:236,type:'loop'}];
 const funnel=[{x:465,y:105},{x:545,y:105},{x:625,y:105},{x:705,y:105}];
-const pads=[{x:540,y:205,active:false},{x:705,y:205,active:false}];
+const pads=[{x:540,y:205,active:false,latched:false},{x:705,y:205,active:false,latched:false}];
 const experimentSwitches=[{id:'steps',x:862,y:126,label:'steps'},{id:'copy',x:986,y:126,label:'copy'},{id:'visual',x:1110,y:126,label:'visual'}];
 const particles=Array.from({length:90},()=>({x:Math.random()*1200,y:Math.random()*760,a:Math.random()*.45+.1,s:Math.random()*1.2+.3}));
-function resize(){const r=stage.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}addEventListener('resize',resize);resize();
+function resize(){const r=stage.getBoundingClientRect();DPR=.5;W=r.width;H=r.height;canvas.width=Math.max(1,Math.round(W*DPR));canvas.height=Math.max(1,Math.round(H*DPR));ctx.setTransform(DPR,0,0,DPR,0,0);ctx.imageSmoothingEnabled=false}addEventListener('resize',resize);resize();
 const sx=()=>W/world.w, sy=()=>H/world.h;
 function roomAt(x,y){return rooms.find(r=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)}
 function collides(x,y){if(x<34||x>1166||y<34||y>726)return true;for(const w of walls){if(x>w[0]-13&&x<w[0]+w[2]+13&&y>w[1]-13&&y<w[1]+w[3]+13)return true}return false}
@@ -67,12 +69,13 @@ function showToast(a,b){clearTimeout(toastTimer);toast.innerHTML='<b>'+a+'</b><d
 function spawnSignal(x,y,type){if(state.signals.has(type)||state.signalOrbs.some(s=>s.type===type))return;state.signalOrbs.push({x,y,type,t:0})}
 function updateUsers(t){users.forEach((u,i)=>{u.x=u.hx+Math.sin(t*.0011+u.ph)*46;u.y=u.hy+Math.cos(t*.0014+u.ph)*25;const f=friction[i];if(Math.hypot(u.x-f.x,u.y-f.y)<40&&Math.sin(t*.003+u.ph)>.92)spawnSignal(u.x+16,u.y-8,f.type)})}
 function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit)}
-function updateAnalytics(){pads[0].active=Math.hypot(player.x-pads[0].x,player.y-pads[0].y)<32;pads[1].active=Math.hypot(player.x-pads[1].x,player.y-pads[1].y)<32;if(pads[0].active&&pads[1].active&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You repaired the bottleneck by tracing the system, not by staring at the top-line metric.')}}
+function updateAnalytics(){pads.forEach(p=>p.active=Math.hypot(player.x-p.x,player.y-p.y)<34);if(pads.every(p=>p.latched)&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You traced the flow and restored both broken checkpoints.')}}
 function spawnRequest(){const pool=[['Fix import',true],['Reduce steps',true],['Dark theme',false],['AI avatar',false],['Add confetti',false],['Fix verify',true]];const p=pool[Math.floor(Math.random()*pool.length)];state.requests.push({x:90+Math.random()*320,y:490,label:p[0],good:p[1],vx:55+Math.random()*45,vy:0,held:false})}
 function updateRoadmap(dt){state.requestTimer-=dt;if(state.requestTimer<=0&&state.requests.length<5){spawnRequest();state.requestTimer=.9+Math.random()*1.2}for(const r of state.requests){if(r.held){r.x=player.x+18*player.dir;r.y=player.y-6;continue}r.x+=r.vx*dt;if(r.x>455){r.x=70;r.y=490+Math.random()*170}}}
 function nearestInteractable(){
 let best=null,d=999;
 const r=roomAt(player.x,player.y);
+if(r?.id==='analytics'){for(const p of pads){const dd=Math.hypot(player.x-p.x,player.y-p.y);if(dd<d&&!p.latched){d=dd;best={type:'pad',obj:p,label:'Repair checkpoint'}}}}
 if(r?.id==='roadmap'){for(const q of state.requests){const dd=Math.hypot(player.x-q.x,player.y-q.y);if(dd<d){d=dd;best={type:'request',obj:q,label:q.held?'Drop request':'Grab request'}}}const shipD=Math.hypot(player.x-450,player.y-670);if(shipD<d){d=shipD;best={type:'ship',label:'Drop into release chute'}}}
 if(r?.id==='experiment'){for(const s of experimentSwitches){const dd=Math.hypot(player.x-s.x,player.y-s.y);if(dd<d){d=dd;best={type:'switch',obj:s,label:(state.experiment===s.id?'Disable ':'Activate ')+s.label}}}const dd=Math.hypot(player.x-1000,player.y-245);if(dd<d){d=dd;best={type:'launch',label:'Run experiment'}}}
 if(r?.id==='learn'){const dd=Math.hypot(player.x-955,player.y-590);if(dd<d){d=dd;best={type:'result',label:'Collect outcome'}}}
@@ -80,6 +83,7 @@ return d<58?best:null;
 }
 function act(){
 if(!near)return;
+if(near.type==='pad'){near.obj.latched=true;showToast('Checkpoint restored',pads.filter(p=>p.latched).length+' / 2 repaired');}
 if(near.type==='request'){
 const carried=state.requests.find(x=>x.held);if(carried){carried.held=false;return}
 near.obj.held=true;
@@ -97,7 +101,7 @@ function updateMission(){
 const r=roomAt(player.x,player.y);roomChip.textContent=r?r.name:'Hallway';
 if(!r){chapter.textContent='Office';mission.textContent='Choose your next room.';hint.textContent='The office is the level select. Open rooms can be completed in any order.';return}
 if(r.id==='research'){chapter.textContent='Research Lab';mission.textContent='Catch 3 behaviour signals.';hint.textContent='Follow moving users. When friction happens, a signal drops into the room. Run through it before it fades. '+state.signals.size+'/3 collected.'}
-if(r.id==='analytics'){chapter.textContent='Analytics';mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Trace the moving packets. The broken stage only stabilises when both pressure points are covered.'}
+if(r.id==='analytics'){chapter.textContent='Analytics';mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Follow the packets to the breakpoints. Stand by each damaged node and press ACT to repair it.'}
 if(r.id==='roadmap'){chapter.textContent='Roadmap Room';mission.textContent='Ship evidence, reject noise.';hint.textContent='Grab moving requests and carry only evidence-backed ones into the release chute. '+state.goodShipped+'/2 useful items shipped.'}
 if(r.id==='experiment'){chapter.textContent='Experiment Bay';mission.textContent='Change one thing.';hint.textContent='Arm exactly one lever, then run the test. More changes make the result unreadable.'}
 if(r.id==='learn'){chapter.textContent='Launch Room';mission.textContent='Read the outcome.';hint.textContent=state.resultReady?'The result is ready. Go collect it.':'The board stays dark until an experiment has actually run.'}
@@ -110,11 +114,11 @@ if(state.launched&&!state.resultReady){state.resultTimer-=dt;if(state.resultTime
 near=nearestInteractable();if(near){prompt.innerHTML='<b>ACT</b> · '+near.label;prompt.classList.add('show')}else prompt.classList.remove('show');
 updateMission();screenShake*=.84;
 }
-function rr(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function rr(x,y,w,h,r,fill,stroke){x=Math.round(x);y=Math.round(y);w=Math.round(w);h=Math.round(h);if(fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2)}}
 function label(s,x,y,size=11,color='#95a7b3',weight=700,align='left'){ctx.fillStyle=color;ctx.font=weight+' '+size+'px Inter,system-ui';ctx.textAlign=align;ctx.fillText(s,x,y);ctx.textAlign='left'}
-function dot(x,y,r,c,glow=0){ctx.save();if(glow){ctx.shadowColor=c;ctx.shadowBlur=glow}ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore()}
-function drawPerson(x,y,c='#7ce7ff',selected=false){ctx.save();ctx.translate(x,y);dot(0,-9,9,'#111820');rr(-9,1,18,22,6,c);if(selected){ctx.strokeStyle='#9ceb73';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,3,22,0,Math.PI*2);ctx.stroke()}ctx.restore()}
-function drawPlayer(){ctx.save();ctx.translate(player.x,player.y);const bob=Math.sin(player.step)*2;ctx.shadowColor='#7ce7ff';ctx.shadowBlur=18;dot(0,-10+bob,10,'#dff7ff');rr(-10,1+bob,20,24,7,'#7ce7ff');ctx.shadowBlur=0;ctx.strokeStyle='#7ce7ff';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-6,22+bob);ctx.lineTo(-9+Math.sin(player.step)*4,31);ctx.moveTo(6,22+bob);ctx.lineTo(9-Math.sin(player.step)*4,31);ctx.stroke();ctx.fillStyle='#081017';ctx.fillRect(player.dir>0?3:-6,-12+bob,3,3);ctx.restore()}
+function dot(x,y,r,c,glow=0){ctx.save();x=Math.round(x);y=Math.round(y);r=Math.max(2,Math.round(r));if(glow){ctx.shadowColor=c;ctx.shadowBlur=Math.round(glow/2)}ctx.fillStyle=c;ctx.fillRect(x-r,y-r,r*2,r*2);ctx.restore()}
+function drawPerson(x,y,c='#7ce7ff',selected=false){ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.fillStyle='#1a1720';ctx.fillRect(-7,-16,14,6);ctx.fillStyle='#d8b59b';ctx.fillRect(-6,-10,12,9);ctx.fillStyle=c;ctx.fillRect(-8,-1,16,15);ctx.fillStyle='#24202c';ctx.fillRect(-7,14,5,9);ctx.fillRect(2,14,5,9);ctx.fillStyle='#0b0d14';ctx.fillRect(2,-8,2,2);if(selected){ctx.strokeStyle='#8ce071';ctx.strokeRect(-12,-20,24,46)}ctx.restore()}
+function drawPlayer(){ctx.save();ctx.translate(Math.round(player.x),Math.round(player.y));const bob=(Math.sin(player.step)>0?1:0)*2;ctx.fillStyle='#2a1e33';ctx.fillRect(-8,-18+bob,16,7);ctx.fillStyle='#f1c3a5';ctx.fillRect(-7,-11+bob,14,10);ctx.fillStyle='#62d9ff';ctx.fillRect(-9,-1+bob,18,16);ctx.fillStyle='#f8f2df';ctx.fillRect(-5,3+bob,10,5);ctx.fillStyle='#292638';const walk=Math.sin(player.step)>0?3:-3;ctx.fillRect(-8,15+bob,6,10+Math.max(0,walk));ctx.fillRect(2,15+bob,6,10+Math.max(0,-walk));ctx.fillStyle='#0b0d14';ctx.fillRect(player.dir>0?3:-5,-9+bob,2,2);ctx.restore()}
 function draw(){
 ctx.save();ctx.clearRect(0,0,W,H);ctx.scale(sx(),sy());if(screenShake)ctx.translate((Math.random()-.5)*screenShake,(Math.random()-.5)*screenShake);
 ctx.fillStyle='#081017';ctx.fillRect(0,0,1200,760);
@@ -133,10 +137,10 @@ for(const s of state.signals){label(s.toUpperCase(),72+[...state.signals].indexO
 ctx.strokeStyle='#405562';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(465,105);ctx.lineTo(705,105);ctx.stroke();
 const tt=(performance.now()/6)%240;for(let i=0;i<5;i++){const px=465+((tt+i*52)%240);if(!state.repairDone&&px>605&&px<655)continue;dot(px,105,4,'#dff7ff',5)}
 funnel.forEach((f,i)=>dot(f.x,f.y,11,i===2&&!state.repairDone?'#ff7f86':'#7ce7ff',i===2?14:5));
-pads.forEach(p=>{rr(p.x-26,p.y-18,52,36,10,p.active?'#223824':'#111d26',p.active?'#9ceb73':'#40515c');label('PAD',p.x,p.y+4,8,p.active?'#bdf49d':'#768a97',900,'center')});
+pads.forEach(p=>{rr(p.x-26,p.y-18,52,36,0,p.latched?'#28402c':p.active?'#2c2e42':'#171a26',p.latched?'#8ce071':p.active?'#ffd166':'#4e5269');label(p.latched?'FIXED':'NODE',p.x,p.y+4,8,p.latched?'#c9f5b7':p.active?'#ffe49b':'#8f93a6',900,'center')});
 rr(472,244,238,34,10,'#111d26','#30434f');label(state.repairDone?'FLOW STABLE':'VERIFY LEAK',591,266,10,state.repairDone?'#9ceb73':'#ff7f86',900,'center');
 
-state.requests.forEach(r=>{rr(r.x-52,r.y-18,104,36,9,r.good?'#20312b':'#302126',r.good?'#5b8f72':'#7b4b55');label(r.label,r.x,r.y+4,9,'#eef5f8',800,'center')});
+state.requests.forEach(r=>{rr(r.x-52,r.y-18,104,36,0,'#24283a','#5b6079');label(r.label,r.x,r.y+4,9,'#f3eedf',800,'center')});
 rr(406,632,82,70,13,'#14271d','#547b5b');label('SHIP',447,672,10,'#9ceb73',950,'center');label('noise returned: '+state.badShipped,65,710,9,'#9f7a80',700);
 
 rr(838,78,310,112,16,'#122019','#365344');experimentSwitches.forEach(s=>{const on=state.experiment===s.id;dot(s.x,s.y,17,on?'#9ceb73':'#354650',on?12:0);label(s.label.toUpperCase(),s.x,s.y+38,8,on?'#c5f7aa':'#81939e',900,'center')});
@@ -158,6 +162,7 @@ document.getElementById('start').onclick=()=>{document.getElementById('intro').c
 document.getElementById('controls').onclick=()=>showToast('Controls','WASD / arrows to move. E or Space to interact. On mobile use the stick and ACT.');
 document.getElementById('again').onclick=()=>location.reload();
 draw();
+setInterval(()=>{if(!playing)draw()},180);
 })();
 </script>
 </body>
