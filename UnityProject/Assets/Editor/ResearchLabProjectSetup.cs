@@ -11,11 +11,22 @@ public static class ResearchLabProjectSetup
 
     static ResearchLabProjectSetup()
     {
-        EditorApplication.delayCall += EnsureScene;
+        EditorApplication.delayCall += AutoEnsureScene;
+    }
+
+    static void AutoEnsureScene()
+    {
+        if (System.IO.File.Exists(ScenePath))
+        {
+            if (SceneManager.GetActiveScene().path != ScenePath)
+                EditorSceneManager.OpenScene(ScenePath);
+            return;
+        }
+        RebuildScene();
     }
 
     [MenuItem("DARIA.EXE/Rebuild Research Lab Scene")]
-    public static void EnsureScene()
+    public static void RebuildScene()
     {
         if (!AssetDatabase.IsValidFolder("Assets/Scenes"))
             AssetDatabase.CreateFolder("Assets", "Scenes");
