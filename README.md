@@ -1,21 +1,34 @@
 # DARIA.EXE — Product Office
 
-[Play it live →](https://dokarpov.github.io/daria-exe/)
+[Play the current browser prototype →](https://dokarpov.github.io/daria-exe/)
 
-A browser game prototype about learning product judgement by moving through a living office instead of answering quizzes.
+DARIA.EXE is a product-judgement game prototype built around an explorable office rather than quiz cards.
 
-## v4.1 gameplay
+## Current stable browser build
 
-You can run around the office and complete five physical, visual challenges:
+The stable browser build on `main` is **v4.1.0**. It contains five rooms:
 
-- **Research Lab** — follow moving users and catch behaviour signals when friction actually happens.
-- **Analytics** — trace animated data flow and stabilise the broken funnel using pressure points.
-- **Roadmap Room** — grab moving requests, carry evidence-backed work to the release chute, and reject attractive noise.
-- **Experiment Bay** — arm exactly one variable and launch a readable experiment.
-- **Launch Room** — wait for the result, inspect the outcome, and close the learning loop.
+- **Research Lab** — observe users and collect behaviour signals.
+- **Analytics** — trace a broken product flow.
+- **Roadmap Room** — separate evidence-backed work from noise.
+- **Experiment Bay** — isolate one variable before testing.
+- **Launch Room** — return to the outcome after launch.
 
-The game includes animated NPCs, moving data packets, collectible evidence, carry/drop interactions, feedback, achievements, mobile controls and a complete first-day loop.
+This build is a gameplay prototype. It is not evidence of learning impact, retention, or product-market fit.
 
-This is intentionally described as a **gameplay prototype**, not a validated learning product. No claims are made about learning impact, retention or product-market fit.
+## Development tracks
+
+Experimental work is kept off `main`.
+
+- `feature/product-office-tested` — browser UX/testing work.
+- `unity/integration` — Unity integration base.
+- `unity/research-lab` — Unity Research Lab development.
+- `unity/research-lab-testing` — Unity gameplay/graphics test branch.
+
+Unity work lives in `/unity` and does not replace the current browser release unless it passes its own validation gate.
+
+## Release discipline
+
+A branch is not a release because it renders or builds once. Promotion requires its own passing test suite and an explicit release decision.
 
 Built by **Daria Karpova**.
