@@ -1,0 +1,65 @@
+name: Unity WebGL RC
+
+on:
+  push:
+    branches:
+      - unity/research-lab
+      - unity/research-lab-testing
+    paths:
+      - 'unity/**'
+      - '.github/workflows/unity-webgl.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unity-webgl-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Unity EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: unity
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: EditMode
+          artifactsPath: unity-test-results
+
+      - name: Build WebGL release candidate
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: unity
+          targetPlatform: WebGL
+          unityVersion: 2022.3.62f1
+          customParameters: -executeMethod DariaExe.Editor.WebGLBuild.Build
+          buildName: daria-exe-research-lab
+
+      - name: Upload WebGL candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: daria-exe-unity-webgl-rc
+          path: build/WebGL
+          if-no-files-found: error
+
+      - name: Upload Unity test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-test-results
+          path: unity-test-results
+          if-no-files-found: ignore
