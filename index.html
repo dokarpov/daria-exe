@@ -3,181 +3,217 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d12">
+<meta name="theme-color" content="#0a0d12">
 <title>DARIA.EXE — Product Office</title>
 <style>
-:root{--bg:#0b0d12;--panel:#11141b;--ink:#f7f5fb;--muted:#9ba0ad;--line:#292e39;--violet:#9f86ff;--cyan:#6de7ff;--pink:#ff79bd;--green:#88e49f;--amber:#ffd46b;--red:#ff737a}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;color:inherit}
-body{overflow-x:hidden;background:radial-gradient(circle at 10% -10%,#8f72ff18,transparent 28%),var(--bg)}
-.wrap{max-width:1280px;margin:auto;padding:12px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.brand{font-weight:900;letter-spacing:.12em;font-size:12px}.status{display:flex;gap:8px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#10131a;border-radius:999px;padding:6px 9px;font-size:11px;color:#c6c9d3}
-.shell{border:1px solid #242934;border-radius:24px;overflow:hidden;background:#0d1016;box-shadow:0 28px 90px #0008;position:relative}
-.home{min-height:calc(100dvh - 66px);display:grid;grid-template-columns:1fr .95fr;gap:28px;padding:54px;align-items:center}
-.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:900}.home h1{font-size:clamp(48px,7vw,86px);line-height:.9;letter-spacing:-.06em;margin:12px 0 18px}.home p{font-size:18px;line-height:1.48;color:#c1c5cf;max-width:620px}
-.cta{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}.primary,.ghost,.interact,.modal button{border-radius:14px;cursor:pointer;transition:.15s transform,.15s background,.15s border-color}.primary{border:0;background:#f5f2ff;color:#111018;padding:14px 18px;font-weight:900}.ghost{border:1px solid #353a47;background:#151922;padding:14px 18px;font-weight:800}.primary:hover,.ghost:hover,.interact:hover,.modal button:hover{transform:translateY(-2px)}
-.preview{position:relative;min-height:470px}.miniOffice{position:absolute;inset:0;border:1px solid #2b3140;border-radius:26px;background:linear-gradient(#ffffff04,#ffffff00),#11151d;overflow:hidden}.miniRoom{position:absolute;border:1px solid #343b4b;border-radius:16px;background:#151a23;box-shadow:inset 0 0 0 1px #ffffff03}.miniRoom span{position:absolute;left:12px;top:10px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#7f8798}.r1{left:5%;top:8%;width:42%;height:38%}.r2{right:5%;top:8%;width:42%;height:38%}.r3{left:5%;bottom:8%;width:42%;height:38%}.r4{right:5%;bottom:8%;width:42%;height:38%}.miniAvatar{position:absolute;width:24px;height:24px;border-radius:8px;background:var(--violet);left:48%;top:47%;box-shadow:0 0 24px #9f86ff88;animation:roam 7s ease-in-out infinite}.token{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px #6de7ffaa;animation:pulse 1.7s ease-in-out infinite}.t1{left:21%;top:28%}.t2{right:18%;top:28%;animation-delay:.4s}.t3{left:20%;bottom:25%;animation-delay:.8s}.t4{right:20%;bottom:22%;animation-delay:1.2s}@keyframes pulse{50%{transform:scale(1.45);opacity:.65}}@keyframes roam{0%,100%{transform:translate(-20px,-10px)}25%{transform:translate(80px,-80px)}50%{transform:translate(90px,85px)}75%{transform:translate(-70px,70px)}}
-.game{display:none}.game.active{display:block}.home.hidden{display:none}
-.gameGrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;min-height:calc(100dvh - 66px)}.stage{position:relative;background:#090b10;min-height:720px;overflow:hidden}.stage canvas{display:block;width:100%;height:100%}.side{border-left:1px solid var(--line);padding:20px;display:flex;flex-direction:column;background:#10131a}.side h2{font-size:28px;line-height:1;letter-spacing:-.035em;margin:9px 0}.side p{color:#aeb3bf;line-height:1.45;font-size:14px}.roomName{font-size:10px;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;font-weight:900}.mission{border:1px solid #2d3340;background:#141821;border-radius:16px;padding:13px;margin-top:10px}.mission strong{display:block;font-size:13px;margin-bottom:4px}.mission small{color:#8f96a6;line-height:1.35}.mission.done{border-color:#456a52;background:#101a14}.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.badge{width:44px;height:44px;border:1px solid #343a47;border-radius:12px;display:grid;place-items:center;color:#596171;background:#11151c;font-size:20px}.badge.on{color:#0c1012;border-color:#6de7ff;background:var(--cyan);box-shadow:0 0 16px #6de7ff33}.hint{margin-top:auto;border-top:1px solid #242936;padding-top:14px;color:#8f96a5;font-size:12px;line-height:1.45}.interact{width:100%;border:1px solid #454c5d;background:#181d27;padding:12px 14px;font-weight:850;margin-top:10px}.interact.ready{border-color:#7b68d6;background:#211b31}.controls{display:flex;gap:7px;margin-top:10px}.key{border:1px solid #3b414f;border-radius:8px;padding:5px 7px;font-size:11px;color:#b8bdc7}
-.toast{position:absolute;left:50%;bottom:22px;transform:translate(-50%,14px);opacity:0;z-index:8;background:#141923;border:1px solid #3b4354;border-radius:999px;padding:10px 14px;font-size:12px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
-.modalWrap{position:absolute;inset:0;background:#06080cb8;backdrop-filter:blur(7px);display:none;place-items:center;z-index:10;padding:20px}.modalWrap.show{display:grid}.modal{width:min(620px,100%);border:1px solid #3a4150;border-radius:22px;background:#11151d;padding:22px;box-shadow:0 26px 90px #000}.modal .eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--cyan);font-weight:900}.modal h3{font-size:28px;margin:8px 0 8px;letter-spacing:-.035em}.modal p{color:#aeb4c0;line-height:1.45}.taskArea{margin-top:16px}.taskRow{display:flex;gap:10px;flex-wrap:wrap}.modal button{border:1px solid #3b4251;background:#171c26;padding:11px 13px}.modal button.good{border-color:#527d5f;background:#142019}.modal button.warn{border-color:#805a61;background:#21161a}.slider{width:100%}.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.fstep{height:72px;border:1px solid #343b49;border-radius:12px;background:#151a22;display:grid;place-items:center;text-align:center;font-size:12px;color:#aeb4c0;position:relative;overflow:hidden}.fstep i{position:absolute;left:0;bottom:0;height:5px;background:var(--cyan)}.fstep.bad{border-color:#7c4d57}.fstep.bad i{background:var(--red)}
-.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.zone{min-height:96px;border:1px dashed #434a59;border-radius:12px;padding:9px}.zone b{font-size:11px;color:#8890a1}.card{border:1px solid #3a4150;background:#181d27;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;cursor:pointer}.card.sel{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet) inset}.experiment{display:grid;grid-template-columns:1fr 1fr;gap:10px}.variant{border:1px solid #343b49;border-radius:14px;padding:14px;background:#151a22}.variant.active{border-color:var(--violet)}.variant strong{display:block;margin-bottom:8px}.switches{display:flex;gap:7px;flex-wrap:wrap}.ending{display:none;position:absolute;inset:0;z-index:20;background:#0b0d12;padding:40px;align-items:center}.ending.show{display:flex}.ending h2{font-size:clamp(42px,7vw,78px);line-height:.92;letter-spacing:-.055em;margin:10px 0}.ending p{max-width:760px;color:#bdc2cc;font-size:18px;line-height:1.5}
-.dpad{display:none;position:absolute;left:16px;bottom:16px;z-index:9;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px 46px;gap:4px}.dpad button{border:1px solid #49505f;background:#151a22dd;border-radius:12px;font-size:18px}.dpad .u{grid-column:2}.dpad .l{grid-column:1;grid-row:2}.dpad .d{grid-column:2;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.tapAct{display:none;position:absolute;right:16px;bottom:18px;z-index:9;width:64px;height:64px;border-radius:50%;border:1px solid #6f61c5;background:#261f3add;font-weight:900}
-@media(max-width:900px){.home{grid-template-columns:1fr;padding:30px 22px}.preview{min-height:330px}.gameGrid{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}.stage{min-height:62dvh}.dpad,.tapAct{display:grid}.tapAct{place-items:center}.controls{display:none}}
-@media(max-width:520px){.wrap{padding:8px}.shell{border-radius:18px}.home h1{font-size:48px}.home p{font-size:16px}.preview{min-height:270px}.side{padding:16px}.funnel,.board,.experiment{grid-template-columns:1fr 1fr}.stage{min-height:58dvh}}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+:root{--bg:#090c11;--ink:#f5f7fb;--muted:#8f98a8;--line:#27303d;--cyan:#72e5ff;--violet:#a78bfa;--lime:#9fe870;--amber:#ffd166;--red:#ff6b6b}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+button{font:inherit}.app{height:100dvh;display:grid;grid-template-rows:52px 1fr;background:radial-gradient(circle at 65% -10%,#6d5dfd19,transparent 30%),#090c11}
+.top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #1e2530;background:#0b0f15e8;backdrop-filter:blur(12px);z-index:10}.brand{font-weight:900;letter-spacing:.13em;font-size:11px}.hud{display:flex;gap:8px;align-items:center}.pill{border:1px solid #2e3745;border-radius:999px;padding:6px 9px;font-size:11px;color:#bac2cf;background:#111620}
+.scene{position:relative;min-height:0}.scene canvas{display:block;width:100%;height:100%;touch-action:none}.intro{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:linear-gradient(120deg,#090c11f2,#090c11d8)}.intro.hidden{display:none}.introCard{width:min(760px,calc(100% - 28px));padding:34px;border:1px solid #2b3442;border-radius:28px;background:#0f141d;box-shadow:0 32px 120px #000b}.kicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:900}.intro h1{font-size:clamp(44px,7vw,84px);line-height:.9;letter-spacing:-.06em;margin:12px 0 18px}.intro p{max-width:660px;font-size:17px;line-height:1.5;color:#b8c0cd}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.primary,.secondary{border-radius:14px;padding:13px 16px;font-weight:850;cursor:pointer}.primary{border:0;background:#f4f7fb;color:#0b0e12}.secondary{border:1px solid #374151;background:#151b25;color:#d7dde7}
+.quest{position:absolute;left:14px;top:14px;z-index:5;width:min(330px,calc(100% - 28px));padding:13px 14px;border:1px solid #2a3340;border-radius:16px;background:#0d121acc;backdrop-filter:blur(9px);pointer-events:none}.quest .room{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:var(--cyan);font-weight:900}.quest strong{display:block;font-size:15px;margin:4px 0}.quest span{font-size:12px;line-height:1.35;color:#98a2b1}
+.prompt{position:absolute;left:50%;bottom:18px;transform:translate(-50%,12px);opacity:0;z-index:8;border:1px solid #3a4657;border-radius:999px;background:#101722e8;padding:10px 14px;font-size:12px;transition:.16s;pointer-events:none;white-space:nowrap}.prompt.show{opacity:1;transform:translate(-50%,0)}.prompt b{color:#fff}
+.toast{position:absolute;right:14px;top:14px;z-index:9;width:min(300px,calc(100% - 28px));padding:12px 14px;border:1px solid #3c4758;border-radius:15px;background:#111823ec;transform:translateY(-12px);opacity:0;transition:.2s;pointer-events:none}.toast.show{transform:none;opacity:1}.toast b{font-size:12px}.toast div{font-size:11px;color:#a8b1bf;margin-top:3px}
+.map{position:absolute;right:14px;bottom:14px;z-index:5;width:150px;height:104px;border:1px solid #2a3442;border-radius:14px;background:#0e141dcc;backdrop-filter:blur(8px);padding:7px;pointer-events:none}.map canvas{width:100%;height:100%}
+.mobile{display:none;position:absolute;inset:auto 12px 12px 12px;z-index:7;pointer-events:none}.stick{width:112px;height:112px;border:1px solid #344050;border-radius:50%;background:#10172299;pointer-events:auto;position:relative}.nub{position:absolute;width:42px;height:42px;border-radius:50%;background:#dfe7f2;left:35px;top:35px}.act{pointer-events:auto;position:absolute;right:0;bottom:16px;width:70px;height:70px;border-radius:50%;border:1px solid #5f6d80;background:#dfe7f2;color:#0d1117;font-weight:950}.ending{position:absolute;inset:0;z-index:30;display:none;place-items:center;background:#090c11ef}.ending.show{display:grid}.endingCard{width:min(720px,calc(100% - 28px));padding:34px;border:1px solid #344050;border-radius:26px;background:#101620}.ending h2{font-size:clamp(40px,6vw,72px);line-height:.92;letter-spacing:-.05em;margin:10px 0}.ending p{font-size:17px;line-height:1.5;color:#b8c1cf}
+@media(max-width:760px){.top{padding:0 10px}.brand{font-size:10px}.hud .pill:first-child{display:none}.quest{top:10px;left:10px;width:calc(100% - 20px)}.map{display:none}.mobile{display:block}.prompt{bottom:92px}.introCard{padding:25px}.intro p{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div class="brand">DARIA.EXE / PRODUCT OFFICE</div>
-    <div class="status"><span class="pill" id="xpPill">0 XP</span><span class="pill" id="achPill">0 / 4 achievements</span></div>
-  </div>
-
-  <div class="shell">
-    <section class="home" id="home">
-      <div>
-        <div class="kicker">Learn product by doing product</div>
-        <h1>Your first day is already on fire.</h1>
-        <p>Run through the office, find what is actually happening, make product calls and earn achievements. No quiz screen. No abstract logic puzzle. The office itself is the game board.</p>
-        <div class="cta"><button class="primary" id="start">Enter the office</button><button class="ghost" id="how">How it plays</button></div>
-      </div>
-      <div class="preview">
-        <div class="miniOffice">
-          <div class="miniRoom r1"><span>research</span></div><div class="miniRoom r2"><span>analytics</span></div>
-          <div class="miniRoom r3"><span>priorities</span></div><div class="miniRoom r4"><span>experiment</span></div>
-          <div class="miniAvatar"></div><i class="token t1"></i><i class="token t2"></i><i class="token t3"></i><i class="token t4"></i>
-        </div>
-      </div>
-    </section>
-
-    <section class="game" id="game">
-      <div class="gameGrid">
-        <div class="stage" id="stage">
-          <canvas id="c"></canvas>
-          <div class="toast" id="toast"></div>
-          <div class="modalWrap" id="modalWrap"><div class="modal" id="modal"></div></div>
-          <div class="dpad">
-            <button class="u" data-dir="up">↑</button><button class="l" data-dir="left">←</button><button class="d" data-dir="down">↓</button><button class="r" data-dir="right">→</button>
-          </div>
-          <button class="tapAct" id="tapAct">E</button>
-          <div class="ending" id="ending">
-            <div><div class="kicker">Promotion unlocked</div><h2>You shipped judgement, not features.</h2><p>You observed behavior, found the real leak, cut work that did not earn its way in, and designed an experiment that could teach you something. That is the core loop: <b>observe → frame → choose → test → learn.</b></p><div class="cta"><button class="primary" id="replay">Replay office</button></div></div>
-          </div>
-        </div>
-        <aside class="side">
-          <div class="roomName" id="roomName">Lobby</div>
-          <h2 id="sideTitle">Find the four product rooms.</h2>
-          <p id="sideText">Walk into a room, get close to its workstation and interact. Each room teaches one product habit through a different mechanic.</p>
-          <div class="mission" id="m1"><strong>Research · Evidence hunter</strong><small>Observe users before accepting requests.</small></div>
-          <div class="mission" id="m2"><strong>Analytics · Funnel medic</strong><small>Find the actual leak, not the loudest metric.</small></div>
-          <div class="mission" id="m3"><strong>Priorities · Ruthless cut</strong><small>Protect the outcome from feature gravity.</small></div>
-          <div class="mission" id="m4"><strong>Experiment · Clean test</strong><small>Change one thing so the result can teach you.</small></div>
-          <div class="badges"><div class="badge" id="b1">◉</div><div class="badge" id="b2">⌁</div><div class="badge" id="b3">✂</div><div class="badge" id="b4">⚗</div></div>
-          <button class="interact" id="interact">Nothing to interact with</button>
-          <div class="controls"><span class="key">WASD / arrows</span><span class="key">E / space</span></div>
-          <div class="hint" id="hint">Blue pulses are workstations. Walk up to one. Rooms unlock in any order.</div>
-        </aside>
-      </div>
-    </section>
-  </div>
+<div class="app">
+  <header class="top"><div class="brand">DARIA.EXE / PRODUCT OFFICE</div><div class="hud"><span class="pill" id="roomPill">Lobby</span><span class="pill" id="progressPill">0 / 5 achievements</span></div></header>
+  <main class="scene" id="scene">
+    <canvas id="game"></canvas>
+    <div class="quest"><div class="room" id="qRoom">First day</div><strong id="qTitle">Choose where to start.</strong><span id="qText">Walk through any open door. The office is the menu.</span></div>
+    <div class="prompt" id="prompt"></div>
+    <div class="toast" id="toast"></div>
+    <div class="map"><canvas id="mini"></canvas></div>
+    <div class="mobile"><div class="stick" id="stick"><div class="nub" id="nub"></div></div><button class="act" id="act">ACT</button></div>
+    <section class="intro" id="intro"><div class="introCard"><div class="kicker">A tiny product-management adventure</div><h1>Walk in. Find the problem. Ship judgement.</h1><p>You are the new product manager. The office is alive: users get stuck, metrics leak, stakeholders dump requests on you and experiments can lie. Walk between rooms, interact with people and objects, collect evidence, and earn five product achievements.</p><div class="actions"><button class="primary" id="start">Enter office</button><button class="secondary" id="how">Controls</button></div></div></section>
+    <section class="ending" id="ending"><div class="endingCard"><div class="kicker">Day one complete</div><h2>You learned the loop by moving through it.</h2><p>Observe users. Trace the system. Cut noise. Isolate a test. Read the outcome. The office resets, but the judgement carries over.</p><div class="actions"><button class="primary" id="again">Play again</button></div></div></section>
+  </main>
 </div>
 <script>
-(function(){
-const $=s=>document.querySelector(s), canvas=$('#c'),ctx=canvas.getContext('2d'), stage=$('#stage');
-const home=$('#home'),game=$('#game'),modalWrap=$('#modalWrap'),modal=$('#modal'),toast=$('#toast');
-let W=900,H=720,keys={},running=false,last=0,xp=0,near=null;
-const done={research:false,analytics:false,priority:false,experiment:false};
-const player={x:450,y:360,r:13,s:210};
+(()=>{
+const C=document.querySelector('#game'),ctx=C.getContext('2d'),scene=document.querySelector('#scene');
+const mini=document.querySelector('#mini'),mctx=mini.getContext('2d');
+const prompt=document.querySelector('#prompt'),toast=document.querySelector('#toast');
+const qRoom=document.querySelector('#qRoom'),qTitle=document.querySelector('#qTitle'),qText=document.querySelector('#qText');
+const roomPill=document.querySelector('#roomPill'),progressPill=document.querySelector('#progressPill');
+let W=1200,H=760,DPR=1,last=0,active=false,keys={},near=null,toastTimer;
+const world={w:1200,h:760};
+const player={x:600,y:380,r:12,s:205,dir:1};
+const progress={research:false,analytics:false,priority:false,experiment:false,learn:false};
+const state={researchHits:new Set(),analyticsFixed:false,priorityCarry:null,priorityShipped:new Set(),experimentChoice:null,launched:false,resultSeen:false};
 const rooms=[
- {id:'research',name:'Research Lab',x:40,y:40,w:380,h:275,color:'#17222a',station:{x:220,y:155},door:{x:405,y:175}},
- {id:'analytics',name:'Analytics',x:480,y:40,w:380,h:275,color:'#1d1b2a',station:{x:670,y:155},door:{x:495,y:175}},
- {id:'priority',name:'Priorities',x:40,y:405,w:380,h:275,color:'#241b22',station:{x:220,y:545},door:{x:405,y:500}},
- {id:'experiment',name:'Experiment Bay',x:480,y:405,w:380,h:275,color:'#18231c',station:{x:670,y:545},door:{x:495,y:500}}
+{id:'research',name:'Research Lab',x:36,y:42,w:370,h:260,fill:'#132029'},
+{id:'analytics',name:'Analytics',x:432,y:42,w:336,h:260,fill:'#1b1827'},
+{id:'experiment',name:'Experiment Bay',x:794,y:42,w:370,h:260,fill:'#15231a'},
+{id:'priority',name:'Roadmap Room',x:36,y:458,w:475,h:260,fill:'#24191f'},
+{id:'learn',name:'Launch Room',x:689,y:458,w:475,h:260,fill:'#182027'}
 ];
-const furniture=[
- [90,95,120,52],[250,95,110,52],[525,92,120,58],[680,92,120,58],
- [90,470,115,55],[260,470,105,55],[525,470,118,55],[690,470,110,55]
+const walls=[
+[0,0,1200,24],[0,736,1200,24],[0,0,24,760],[1176,0,24,760],
+[418,24,18,278],[768,24,18,278],[24,302,385,18],[447,302,312,18],[797,302,379,18],
+[24,440,487,18],[689,440,487,18],[511,440,178,18],
+[511,458,18,278],[671,458,18,278]
 ];
-function fit(){const r=stage.getBoundingClientRect(); const d=Math.min(2,devicePixelRatio||1); canvas.width=r.width*d; canvas.height=r.height*d; canvas.style.width=r.width+'px';canvas.style.height=r.height+'px';ctx.setTransform(d,0,0,d,0,0);W=r.width;H=r.height}
-addEventListener('resize',fit);fit();
-function sx(v){return v/900*W} function sy(v){return v/720*H}
-function worldX(px){return px/900*W} function worldY(py){return py/720*H}
-function reset(){player.x=450;player.y=360;xp=0;Object.keys(done).forEach(k=>done[k]=false);updateUI()}
-function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
-function updateUI(){
- const n=Object.values(done).filter(Boolean).length;$('#xpPill').textContent=xp+' XP';$('#achPill').textContent=n+' / 4 achievements';
- ['research','analytics','priority','experiment'].forEach((k,i)=>{$('#m'+(i+1)).classList.toggle('done',done[k]);$('#b'+(i+1)).classList.toggle('on',done[k])});
- if(n===4)setTimeout(()=>$('#ending').classList.add('show'),500);
-}
+const npcs=[
+{id:'u1',x:115,y:122,homeX:115,homeY:122,phase:.2,color:'#72e5ff'},
+{id:'u2',x:310,y:206,homeX:310,homeY:206,phase:2.1,color:'#72e5ff'},
+{id:'u3',x:185,y:255,homeX:185,homeY:255,phase:4.2,color:'#72e5ff'},
+{id:'boss',x:190,y:545,homeX:190,homeY:545,phase:1.1,color:'#ffd166'}
+];
+const funnel=[
+{x:485,y:115,label:'Visit',ok:true},{x:565,y:115,label:'Start',ok:true},{x:645,y:115,label:'Verify',ok:false},{x:725,y:115,label:'Pay',ok:true}
+];
+const cards=[
+{id:'onboard',label:'Shorten onboarding',x:102,y:545,evidence:true},
+{id:'import',label:'Fix CSV import',x:102,y:610,evidence:true},
+{id:'theme',label:'New dark theme',x:318,y:545,evidence:false},
+{id:'avatar',label:'AI avatar',x:318,y:610,evidence:false}
+];
+const switches=[
+{id:'steps',label:'Fewer steps',x:866,y:126},
+{id:'copy',label:'New copy',x:973,y:126},
+{id:'color',label:'New color',x:1080,y:126}
+];
+function resize(){const r=scene.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;C.width=W*DPR;C.height=H*DPR;C.style.width=W+'px';C.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);mini.width=272;mini.height=180}
+addEventListener('resize',resize);resize();
+const sx=()=>W/world.w,sy=()=>H/world.h;
+function toScreen(x,y){return [x*sx(),y*sy()]}
 function roomAt(x,y){return rooms.find(r=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)}
-function canMove(nx,ny){
- if(nx<18||nx>882||ny<18||ny>702)return false;
- for(const f of furniture){if(nx>f[0]-16&&nx<f[0]+f[2]+16&&ny>f[1]-16&&ny<f[1]+f[3]+16)return false}
- return true
+function collide(x,y){
+ if(x<34||x>1166||y<34||y>726)return true;
+ for(const w of walls){if(x>w[0]-13&&x<w[0]+w[2]+13&&y>w[1]-13&&y<w[1]+w[3]+13)return true}
+ return false
 }
-function update(dt){
+function award(id,title,body){if(progress[id])return;progress[id]=true;showToast(title,body);updateHUD();if(Object.values(progress).every(Boolean))setTimeout(()=>document.querySelector('#ending').classList.add('show'),900)}
+function showToast(a,b){clearTimeout(toastTimer);toast.innerHTML='<b>'+a+'</b><div>'+b+'</div>';toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),2600)}
+function updateHUD(){
+ const n=Object.values(progress).filter(Boolean).length;progressPill.textContent=n+' / 5 achievements';
+}
+function taskCopy(r){
+ if(!r)return ['Hallway','Choose a room.','Walk through any open doorway.'];
+ if(r.id==='research'){
+   const n=state.researchHits.size;
+   return ['Research Lab','Shadow the users.','Stay close to each moving user until you capture all 3 friction signals. '+n+'/3 found.'];
+ }
+ if(r.id==='analytics')return ['Analytics','Follow the moving data.','One funnel node is dropping packets. Stand by the leak and repair it.'];
+ if(r.id==='priority'){
+   const n=state.priorityShipped.size;
+   return ['Roadmap Room','Carry evidence-backed work to SHIP.','Pick up a card, walk it to the green release zone. Ship 2 useful items. '+n+'/2 shipped.'];
+ }
+ if(r.id==='experiment')return ['Experiment Bay','Build a clean experiment.','Activate exactly one change, then launch the rig.'];
+ return ['Launch Room','Read what happened.','Inspect the outcome board after the experiment runs.'];
+}
+function interactables(){
+ const a=[];
+ npcs.slice(0,3).forEach(n=>a.push({type:'user',id:n.id,x:n.x,y:n.y,label:state.researchHits.has(n.id)?'Observed':'Observe user'}));
+ funnel.forEach((f,i)=>a.push({type:'node',id:i,x:f.x,y:f.y,label:i===2&&!state.analyticsFixed?'Repair leaking node':'Inspect node'}));
+ cards.forEach(c=>a.push({type:'card',id:c.id,x:c.x,y:c.y,label:state.priorityCarry===c.id?'Carrying '+c.label:'Pick up '+c.label}));
+ a.push({type:'ship',id:'ship',x:438,y:608,label:'Ship carried item'});
+ switches.forEach(s=>a.push({type:'switch',id:s.id,x:s.x,y:s.y,label:(state.experimentChoice===s.id?'Disable ':'Activate ')+s.label}));
+ a.push({type:'launch',id:'launch',x:1022,y:236,label:'Launch experiment'});
+ a.push({type:'result',id:'result',x:928,y:585,label:'Inspect outcome'});
+ return a;
+}
+function nearest(){
+ let best=null,d=999;
+ for(const it of interactables()){const dd=Math.hypot(player.x-it.x,player.y-it.y);if(dd<d){d=dd;best=it}}
+ return d<54?best:null
+}
+function act(){
+ if(!near)return;
+ if(near.type==='user'){
+   if(!state.researchHits.has(near.id)){state.researchHits.add(near.id);showToast('Friction captured',state.researchHits.size+' of 3 user signals collected.');if(state.researchHits.size===3)award('research','Evidence Hunter','You watched behavior before accepting a request.')}
+ }
+ if(near.type==='node'){
+   if(near.id===2&&!state.analyticsFixed){state.analyticsFixed=true;award('analytics','Funnel Medic','You repaired the biggest behavioral drop, not the loudest metric.')}else showToast('Node inspected','This stage is flowing normally.')
+ }
+ if(near.type==='card'){
+   state.priorityCarry=near.id;showToast('Card picked up',cards.find(c=>c.id===near.id).label+'. Carry it to SHIP.');
+ }
+ if(near.type==='ship'&&state.priorityCarry){
+   const c=cards.find(x=>x.id===state.priorityCarry);
+   if(c.evidence){state.priorityShipped.add(c.id);showToast('Shipped',c.label+' earned its place.');if(state.priorityShipped.size===2)award('priority','Ruthless Prioritizer','You protected the outcome from feature gravity.')}else showToast('No evidence','That request is loud, but it does not attack the observed problem.');
+   state.priorityCarry=null;
+ }
+ if(near.type==='switch'){
+   state.experimentChoice=state.experimentChoice===near.id?null:near.id;
+   showToast('Experiment rig',state.experimentChoice?'One variable active: '+switches.find(s=>s.id===state.experimentChoice).label+'.':'No variable active.');
+ }
+ if(near.type==='launch'){
+   if(!state.experimentChoice){showToast('Rig will not launch','Choose exactly one change first.');return}
+   state.launched=true;award('experiment','Clean Experiment','One causal difference. The result can actually teach you.');
+ }
+ if(near.type==='result'){
+   if(!state.launched){showToast('No result yet','The experiment rig has not launched.');return}
+   if(!state.resultSeen){state.resultSeen=true;award('learn','Learning Loop','You checked the outcome instead of declaring victory at launch.')}else showToast('Outcome','Activation improved. Keep the result, not the ego.');
+ }
+}
+function update(dt,t){
  let dx=0,dy=0;if(keys.ArrowLeft||keys.a)dx--;if(keys.ArrowRight||keys.d)dx++;if(keys.ArrowUp||keys.w)dy--;if(keys.ArrowDown||keys.s)dy++;
- if(dx||dy){const m=Math.hypot(dx,dy);dx/=m;dy/=m;const nx=player.x+dx*player.s*dt,ny=player.y+dy*player.s*dt;if(canMove(nx,player.y))player.x=nx;if(canMove(player.x,ny))player.y=ny}
- let best=null,dist=999;
- rooms.forEach(r=>{const d=Math.hypot(player.x-r.station.x,player.y-r.station.y);if(d<dist){dist=d;best=r}});
- near=dist<72?best:null;
- const rm=roomAt(player.x,player.y);$('#roomName').textContent=rm?rm.name:'Lobby';
- if(near){$('#interact').textContent=(done[near.id]?'Replay ':'Start ')+near.name;$('#interact').classList.add('ready')}else{$('#interact').textContent='Nothing to interact with';$('#interact').classList.remove('ready')}
+ if(dx||dy){const m=Math.hypot(dx,dy);dx/=m;dy/=m;player.dir=dx||player.dir;const nx=player.x+dx*player.s*dt,ny=player.y+dy*player.s*dt;if(!collide(nx,player.y))player.x=nx;if(!collide(player.x,ny))player.y=ny}
+ npcs.slice(0,3).forEach((n,i)=>{n.x=n.homeX+Math.sin(t/800+n.phase)*34;n.y=n.homeY+Math.cos(t/1000+n.phase)*20});
+ near=nearest();
+ const r=roomAt(player.x,player.y),copy=taskCopy(r);roomPill.textContent=r?r.name:'Hallway';qRoom.textContent=copy[0];qTitle.textContent=copy[1];qText.textContent=copy[2];
+ if(near){prompt.innerHTML='<b>ACT</b> · '+near.label;prompt.classList.add('show')}else prompt.classList.remove('show');
 }
+function rr(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function label(s,x,y,size=11,color='#9da6b5',weight=700){ctx.fillStyle=color;ctx.font=weight+' '+size+'px Inter,system-ui';ctx.fillText(s,x,y)}
 function draw(){
- ctx.clearRect(0,0,W,H);ctx.save();ctx.scale(W/900,H/720);
- ctx.fillStyle='#090b10';ctx.fillRect(0,0,900,720);
- ctx.strokeStyle='#181d26';ctx.lineWidth=1;for(let x=0;x<900;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,720);ctx.stroke()}for(let y=0;y<720;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(900,y);ctx.stroke()}
- rooms.forEach(r=>{
-   ctx.fillStyle=r.color;round(r.x,r.y,r.w,r.h,18,true);ctx.strokeStyle='#343b49';ctx.lineWidth=2;round(r.x,r.y,r.w,r.h,18,false);
-   ctx.fillStyle='#7f8798';ctx.font='700 12px Inter, sans-serif';ctx.fillText(r.name.toUpperCase(),r.x+18,r.y+26);
-   const pulse=18+Math.sin(performance.now()/350)*4;ctx.strokeStyle=done[r.id]?'#88e49f':'#6de7ff';ctx.globalAlpha=.35;ctx.lineWidth=3;ctx.beginPath();ctx.arc(r.station.x,r.station.y,pulse,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
-   ctx.fillStyle=done[r.id]?'#88e49f':'#6de7ff';ctx.beginPath();ctx.arc(r.station.x,r.station.y,7,0,Math.PI*2);ctx.fill();
- });
- furniture.forEach((f,i)=>{ctx.fillStyle=i<4?'#202630':'#25212a';round(f[0],f[1],f[2],f[3],10,true);ctx.strokeStyle='#353c49';round(f[0],f[1],f[2],f[3],10,false)});
- ctx.fillStyle='#131821';round(420,0,60,720,0,true);round(0,315,900,90,0,true);
- ctx.fillStyle='#2c3441';round(427,328,46,64,8,true);
- // avatar
- ctx.shadowColor='#9f86ff';ctx.shadowBlur=18;ctx.fillStyle='#9f86ff';round(player.x-14,player.y-14,28,28,9,true);ctx.shadowBlur=0;ctx.fillStyle='#10131a';ctx.fillRect(player.x-5,player.y-2,3,3);ctx.fillRect(player.x+3,player.y-2,3,3);
- if(near){ctx.strokeStyle='#9f86ff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(player.x,player.y,23+Math.sin(performance.now()/180)*2,0,Math.PI*2);ctx.stroke()}
- ctx.restore()
+ ctx.save();ctx.scale(sx(),sy());ctx.clearRect(0,0,world.w,world.h);ctx.fillStyle='#0a0e14';ctx.fillRect(0,0,world.w,world.h);
+ for(let x=0;x<1200;x+=40){for(let y=0;y<760;y+=40){ctx.fillStyle=(x/40+y/40)%2?'#0b1017':'#0c1118';ctx.fillRect(x,y,40,40)}}
+ rooms.forEach(r=>{rr(r.x,r.y,r.w,r.h,18,r.fill,'#354151');label(r.name.toUpperCase(),r.x+16,r.y+25,11,'#aab3c0',850)});
+ ctx.fillStyle='#111722';walls.forEach(w=>ctx.fillRect(...w));
+ // corridor rugs + doors
+ rr(528,325,144,102,18,'#111925','#2c3745');label('LOBBY',576,382,10,'#697487',850);
+ [[178,302],[588,302],[974,302],[274,440],[917,440]].forEach(([x,y])=>{ctx.fillStyle='#72e5ff';ctx.fillRect(x-24,y-3,48,6)});
+ // research furniture
+ rr(70,78,112,44,9,'#1e2d37','#314451');rr(240,78,122,44,9,'#1e2d37','#314451');label('SESSION',86,104,9,'#6f8090',800);
+ npcs.slice(0,3).forEach(n=>drawPerson(n.x,n.y,n.color,state.researchHits.has(n.id)));
+ // analytics
+ ctx.strokeStyle='#556172';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(485,115);ctx.lineTo(725,115);ctx.stroke();
+ funnel.forEach((f,i)=>{const bad=i===2&&!state.analyticsFixed;ctx.shadowColor=bad?'#ff6b6b':'#72e5ff';ctx.shadowBlur=bad?16:5;ctx.fillStyle=bad?'#ff6b6b':'#72e5ff';ctx.beginPath();ctx.arc(f.x,f.y,11,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;label(f.label,f.x-17,f.y+32,9,bad?'#ff9a9a':'#91a0b4',800)});
+ const tt=performance.now()/7%240;ctx.fillStyle='#dbeafe';ctx.beginPath();ctx.arc(485+Math.min(tt,160),115,4,0,Math.PI*2);ctx.fill();
+ rr(486,186,228,56,12,'#141a24','#313b49');label(state.analyticsFixed?'FLOW RESTORED':'PACKETS DROPPING',510,219,11,state.analyticsFixed?'#9fe870':'#ff8080',850);
+ // roadmap
+ rr(72,515,185,132,14,'#1a151a','#3a2f37');rr(286,515,185,132,14,'#1a151a','#3a2f37');
+ cards.forEach(c=>{if(state.priorityShipped.has(c.id))return;const carrying=state.priorityCarry===c.id;rr(c.x,c.y,150,42,9,carrying?'#312a45':'#211a20',carrying?'#a78bfa':'#4b3a43');label(c.label,c.x+10,c.y+25,10,carrying?'#efe9ff':'#d5bdc8',750)});
+ rr(410,575,72,74,12,'#14231a','#4b6b4d');label('SHIP',428,616,10,'#9fe870',900);
+ drawPerson(190,686,'#ffd166',false);label('STAKEHOLDER',136,712,9,'#8f98a8',800);
+ // experiment
+ rr(830,86,310,105,16,'#131c17','#34493b');switches.forEach(s=>{const on=state.experimentChoice===s.id;ctx.fillStyle=on?'#9fe870':'#374150';ctx.beginPath();ctx.arc(s.x,s.y,16,0,Math.PI*2);ctx.fill();label(s.label,s.x-35,s.y+35,9,on?'#bff69a':'#8f99a8',800)});
+ rr(974,205,98,56,14,state.launched?'#1d3424':'#241f18',state.launched?'#68a46f':'#6d5d3d');label(state.launched?'RUNNING':'LAUNCH',991,238,10,state.launched?'#9fe870':'#ffd166',900);
+ // launch room
+ rr(770,508,315,148,16,'#151c24','#34404f');label('OUTCOME BOARD',792,535,9,'#7f8a99',900);
+ if(state.launched){const vals=[38,46,53,61,67];ctx.strokeStyle='#9fe870';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*52,y=632-v*1.25;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();label('+18% activation',805,620,13,'#9fe870',900)}else label('NO RUN YET',848,590,12,'#6f7a88',850);
+ // decorations
+ [[54,358],[1110,359],[556,696],[630,694]].forEach(([x,y])=>{ctx.fillStyle='#203426';ctx.beginPath();ctx.arc(x,y,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#31563a';ctx.beginPath();ctx.arc(x-5,y-7,8,0,Math.PI*2);ctx.arc(x+6,y-5,8,0,Math.PI*2);ctx.fill()});
+ drawPlayer();
+ ctx.restore();drawMini();
 }
-function round(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);fill?ctx.fill():ctx.stroke()}
-function loop(t){const dt=Math.min(.03,(t-last)/1000||0);last=t;if(running){update(dt);draw();requestAnimationFrame(loop)}}
-function interact(){if(near)openTask(near.id)}
-$('#interact').onclick=interact;$('#tapAct').onclick=interact;
-addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if((k==='e'||k===' ')&&running){e.preventDefault();interact()}});
+function drawPerson(x,y,color,done){ctx.fillStyle='#131820';ctx.beginPath();ctx.arc(x,y-10,10,0,Math.PI*2);ctx.fill();ctx.fillStyle=done?'#9fe870':color;rr(x-10,y,20,24,7,ctx.fillStyle);if(done){ctx.strokeStyle='#9fe870';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y+2,22,0,Math.PI*2);ctx.stroke()}}
+function drawPlayer(){ctx.save();ctx.translate(player.x,player.y);ctx.shadowColor='#a78bfa';ctx.shadowBlur=18;ctx.fillStyle='#a78bfa';ctx.beginPath();ctx.arc(0,-8,10,0,Math.PI*2);ctx.fill();rr(-11,2,22,24,7,'#a78bfa');ctx.shadowBlur=0;ctx.fillStyle='#0a0e14';ctx.fillRect(player.dir>0?2:-5,-10,3,3);ctx.restore()}
+function drawMini(){
+ mctx.setTransform(1,0,0,1,0,0);mctx.clearRect(0,0,mini.width,mini.height);mctx.fillStyle='#0b1017';mctx.fillRect(0,0,mini.width,mini.height);const ax=mini.width/1200,ay=mini.height/760;
+ rooms.forEach(r=>{mctx.fillStyle=progress[r.id]?'#304f35':'#202936';mctx.fillRect(r.x*ax,r.y*ay,r.w*ax,r.h*ay)});
+ mctx.fillStyle='#a78bfa';mctx.beginPath();mctx.arc(player.x*ax,player.y*ay,4,0,Math.PI*2);mctx.fill();
+}
+function loop(t){const dt=Math.min(.033,(t-last)/1000||0);last=t;if(active){update(dt,t);draw();requestAnimationFrame(loop)}}
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k==='e'||k===' '){e.preventDefault();act()}});
 addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
-document.querySelectorAll('[data-dir]').forEach(b=>{const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'},k=map[b.dataset.dir];b.addEventListener('pointerdown',()=>keys[k]=true);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false))});
-function openTask(id){
- modalWrap.classList.add('show');
- if(id==='research')researchTask();if(id==='analytics')analyticsTask();if(id==='priority')priorityTask();if(id==='experiment')experimentTask()
-}
-function close(){modalWrap.classList.remove('show')}
-function award(id,points,msg){if(!done[id]){done[id]=true;xp+=points;updateUI();showToast(msg)}close()}
-function researchTask(){
- modal.innerHTML='<div class="eyebrow">Research Lab · live session</div><h3>Watch first. Ask second.</h3><p>A user is trying to submit an invoice. Follow the cursor trail and collect the <b>three hesitation moments</b> before you ask what feature they want.</p><div class="taskArea" id="trail" style="height:210px;position:relative;border:1px solid #303746;border-radius:16px;background:#0d1118;overflow:hidden"></div><button id="rDone" disabled>Finish observation</button>';
- const area=$('#trail');let found=0;const pts=[[16,25],[70,20],[54,72],[25,68],[80,63]];pts.forEach((p,i)=>{const el=document.createElement('button');el.textContent=i<3?'·':'×';el.style.cssText='position:absolute;left:'+p[0]+'%;top:'+p[1]+'%;width:44px;height:44px;border-radius:50%;padding:0;'+(i<3?'border-color:#6de7ff':'');el.onclick=()=>{if(i<3&&!el.dataset.hit){el.dataset.hit=1;el.textContent='✓';found++;if(found===3)$('#rDone').disabled=false}else if(i>=3){el.classList.add('warn')}};area.appendChild(el)});
- $('#rDone').onclick=()=>award('research',120,'Achievement: Evidence hunter +120 XP')
-}
-function analyticsTask(){
- modal.innerHTML='<div class="eyebrow">Analytics · live funnel</div><h3>Find where reality breaks.</h3><p>Do not stare at the headline conversion number. Inspect the stages and patch the single leak.</p><div class="taskArea funnel"><div class="fstep" data-v="100">Visit<i style="width:100%"></i></div><div class="fstep" data-v="82">Start<i style="width:82%"></i></div><div class="fstep bad" id="leak" data-v="31">Verify<i style="width:31%"></i></div><div class="fstep" data-v="27">Pay<i style="width:27%"></i></div></div><div class="taskRow" style="margin-top:12px"><button data-f="visit">Patch Visit</button><button data-f="verify">Patch Verify</button><button data-f="pay">Patch Pay</button></div>';
- document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{if(b.dataset.f==='verify')award('analytics',140,'Achievement: Funnel medic +140 XP');else{b.classList.add('warn');showToast('You changed a stage that was not leaking.')}})
-}
-function priorityTask(){
- modal.innerHTML='<div class="eyebrow">Priorities · release train</div><h3>Make room for the outcome.</h3><p>You can ship only <b>two</b> things. Select two cards, then commit. One is noise, one is vanity, two directly attack the activation problem.</p><div class="taskArea board"><div class="zone"><b>ITEMS</b><div class="card" data-c="onboard">Shorter onboarding</div><div class="card" data-c="import">CSV import fix</div></div><div class="zone"><b>ITEMS</b><div class="card" data-c="theme">New dark theme</div><div class="card" data-c="ai">AI avatar generator</div></div><div class="zone"><b>SHIP</b><div id="shipCount" style="margin-top:10px;color:#9ba0ad;font-size:12px">0 / 2 selected</div></div></div><button id="commitP" style="margin-top:12px" disabled>Commit release</button>';
- let sel=[];document.querySelectorAll('[data-c]').forEach(c=>c.onclick=()=>{const id=c.dataset.c;if(sel.includes(id)){sel=sel.filter(x=>x!==id);c.classList.remove('sel')}else if(sel.length<2){sel.push(id);c.classList.add('sel')}$('#shipCount').textContent=sel.length+' / 2 selected';$('#commitP').disabled=sel.length!==2});
- $('#commitP').onclick=()=>{const ok=sel.includes('onboard')&&sel.includes('import');if(ok)award('priority',160,'Achievement: Ruthless cut +160 XP');else{showToast('Release is full, but activation is still broken.');document.querySelectorAll('[data-c].sel').forEach(x=>x.classList.remove('sel'));sel=[];$('#shipCount').textContent='0 / 2 selected';$('#commitP').disabled=true}}
-}
-function experimentTask(){
- modal.innerHTML='<div class="eyebrow">Experiment Bay · A/B rig</div><h3>Build a test that can teach you.</h3><p>Variant B currently changes three things at once. Turn off two changes so only one causal difference remains, then launch.</p><div class="taskArea experiment"><div class="variant"><strong>A · Control</strong><span>Current onboarding</span></div><div class="variant active"><strong>B · Variant</strong><div class="switches"><button class="good active" data-s="steps">2 fewer steps</button><button class="active" data-s="copy">new copy</button><button class="active" data-s="color">new color</button></div></div></div><button id="launch" style="margin-top:12px" disabled>Launch clean test</button>';
- let on=new Set(['steps','copy','color']);const refresh=()=>{$('#launch').disabled=on.size!==1};document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const k=b.dataset.s;if(on.has(k)){on.delete(k);b.classList.remove('active');b.style.opacity=.4}else{on.add(k);b.classList.add('active');b.style.opacity=1}refresh()});$('#launch').onclick=()=>{if(on.size===1)award('experiment',180,'Achievement: Clean test +180 XP')}
-}
-modalWrap.addEventListener('click',e=>{if(e.target===modalWrap)close()});
-$('#start').onclick=()=>{home.classList.add('hidden');game.classList.add('active');running=true;fit();last=performance.now();requestAnimationFrame(loop)};
-$('#how').onclick=()=>alert('Move with WASD / arrow keys. Walk to a pulsing workstation and press E or Space. On mobile use the on-screen controls. Finish all four rooms to complete the day.');
-$('#replay').onclick=()=>{$('#ending').classList.remove('show');reset();showToast('New day. Same office. Better judgement.')};
-reset();
+document.querySelector('#act').addEventListener('click',act);
+const stick=document.querySelector('#stick'),nub=document.querySelector('#nub');let stickOn=false;
+function moveStick(e){if(!stickOn)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,mag=Math.hypot(dx,dy),max=35;if(mag>max){dx=dx/mag*max;dy=dy/mag*max}nub.style.transform='translate('+dx+'px,'+dy+'px)';keys.ArrowLeft=dx<-10;keys.ArrowRight=dx>10;keys.ArrowUp=dy<-10;keys.ArrowDown=dy>10}
+stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);stick.addEventListener('pointerup',()=>{stickOn=false;nub.style.transform='';keys.ArrowLeft=keys.ArrowRight=keys.ArrowUp=keys.ArrowDown=false});
+C.addEventListener('pointerdown',e=>{if(innerWidth<760)return;const r=C.getBoundingClientRect(),tx=(e.clientX-r.left)/r.width*1200,ty=(e.clientY-r.top)/r.height*760;const dx=tx-player.x,dy=ty-player.y;if(Math.hypot(dx,dy)<70&&near)act()});
+document.querySelector('#start').onclick=()=>{document.querySelector('#intro').classList.add('hidden');active=true;last=performance.now();requestAnimationFrame(loop)};
+document.querySelector('#how').onclick=()=>showToast('Controls','WASD or arrow keys to walk. Press E / Space or ACT near people and objects. On mobile, use the thumb stick.');
+document.querySelector('#again').onclick=()=>location.reload();
+updateHUD();draw();
 })();
 </script>
 </body>
