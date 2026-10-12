@@ -191,6 +191,7 @@ public class ResearchLabController : MonoBehaviour
     void AddFullScreenSprite(string name, string resource, int order, Vector3 pos, float alpha)
     {
         var sprite = Resources.Load<Sprite>(resource);
+        if (!sprite && resource == "Research/research_lab") sprite = EmbeddedArt.ResearchLab;
         if (!sprite) return;
         var go = new GameObject(name);
         go.transform.position = pos;
@@ -208,11 +209,26 @@ public class ResearchLabController : MonoBehaviour
 
     Sprite FirstFrame(Texture2D tex, int cols, int rows)
     {
-        if (!tex) return null;
+        if (!tex) return MakeFallbackActorSprite();
         int w = tex.width / cols;
         int h = tex.height / rows;
         var rect = new Rect(0, tex.height - h, w, h);
         return Sprite.Create(tex, rect, new Vector2(.5f,.18f), 64f, 0, SpriteMeshType.FullRect);
+    }
+
+    Sprite MakeFallbackActorSprite()
+    {
+        var tex = new Texture2D(12, 20, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        for (int y=0;y<20;y++) for (int x=0;x<12;x++)
+        {
+            bool body = y < 15 && x > 2 && x < 9;
+            bool head = y >= 14 && (x-5.5f)*(x-5.5f)+(y-16.5f)*(y-16.5f) < 9f;
+            bool feet = y < 4 && (x < 5 || x > 6);
+            tex.SetPixel(x,y,(body||head||feet)?new Color(.55f,.92f,1f,1):Color.clear);
+        }
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0,0,12,20), new Vector2(.5f,.15f), 16f, 0, SpriteMeshType.FullRect);
     }
 
     Sprite MakeDiscSprite()
