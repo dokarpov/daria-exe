@@ -39,7 +39,7 @@ let W=1200,H=760,DPR=1,last=0,playing=false,keys={},near=null,toastTimer=0,scree
 const world={w:1200,h:760};
 const player={x:590,y:380,r:12,s:225,vx:0,vy:0,dir:1,step:0};
 const done={research:false,analytics:false,roadmap:false,experiment:false,learn:false};
-const state={signals:new Set(),signalOrbs:[],repairHeld:false,repairDone:false,requestTimer:0,requests:[],goodShipped:0,badShipped:0,experiment:null,launched:false,resultReady:false,resultTimer:0,resultCollected:false};
+const state={signals:new Set(),signalOrbs:[],padsLatched:[false,false],repairDone:false,requestTimer:0,requests:[],requestIndex:0,goodShipped:0,badRejected:0,badShipped:0,experiment:null,launched:false,resultReady:false,resultTimer:0,resultCollected:false,outcome:null};
 const rooms=[
 {id:'research',name:'Research Lab',x:28,y:34,w:360,h:264,fill:'#10212b'},
 {id:'analytics',name:'Analytics',x:420,y:34,w:360,h:264,fill:'#171b2a'},
@@ -66,16 +66,17 @@ function award(id,title,body){if(done[id])return;done[id]=true;scoreEl.textConte
 function showToast(a,b){clearTimeout(toastTimer);toast.innerHTML='<b>'+a+'</b><div>'+b+'</div>';toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),2400)}
 function spawnSignal(x,y,type){if(state.signals.has(type)||state.signalOrbs.some(s=>s.type===type))return;state.signalOrbs.push({x,y,type,t:0})}
 function updateUsers(t){users.forEach((u,i)=>{u.x=u.hx+Math.sin(t*.0011+u.ph)*46;u.y=u.hy+Math.cos(t*.0014+u.ph)*25;const f=friction[i];if(Math.hypot(u.x-f.x,u.y-f.y)<40&&Math.sin(t*.003+u.ph)>.92)spawnSignal(u.x+16,u.y-8,f.type)})}
-function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit)}
-function updateAnalytics(){pads[0].active=Math.hypot(player.x-pads[0].x,player.y-pads[0].y)<32;pads[1].active=Math.hypot(player.x-pads[1].x,player.y-pads[1].y)<32;if(pads[0].active&&pads[1].active&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You repaired the bottleneck by tracing the system, not by staring at the top-line metric.')}}
-function spawnRequest(){const pool=[['Fix import',true],['Reduce steps',true],['Dark theme',false],['AI avatar',false],['Add confetti',false],['Fix verify',true]];const p=pool[Math.floor(Math.random()*pool.length)];state.requests.push({x:90+Math.random()*320,y:490,label:p[0],good:p[1],vx:55+Math.random()*45,vy:0,held:false})}
-function updateRoadmap(dt){state.requestTimer-=dt;if(state.requestTimer<=0&&state.requests.length<5){spawnRequest();state.requestTimer=.9+Math.random()*1.2}for(const r of state.requests){if(r.held){r.x=player.x+18*player.dir;r.y=player.y-6;continue}r.x+=r.vx*dt;if(r.x>455){r.x=70;r.y=490+Math.random()*170}}}
+function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit&&s.t<5)}
+function updateAnalytics(){if(!done.research)return;pads.forEach((p,i)=>{const on=Math.hypot(player.x-p.x,player.y-p.y)<32;if(on&&!state.padsLatched[i]){state.padsLatched[i]=true;showToast('Pressure point traced',(state.padsLatched.filter(Boolean).length)+' / 2 stages verified.')}p.active=state.padsLatched[i]});if(state.padsLatched.every(Boolean)&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You traced both pressure points and isolated the bottleneck.')}}
+const requestDeck=[['Fix import',true],['Dark theme',false],['Reduce steps',true],['AI avatar',false],['Fix verify',true],['Add confetti',false]];
+function spawnRequest(){const p=requestDeck[state.requestIndex%requestDeck.length];state.requestIndex++;state.requests.push({x:90+(state.requestIndex*61)%300,y:500+(state.requestIndex*47)%150,label:p[0],good:p[1],vx:72,vy:0,held:false})}
+function updateRoadmap(dt){if(!done.analytics)return;state.requestTimer-=dt;if(state.requestTimer<=0&&state.requests.length<5){spawnRequest();state.requestTimer=1.15}for(const r of state.requests){if(r.held){r.x=player.x+18*player.dir;r.y=player.y-6;continue}r.x+=r.vx*dt;if(r.x>455){r.x=70;r.y=500+((state.requestIndex+Math.round(r.y))%150)}}}
 function nearestInteractable(){
 let best=null,d=999;
 const r=roomAt(player.x,player.y);
-if(r?.id==='roadmap'){for(const q of state.requests){const dd=Math.hypot(player.x-q.x,player.y-q.y);if(dd<d){d=dd;best={type:'request',obj:q,label:q.held?'Drop request':'Grab request'}}}const shipD=Math.hypot(player.x-450,player.y-670);if(shipD<d){d=shipD;best={type:'ship',label:'Drop into release chute'}}}
-if(r?.id==='experiment'){for(const s of experimentSwitches){const dd=Math.hypot(player.x-s.x,player.y-s.y);if(dd<d){d=dd;best={type:'switch',obj:s,label:(state.experiment===s.id?'Disable ':'Activate ')+s.label}}}const dd=Math.hypot(player.x-1000,player.y-245);if(dd<d){d=dd;best={type:'launch',label:'Run experiment'}}}
-if(r?.id==='learn'){const dd=Math.hypot(player.x-955,player.y-590);if(dd<d){d=dd;best={type:'result',label:'Collect outcome'}}}
+if(r?.id==='roadmap'&&done.analytics){for(const q of state.requests){const dd=Math.hypot(player.x-q.x,player.y-q.y);if(dd<d){d=dd;best={type:'request',obj:q,label:q.held?'Drop request':'Grab request'}}}const shipD=Math.hypot(player.x-450,player.y-670);if(shipD<d){d=shipD;best={type:'ship',label:'Drop into release chute'}}const rejectD=Math.hypot(player.x-78,player.y-670);if(rejectD<d){d=rejectD;best={type:'reject',label:'Reject request'}}}
+if(r?.id==='experiment'&&done.roadmap){for(const s of experimentSwitches){const dd=Math.hypot(player.x-s.x,player.y-s.y);if(dd<d){d=dd;best={type:'switch',obj:s,label:(state.experiment===s.id?'Disable ':'Activate ')+s.label}}}const dd=Math.hypot(player.x-1000,player.y-245);if(dd<d){d=dd;best={type:'launch',label:'Run experiment'}}}
+if(r?.id==='learn'&&state.launched){const dd=Math.hypot(player.x-955,player.y-590);if(dd<d){d=dd;best={type:'result',label:'Collect outcome'}}}
 return d<58?best:null;
 }
 function act(){
@@ -87,26 +88,27 @@ near.obj.held=true;
 if(near.type==='ship'){
 const carried=state.requests.find(x=>x.held);if(!carried)return;
 if(carried.good){state.goodShipped++;showToast('Evidence-backed work shipped',state.goodShipped+' / 2 useful items');state.requests=state.requests.filter(x=>x!==carried);if(state.goodShipped>=2)award('roadmap','Focus defender','You protected the roadmap from attractive noise.')}
-else{state.badShipped++;carried.held=false;carried.x=70;showToast('Noise shipped','That request was loud, not evidenced. Put it back in the queue.')}
+else{state.badShipped++;carried.held=false;carried.x=90;showToast('Weak evidence','This is noise. Take it to REJECT, not SHIP.')}
 }
+if(near.type==='reject'){const carried=state.requests.find(x=>x.held);if(!carried)return;if(carried.good){carried.held=false;showToast('Useful work rejected','This request is backed by evidence.')}else{state.badRejected++;state.requests=state.requests.filter(x=>x!==carried);showToast('Noise rejected',state.badRejected+' distractions removed.')}}
 if(near.type==='switch'){state.experiment=state.experiment===near.obj.id?null:near.obj.id;showToast('Experiment rig',state.experiment?'One variable armed. Keep it clean.':'No variable selected.')}
-if(near.type==='launch'){if(!state.experiment){showToast('Rig locked','Arm exactly one variable.');return}state.launched=true;state.resultTimer=3;award('experiment','Clean experiment','One variable changed. The outcome can teach you something.')}
+if(near.type==='launch'){if(!done.roadmap){showToast('Rig locked','Bring evidence through the roadmap first.');return}if(!state.experiment){showToast('Rig locked','Arm exactly one variable.');return}state.launched=true;state.resultReady=false;state.resultTimer=2.2;state.outcome={steps:{value:18,label:'Activation +18%',note:'Removing friction moved activation.'},copy:{value:6,label:'Activation +6%',note:'Copy helped, but friction remains.'},visual:{value:-2,label:'Activation -2%',note:'Visual polish did not address the bottleneck.'}}[state.experiment];showToast('Experiment running','One variable changed. Wait for the measured outcome.')}
 if(near.type==='result'){if(!state.resultReady){showToast('Nothing to read yet','Let the test run first.');return}if(!state.resultCollected){state.resultCollected=true;award('learn','Closed loop','You returned to evidence after launch instead of declaring victory at shipment.')}}
 }
 function updateMission(){
 const r=roomAt(player.x,player.y);roomChip.textContent=r?r.name:'Hallway';
 if(!r){chapter.textContent='Office';mission.textContent=done.research?'Continue to Analytics.':'Go to the Research Lab.';hint.textContent=done.research?'Analytics is the top-centre room.':'Research Lab is the top-left room. Follow the moving users and walk into the glowing signals they leave behind.';nextStep.innerHTML=done.research?'<b>Next objective</b>Go to Analytics — top centre. Trace the flow and stabilise the broken stage.':'<b>First objective</b>Go to the Research Lab — top left. Follow users and walk into the signals they drop.';return}
 if(r.id==='research'){chapter.textContent='Research Lab';mission.textContent='Research Lab · Catch 3 behaviour signals.';hint.textContent='Follow the moving users. When a glowing signal appears, walk into it to collect it. '+state.signals.size+'/3 collected.';nextStep.innerHTML=done.research?'<b>Room complete</b>Go to Analytics — top centre.':'<b>Current action</b>Follow users → wait for a glowing signal → walk into it. '+state.signals.size+'/3 collected.'}
-if(r.id==='analytics'){chapter.textContent='Analytics';mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Trace the moving packets. Step onto the two PAD markers to stabilise the broken stage.';nextStep.innerHTML='<b>Current action</b>Stand on the two PAD markers to stabilise the broken stage.'}
-if(r.id==='roadmap'){chapter.textContent='Roadmap Room';mission.textContent='Ship evidence, reject noise.';hint.textContent='Move close to a request until ACT appears, press E/Space to grab it, then carry useful work to SHIP. '+state.goodShipped+'/2 useful items shipped.';nextStep.innerHTML='<b>Current action</b>Approach a request → E/Space to grab → carry evidence-backed work to SHIP.'}
-if(r.id==='experiment'){chapter.textContent='Experiment Bay';mission.textContent='Change one thing.';hint.textContent='Approach one switch, press E/Space, then approach LAUNCH and interact again.';nextStep.innerHTML='<b>Current action</b>Choose exactly one switch → E/Space → go to LAUNCH → E/Space.'}
-if(r.id==='learn'){chapter.textContent='Launch Room';mission.textContent='Read the outcome.';hint.textContent=state.resultReady?'Approach the outcome marker and press E/Space.':'The board stays dark until an experiment has actually run.';nextStep.innerHTML=state.resultReady?'<b>Current action</b>Approach the outcome marker → E/Space to collect it.':'<b>Waiting</b>Run the experiment first; then return here for the result.'}
+if(r.id==='analytics'){chapter.textContent='Analytics';if(!done.research){mission.textContent='Locked · Finish Research first.';hint.textContent='The funnel has no context until you have behaviour evidence.';nextStep.innerHTML='<b>Blocked</b>Return to Research Lab and collect all 3 signals.'}else{mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Trace the moving packets. Step onto each PAD once; verified stages stay lit.';nextStep.innerHTML='<b>Current action</b>Step onto PAD 1 → then PAD 2. '+state.padsLatched.filter(Boolean).length+'/2 verified.'}}
+if(r.id==='roadmap'){chapter.textContent='Roadmap Room';if(!done.analytics){mission.textContent='Locked · Repair Analytics first.';hint.textContent='Prioritisation needs traced evidence, not guesses.';nextStep.innerHTML='<b>Blocked</b>Finish Analytics before prioritising work.'}else{mission.textContent='Ship evidence, reject noise.';hint.textContent='Grab a request with E/Space. Evidence-backed work goes to SHIP; distractions go to REJECT. '+state.goodShipped+'/2 useful shipped.';nextStep.innerHTML='<b>Current action</b>Grab request → SHIP evidence / REJECT noise.'}}
+if(r.id==='experiment'){chapter.textContent='Experiment Bay';if(!done.roadmap){mission.textContent='Locked · Protect the roadmap first.';hint.textContent='The experiment needs an evidence-backed target.';nextStep.innerHTML='<b>Blocked</b>Ship 2 evidence-backed roadmap items first.'}else{mission.textContent='Change one thing.';hint.textContent='Approach one switch, press E/Space, then approach LAUNCH and interact again.';nextStep.innerHTML='<b>Current action</b>Choose exactly one switch → E/Space → LAUNCH → E/Space.'}}
+if(r.id==='learn'){chapter.textContent='Launch Room';mission.textContent=state.launched?'Read the outcome.':'Locked · Run an experiment first.';hint.textContent=state.resultReady?(state.outcome?state.outcome.note:'Approach the outcome marker and press E/Space.'):'The board stays dark until an experiment has actually run.';nextStep.innerHTML=state.resultReady?'<b>Current action</b>Read the measured result → E/Space to close the loop.':'<b>Waiting</b>Run one clean experiment; then return for its result.'}
 }
 function update(dt,t){
 let dx=0,dy=0;if(keys.ArrowLeft||keys.a)dx--;if(keys.ArrowRight||keys.d)dx++;if(keys.ArrowUp||keys.w)dy--;if(keys.ArrowDown||keys.s)dy++;
 if(dx||dy){const m=Math.hypot(dx,dy);dx/=m;dy/=m;player.dir=dx||player.dir;player.step+=dt*10;const nx=player.x+dx*player.s*dt,ny=player.y+dy*player.s*dt;if(!collides(nx,player.y))player.x=nx;if(!collides(player.x,ny))player.y=ny}
 updateUsers(t);updateSignals(dt);updateAnalytics();updateRoadmap(dt);
-if(state.launched&&!state.resultReady){state.resultTimer-=dt;if(state.resultTimer<=0){state.resultReady=true;showToast('Experiment complete','Outcome is waiting in the Launch Room.')}}
+if(state.launched&&!state.resultReady){state.resultTimer-=dt;if(state.resultTimer<=0){state.resultReady=true;award('experiment','Clean experiment','One variable changed, so the outcome is interpretable.');showToast('Experiment complete','Outcome is waiting in the Launch Room.')}}
 near=nearestInteractable();if(near){prompt.innerHTML='<b>ACT</b> · '+near.label;prompt.classList.add('show')}else prompt.classList.remove('show');
 playerState.dataset.x=player.x.toFixed(1);playerState.dataset.y=player.y.toFixed(1);updateMission();screenShake*=.84;
 }
@@ -137,29 +139,40 @@ pads.forEach(p=>{rr(p.x-26,p.y-18,52,36,10,p.active?'#223824':'#111d26',p.active
 rr(472,244,238,34,10,'#111d26','#30434f');label(state.repairDone?'FLOW STABLE':'VERIFY LEAK',591,266,10,state.repairDone?'#9ceb73':'#ff7f86',900,'center');
 
 state.requests.forEach(r=>{rr(r.x-52,r.y-18,104,36,9,r.good?'#20312b':'#302126',r.good?'#5b8f72':'#7b4b55');label(r.label,r.x,r.y+4,9,'#eef5f8',800,'center')});
-rr(406,632,82,70,13,'#14271d','#547b5b');label('SHIP',447,672,10,'#9ceb73',950,'center');label('noise returned: '+state.badShipped,65,710,9,'#9f7a80',700);
+rr(406,632,82,70,13,'#14271d','#547b5b');label('SHIP',447,672,10,'#9ceb73',950,'center');rr(38,632,82,70,13,'#2a171c','#74434c');label('REJECT',79,672,9,'#ff9ca6',950,'center');label('noise rejected: '+state.badRejected,65,710,9,'#9f7a80',700);
 
 rr(838,78,310,112,16,'#122019','#365344');experimentSwitches.forEach(s=>{const on=state.experiment===s.id;dot(s.x,s.y,17,on?'#9ceb73':'#354650',on?12:0);label(s.label.toUpperCase(),s.x,s.y+38,8,on?'#c5f7aa':'#81939e',900,'center')});
 rr(947,214,108,58,14,state.launched?'#1b3725':'#2b2419',state.launched?'#5f8b67':'#7b6844');label(state.launched?'RUNNING':'LAUNCH',1001,248,10,state.launched?'#9ceb73':'#ffcf69',950,'center');
 
 rr(760,510,340,160,18,'#121d25','#30434f');label('OUTCOME BOARD',785,540,9,'#7f919d',900);
-if(state.resultReady){const vals=[38,44,49,58,66];ctx.strokeStyle='#9ceb73';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*56,y=640-v*1.2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();dot(955,590,14,state.resultCollected?'#52705a':'#9ceb73',state.resultCollected?0:18);label('+18% activation',790,620,12,'#9ceb73',900)}else label(state.launched?'TEST RUNNING...':'NO TEST YET',930,595,11,'#748793',900,'center');
+if(state.resultReady){const vals=state.outcome&&state.outcome.value>10?[38,44,49,58,66]:state.outcome&&state.outcome.value>0?[38,40,41,43,45]:[42,41,40,40,39];ctx.strokeStyle=state.outcome&&state.outcome.value>=0?'#9ceb73':'#ff7f86';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*56,y=640-v*1.2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();dot(955,590,14,state.resultCollected?'#52705a':'#9ceb73',state.resultCollected?0:18);label(state.outcome?state.outcome.label:'Measured outcome',790,620,12,state.outcome&&state.outcome.value>=0?'#9ceb73':'#ff7f86',900)}else label(state.launched?'TEST RUNNING...':'NO TEST YET',930,595,11,'#748793',900,'center');
 
 drawPlayer();ctx.restore();
 }
 function loop(t){const dt=Math.min(.033,(t-last)/1000||0);last=t;if(playing){update(dt,t);draw();requestAnimationFrame(loop)}}
 addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k==='e'||k===' '){e.preventDefault();act()}});
-addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
+addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});const clearInput=()=>{keys={};stickOn=false;if(nub)nub.style.transform=''};addEventListener('blur',clearInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)clearInput()});
 document.getElementById('act').onclick=act;
 const stick=document.getElementById('stick'),nub=document.getElementById('nub');let stickOn=false;
 function moveStick(e){if(!stickOn)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),max=34;if(m>max){dx=dx/m*max;dy=dy/m*max}nub.style.transform='translate('+dx+'px,'+dy+'px)';keys.ArrowLeft=dx<-9;keys.ArrowRight=dx>9;keys.ArrowUp=dy<-9;keys.ArrowDown=dy>9}
-stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);stick.addEventListener('pointerup',()=>{stickOn=false;nub.style.transform='';keys.ArrowLeft=keys.ArrowRight=keys.ArrowUp=keys.ArrowDown=false});
+stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);const releaseStick=()=>{stickOn=false;nub.style.transform='';keys.ArrowLeft=keys.ArrowRight=keys.ArrowUp=keys.ArrowDown=false};stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);stick.addEventListener('lostpointercapture',releaseStick);
 document.getElementById('start').onclick=()=>{document.getElementById('intro').classList.add('hidden');playing=true;last=performance.now();requestAnimationFrame(loop)};
 document.getElementById('controls').onclick=()=>showToast('Controls','WASD / arrows to move. E or Space to interact. On mobile use the stick and ACT.');
 document.getElementById('again').onclick=()=>location.reload();
 window.__DARIA_TEST__={
   movePlayer(x,y){player.x=x;player.y=y;updateMission();playerState.dataset.x=String(x);playerState.dataset.y=String(y)},
-  completeResearch(){state.signals=new Set(['delay','rage','loop']);award('research','Evidence hunter','Research complete.');updateMission()}
+  completeResearch(){state.signals=new Set(['delay','rage','loop']);award('research','Evidence hunter','Research complete.');updateMission()},
+  stepAnalytics(i){player.x=pads[i].x;player.y=pads[i].y;updateAnalytics();updateMission()},
+  seedRoadmap(){state.requests=[];state.requestIndex=0;for(let i=0;i<4;i++)spawnRequest();},
+  roadmapState(){return state.requests.map(r=>({label:r.label,good:r.good}))},
+  completeRoadmap(){state.goodShipped=2;award('roadmap','Focus defender','Roadmap complete.');updateMission()},
+  selectExperiment(id){state.experiment=id;},
+  launchNow(){near={type:'launch'};act();},
+  finishExperiment(){state.resultTimer=0;update(.01,performance.now());updateMission()},
+  outcome(){return state.outcome},
+  collectResult(){state.resultReady=true;near={type:'result'};act();updateMission()},
+  done(){return {...done}},
+  pads(){return [...state.padsLatched]}
 };
 draw();
 })();
