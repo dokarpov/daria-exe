@@ -47,3 +47,27 @@ test('mobile buttons meet 44px target',async({page})=>{await page.setViewportSiz
 test('reduced motion keeps quick reveal static',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await page.goto(u);await page.getByRole('button',{name:/Quick Play/}).click();await page.locator('.actionCard').first().click();const d=await page.locator('.quickReveal').evaluate(e=>parseFloat(getComputedStyle(e).animationDuration)||0);expect(d).toBeLessThan(.01)});
 test('keyboard focus is visible',async({page})=>{await page.goto(u);await page.keyboard.press('Tab');const ok=await page.evaluate(()=>{const e=document.activeElement as HTMLElement;return e?.tagName==='BUTTON'&&getComputedStyle(e).outlineStyle!=='none'});expect(ok).toBeTruthy()});
 test('capture canonical visual states',async({page})=>{await reset(page);await page.goto(u);await page.screenshot({path:'artifacts/v37-home.png',fullPage:true});await page.getByRole('button',{name:/Investigation/}).click();await page.getByRole('button',{name:'Ask',exact:true}).click();await page.screenshot({path:'artifacts/v37-investigation-evidence.png',fullPage:true})});
+
+
+test('mobile result layout is compact and actions are full width',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await reset(page);
+  await page.goto(u);
+  await page.getByRole('button',{name:/Quick Play/}).click();
+  await page.locator('.actionCard').filter({hasText:'Check'}).click();
+  await page.getByRole('button',{name:/Decide now/}).click();
+  await page.locator('.quickCall').first().click();
+  await expect(page.locator('#result')).toHaveClass(/active/);
+  await noOverflow(page);
+  const scores=page.locator('.scoreGrid .score');
+  await expect(scores).toHaveCount(4);
+  const boxes=await scores.evaluateAll(es=>es.map((e:any)=>e.getBoundingClientRect()));
+  expect(boxes[0].top).toBe(boxes[1].top);
+  expect(boxes[2].top).toBe(boxes[3].top);
+  const a=await page.locator('#playAgain').boundingBox();
+  const b=await page.locator('#deepFromResult').boundingBox();
+  expect(a).toBeTruthy(); expect(b).toBeTruthy();
+  expect(a!.width).toBeGreaterThan(300);
+  expect(b!.width).toBeGreaterThan(300);
+  expect(b!.y).toBeGreaterThan(a!.y+a!.height-1);
+});
