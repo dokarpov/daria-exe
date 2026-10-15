@@ -1,12 +1,10 @@
 # DARIA.EXE — Product Office
 
-[Play the current browser prototype →](https://dokarpov.github.io/daria-exe/)
-
 DARIA.EXE is a product-judgement game prototype built around an explorable office rather than quiz cards.
 
-## Current stable browser build
+## Current development baseline
 
-The stable browser build on `main` is **v4.1.0**. It contains five rooms:
+The current browser code on `main` is **v4.1.0**, but the public build is offline while gameplay is being rebuilt and tested. It contains five rooms:
 
 - **Research Lab** — observe users and collect behaviour signals.
 - **Analytics** — trace a broken product flow.
