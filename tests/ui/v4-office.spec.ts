@@ -79,3 +79,79 @@ test('keyboard focus is visible',async({page})=>{
   });
   expect(ok).toBeTruthy();
 });
+
+
+test('Analytics is sequentially completable after Research',async({page})=>{
+  await page.goto(u);
+  await page.getByRole('button',{name:/Enter office/i}).click();
+  await page.evaluate(()=>{const a=(window as any).__DARIA_TEST__;a.completeResearch();a.stepAnalytics(0);});
+  expect(await page.evaluate(()=>(window as any).__DARIA_TEST__.pads())).toEqual([true,false]);
+  await page.evaluate(()=>(window as any).__DARIA_TEST__.stepAnalytics(1));
+  expect(await page.evaluate(()=>(window as any).__DARIA_TEST__.pads())).toEqual([true,true]);
+  expect((await page.evaluate(()=>(window as any).__DARIA_TEST__.done())).analytics).toBeTruthy();
+});
+
+test('Roadmap deck is deterministic and cannot soft-lock useful work',async({page})=>{
+  await page.goto(u);
+  await page.getByRole('button',{name:/Enter office/i}).click();
+  const deck=await page.evaluate(()=>{
+    const a=(window as any).__DARIA_TEST__;
+    a.completeResearch();a.stepAnalytics(0);a.stepAnalytics(1);a.seedRoadmap();
+    return a.roadmapState();
+  });
+  expect(deck.filter((x:any)=>x.good).length).toBeGreaterThanOrEqual(2);
+  expect(deck.filter((x:any)=>!x.good).length).toBeGreaterThanOrEqual(1);
+});
+
+test('Experiment is gated by upstream evidence',async({page})=>{
+  await page.goto(u);
+  await page.getByRole('button',{name:/Enter office/i}).click();
+  await page.evaluate(()=>{const a=(window as any).__DARIA_TEST__;a.movePlayer(980,150);});
+  await expect(page.locator('#mission')).toContainText(/Locked/i);
+  await expect(page.locator('#nextStep')).toContainText(/Blocked/i);
+});
+
+test('Experiment choice changes the measured outcome',async({page})=>{
+  async function runVariant(id:string){
+    await page.goto(u);
+    await page.getByRole('button',{name:/Enter office/i}).click();
+    return await page.evaluate((variant)=>{
+      const a=(window as any).__DARIA_TEST__;
+      a.completeResearch();a.stepAnalytics(0);a.stepAnalytics(1);a.completeRoadmap();
+      a.selectExperiment(variant);a.launchNow();a.finishExperiment();
+      return a.outcome();
+    },id);
+  }
+  const steps=await runVariant('steps');
+  const visual=await runVariant('visual');
+  expect(steps.value).not.toBe(visual.value);
+  expect(steps.label).not.toBe(visual.label);
+});
+
+test('full causal office loop can reach 5 of 5',async({page})=>{
+  await page.goto(u);
+  await page.getByRole('button',{name:/Enter office/i}).click();
+  const done=await page.evaluate(()=>{
+    const a=(window as any).__DARIA_TEST__;
+    a.completeResearch();
+    a.stepAnalytics(0);a.stepAnalytics(1);
+    a.completeRoadmap();
+    a.selectExperiment('steps');
+    a.launchNow();a.finishExperiment();a.collectResult();
+    return a.done();
+  });
+  expect(done).toEqual({research:true,analytics:true,roadmap:true,experiment:true,learn:true});
+  await expect(page.locator('#score')).toHaveText('5');
+});
+
+test('input reset does not leave movement stuck after blur',async({page})=>{
+  await page.goto(u);
+  await page.getByRole('button',{name:/Enter office/i}).click();
+  await page.keyboard.down('ArrowLeft');
+  await page.waitForTimeout(200);
+  await page.evaluate(()=>window.dispatchEvent(new Event('blur')));
+  const x1=Number(await page.locator('#playerState').getAttribute('data-x'));
+  await page.waitForTimeout(300);
+  const x2=Number(await page.locator('#playerState').getAttribute('data-x'));
+  expect(Math.abs(x2-x1)).toBeLessThan(4);
+});
