@@ -11,8 +11,8 @@ test('v4 starts with one explicit objective and controls',async({page})=>{
   await page.goto(u);
   await expect(page.getByRole('heading',{name:/Your first day is already on fire/i})).toBeVisible();
   await expect(page.getByText(/Start in the Research Lab/i)).toBeVisible();
-  await expect(page.getByText(/WASD|arrow keys/i)).toBeVisible();
-  await expect(page.getByText(/E or Space/i)).toBeVisible();
+  await expect(page.locator('#intro').getByText(/WASD|arrow keys/i)).toBeVisible();
+  await expect(page.locator('#intro').getByText(/E or Space/i)).toBeVisible();
   await expect(page.getByRole('button',{name:/Enter office/i})).toBeVisible();
 });
 
