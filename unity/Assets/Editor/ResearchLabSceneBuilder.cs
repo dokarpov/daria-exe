@@ -36,9 +36,9 @@ namespace DariaExe.Editor
             cameraGo.tag = "MainCamera";
             cameraGo.transform.position = new Vector3(0, 0, -10);
 
-            CreateArtSlot("ART_Background", -20);
+            var background = CreateArtSlot("ART_Background", -20);
             CreateArtSlot("ART_Environment", -10);
-            CreateArtSlot("ART_Foreground", 20);
+            var foreground = CreateArtSlot("ART_Foreground", 20);
             CreateArtSlot("ART_EmissiveFX", 30);
 
             var player = new GameObject("Player");
@@ -47,6 +47,13 @@ namespace DariaExe.Editor
             var playerCollider = player.AddComponent<CapsuleCollider2D>();
             playerCollider.size = new Vector2(.55f, .9f);
             player.AddComponent<PlayerController>();
+            var playerRenderer = player.AddComponent<SpriteRenderer>();
+            playerRenderer.sortingOrder = 5;
+
+            var scientist = new GameObject("Researcher");
+            scientist.transform.position = new Vector3(2.7f, 1.1f, 0);
+            var scientistRenderer = scientist.AddComponent<SpriteRenderer>();
+            scientistRenderer.sortingOrder = 4;
 
             var station = new GameObject("Observation Station");
             station.transform.position = new Vector3(-1.6f, .6f, 0);
@@ -74,6 +81,12 @@ namespace DariaExe.Editor
             prompt.rectTransform.anchorMin = prompt.rectTransform.anchorMax = new Vector2(.5f, 0);
             prompt.rectTransform.anchoredPosition = new Vector2(0, 110);
 
+            var art = new GameObject("ResearchLabArt").AddComponent<ResearchLabArtLoader>();
+            SetSerialized(art, "background", background);
+            SetSerialized(art, "foreground", foreground);
+            SetSerialized(art, "playerRenderer", playerRenderer);
+            SetSerialized(art, "scientistRenderer", scientistRenderer);
+
             var game = new GameObject("ResearchLabGame").AddComponent<ResearchLabGame>();
             SetSerialized(game, "player", player.transform);
             SetSerialized(game, "objectiveText", objective);
@@ -85,11 +98,12 @@ namespace DariaExe.Editor
             Debug.Log("DARIA.EXE Research Lab scene built at " + ScenePath);
         }
 
-        static void CreateArtSlot(string name, int sortingOrder)
+        static SpriteRenderer CreateArtSlot(string name, int sortingOrder)
         {
             var go = new GameObject(name);
             var renderer = go.AddComponent<SpriteRenderer>();
             renderer.sortingOrder = sortingOrder;
+            return renderer;
         }
 
         static void CreateWall(string name, Vector2 pos, Vector2 size)
