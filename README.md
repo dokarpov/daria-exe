@@ -8,6 +8,8 @@
 
 DARIA.EXE is deliberately different from the systems/enterprise projects in this portfolio. It tests whether decision quality can become a **playable interaction**, not another dashboard or productivity tool.
 
+**Release boundary:** the public link opens the currently shipped browser-based case game. The more immersive Unity WebGL version is a separate development track; it is **not** the live release or a verified working build. Do not conflate browser test coverage with Unity release acceptance.
+
 ## Product loop
 
 ### Quick Play
