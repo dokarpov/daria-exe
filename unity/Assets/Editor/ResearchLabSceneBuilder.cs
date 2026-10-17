@@ -55,12 +55,29 @@ namespace DariaExe.Editor
             var scientistRenderer = scientist.AddComponent<SpriteRenderer>();
             scientistRenderer.sortingOrder = 4;
 
-            var station = new GameObject("Observation Station");
-            station.transform.position = new Vector3(-1.6f, .6f, 0);
-            var stationCollider = station.AddComponent<BoxCollider2D>();
-            stationCollider.size = new Vector2(1.3f, 1.1f);
-            stationCollider.isTrigger = true;
-            station.AddComponent<Interactable>();
+            var station = CreateInteractable(
+                "Observation Station",
+                new Vector3(-2.8f, 1.2f, 0),
+                "observe",
+                "Observe user behaviour",
+                "You saw where the user hesitates. Follow up with the researcher."
+            );
+
+            var researcherInteraction = CreateInteractable(
+                "Researcher Interaction",
+                new Vector3(2.7f, 1.1f, 0),
+                "researcher",
+                "Ask about the hesitation",
+                "The researcher confirms the pattern is repeated, not a one-off. Verify it in the evidence console."
+            );
+
+            var verify = CreateInteractable(
+                "Evidence Console",
+                new Vector3(3.8f, -2.0f, 0),
+                "verify",
+                "Verify the repeated signal",
+                "Verified: the behaviour repeats across sessions. Research is complete."
+            );
 
             CreateWall("Wall Top", new Vector2(0, 4.7f), new Vector2(15, .4f));
             CreateWall("Wall Bottom", new Vector2(0, -4.7f), new Vector2(15, .4f));
@@ -75,9 +92,10 @@ namespace DariaExe.Editor
             scaler.referenceResolution = new Vector2(1440, 900);
             scaler.matchWidthOrHeight = .5f;
 
-            var objective = CreateText(canvasGo.transform, "Objective", new Vector2(36, -34), new Vector2(760, 60), 30, TextAlignmentOptions.TopLeft);
-            var feedback = CreateText(canvasGo.transform, "Controls / Feedback", new Vector2(36, 44), new Vector2(900, 50), 22, TextAlignmentOptions.BottomLeft, false);
-            var prompt = CreateText(canvasGo.transform, "Interact Prompt", new Vector2(0, 110), new Vector2(500, 60), 28, TextAlignmentOptions.Center, false);
+            var objective = CreateText(canvasGo.transform, "Objective", new Vector2(36, -34), new Vector2(880, 60), 30, TextAlignmentOptions.TopLeft);
+            var progress = CreateText(canvasGo.transform, "Progress", new Vector2(36, -84), new Vector2(640, 40), 18, TextAlignmentOptions.TopLeft);
+            var feedback = CreateText(canvasGo.transform, "Feedback", new Vector2(36, 44), new Vector2(980, 50), 22, TextAlignmentOptions.BottomLeft, false);
+            var prompt = CreateText(canvasGo.transform, "Interact Prompt", new Vector2(0, 110), new Vector2(620, 60), 28, TextAlignmentOptions.Center, false);
             prompt.rectTransform.anchorMin = prompt.rectTransform.anchorMax = new Vector2(.5f, 0);
             prompt.rectTransform.anchoredPosition = new Vector2(0, 110);
 
@@ -92,10 +110,73 @@ namespace DariaExe.Editor
             SetSerialized(game, "objectiveText", objective);
             SetSerialized(game, "promptText", prompt);
             SetSerialized(game, "feedbackText", feedback);
+            SetSerialized(game, "progressText", progress);
+
+            CreateMobileControls(canvasGo.transform, player.GetComponent<PlayerController>());
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("DARIA.EXE Research Lab scene built at " + ScenePath);
+        }
+
+        static Interactable CreateInteractable(string name, Vector3 position, string id, string prompt, string feedback)
+        {
+            var go = new GameObject(name);
+            go.transform.position = position;
+            var collider = go.AddComponent<BoxCollider2D>();
+            collider.size = new Vector2(1.2f, 1.0f);
+            collider.isTrigger = true;
+
+            var item = go.AddComponent<Interactable>();
+            SetSerializedString(item, "id", id);
+            SetSerializedString(item, "prompt", prompt);
+            SetSerializedString(item, "feedback", feedback);
+            return item;
+        }
+
+        static void CreateMobileControls(Transform parent, PlayerController player)
+        {
+            var controls = new GameObject("Mobile Controls", typeof(RectTransform));
+            controls.transform.SetParent(parent, false);
+
+            CreateControlButton(controls.transform, "Left", new Vector2(76, 92), "◀", MobileControlButton.Action.Left, player);
+            CreateControlButton(controls.transform, "Right", new Vector2(180, 92), "▶", MobileControlButton.Action.Right, player);
+            CreateControlButton(controls.transform, "Up", new Vector2(128, 144), "▲", MobileControlButton.Action.Up, player);
+            CreateControlButton(controls.transform, "Down", new Vector2(128, 40), "▼", MobileControlButton.Action.Down, player);
+            CreateControlButton(controls.transform, "ACT", new Vector2(-92, 92), "ACT", MobileControlButton.Action.Interact, player, true);
+        }
+
+        static void CreateControlButton(Transform parent, string name, Vector2 position, string label, MobileControlButton.Action action, PlayerController player, bool right = false)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button), typeof(MobileControlButton));
+            go.transform.SetParent(parent, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = right ? new Vector2(1, 0) : new Vector2(0, 0);
+            rt.pivot = new Vector2(.5f, .5f);
+            rt.anchoredPosition = position;
+            rt.sizeDelta = new Vector2(82, 82);
+
+            var image = go.GetComponent<Image>();
+            image.color = new Color(.04f, .08f, .11f, .72f);
+
+            var control = go.GetComponent<MobileControlButton>();
+            control.Configure(player, action);
+
+            var text = CreateText(go.transform, "Label", Vector2.zero, new Vector2(82, 82), 22, TextAlignmentOptions.Center, false);
+            text.rectTransform.anchorMin = Vector2.zero;
+            text.rectTransform.anchorMax = Vector2.one;
+            text.rectTransform.pivot = new Vector2(.5f, .5f);
+            text.rectTransform.anchoredPosition = Vector2.zero;
+            text.rectTransform.sizeDelta = Vector2.zero;
+            text.text = label;
+            text.raycastTarget = false;
+        }
+
+        static void SetSerializedString(Object target, string property, string value)
+        {
+            var so = new SerializedObject(target);
+            so.FindProperty(property).stringValue = value;
+            so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         static SpriteRenderer CreateArtSlot(string name, int sortingOrder)
