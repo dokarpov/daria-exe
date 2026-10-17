@@ -6,7 +6,6 @@ on:
       - unity/research-lab
     paths:
       - 'webgl-release/unity-research-lab/**'
-      - '.github/workflows/publish-unity-pages.yml'
 
 permissions:
   contents: write
