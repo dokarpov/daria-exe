@@ -1,7 +1,10 @@
 {
   "name": "DariaExe.Runtime",
   "rootNamespace": "DariaExe",
-  "references": [],
+  "references": [
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
