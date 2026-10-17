@@ -2,7 +2,9 @@
   "name": "DariaExe.Editor",
   "rootNamespace": "DariaExe.Editor",
   "references": [
-    "DariaExe.Runtime"
+    "DariaExe.Runtime",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
   ],
   "includePlatforms": [
     "Editor"
