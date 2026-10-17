@@ -1,0 +1,65 @@
+name: Unity headless validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - unity/research-lab
+    paths:
+      - 'unity/**'
+      - '.github/workflows/unity-webgl.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  availability:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          if [ -n "$UNITY_LICENSE" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Unity headless validation skipped: no supported CI license configured."
+          fi
+
+  test-and-build:
+    needs: availability
+    if: needs.availability.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Unity EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: unity
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: EditMode
+          artifactsPath: unity-test-results
+
+      - name: Build WebGL release candidate
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: unity
+          targetPlatform: WebGL
+          unityVersion: 2022.3.62f1
+          customParameters: -executeMethod DariaExe.Editor.WebGLBuild.Build
+
+      - name: Upload WebGL candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: daria-exe-unity-webgl-rc
+          path: webgl-release/unity-research-lab
+          if-no-files-found: error

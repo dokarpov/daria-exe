@@ -1,0 +1,56 @@
+name: Publish Unity WebGL to Pages
+
+on:
+  push:
+    branches:
+      - unity/research-lab
+    paths:
+      - 'webgl-release/unity-research-lab/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-unity-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Unity release branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate WebGL release
+        run: |
+          test -f webgl-release/unity-research-lab/index.html
+          test -f webgl-release/unity-research-lab/release.json
+          grep -q '"build":"unity-research-lab"' webgl-release/unity-research-lab/release.json
+
+      - name: Stage release
+        run: |
+          rm -rf /tmp/daria-unity-release
+          mkdir -p /tmp/daria-unity-release
+          cp -R webgl-release/unity-research-lab/. /tmp/daria-unity-release/
+
+      - name: Publish without replacing stable root
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages
+          rm -rf unity
+          mkdir -p unity
+          cp -R /tmp/daria-unity-release/. unity/
+          touch unity/.nojekyll
+          git add -A unity
+          if git diff --cached --quiet; then
+            echo "No Unity Pages changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish Unity Research Lab WebGL RC"
+          git push origin gh-pages
