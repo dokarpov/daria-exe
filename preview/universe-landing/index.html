@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090c">
+<title>DARIA.EXE — The Product Office</title>
+<meta name="description" content="A playable product-judgment world. Follow behavior, trace the system, defend focus, run a clean experiment, and read the outcome.">
+<style>
+:root{
+  --bg:#07090c;--ink:#f4f7f8;--muted:#aab3bc;--line:#283039;
+  --acid:#c8ff4d;--cyan:#69e7ff;--hot:#ff6d7a;
+  --max:1320px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,a{font:inherit}
+a:focus-visible{outline:3px solid var(--acid);outline-offset:4px}
+.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+.top{height:74px;display:flex;align-items:center;justify-content:space-between;position:absolute;z-index:20;left:0;right:0;top:0}
+.brand{font-weight:900;letter-spacing:-.04em;font-size:18px}
+.brand span{color:var(--acid)}
+.nav{display:flex;align-items:center;gap:24px;font-size:13px;color:#d3d9dd}
+.nav .play{padding:11px 16px;border:1px solid rgba(255,255,255,.5);border-radius:999px;background:#f5f7f8;color:#0b0d10;font-weight:800}
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;isolation:isolate;overflow:hidden}
+.heroArt{position:absolute;inset:0;background:url('assets/landing/research-lab.jpg') center 48%/cover no-repeat;filter:saturate(.92) contrast(1.04)}
+.heroArt:after{content:"";position:absolute;inset:0;background:
+ linear-gradient(180deg,rgba(5,7,10,.18) 0%,rgba(5,7,10,.08) 32%,rgba(5,7,10,.55) 65%,#07090c 100%),
+ linear-gradient(90deg,rgba(7,9,12,.78) 0%,rgba(7,9,12,.2) 48%,rgba(7,9,12,.05) 100%)}
+.foreground{position:absolute;inset:0;background:url('assets/landing/foreground.png') center bottom/cover no-repeat;z-index:2;pointer-events:none;opacity:.78}
+.heroGrid{position:absolute;inset:0;z-index:3;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,transparent 0,#000 30%,#000 80%,transparent)}
+.heroContent{position:relative;z-index:6;padding:140px 0 64px}
+.eyebrow,.slash{font:800 12px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:lowercase;letter-spacing:.05em;color:var(--acid)}
+h1{margin:18px 0 18px;font-size:clamp(62px,11.4vw,178px);line-height:.78;letter-spacing:-.082em;font-weight:950;max-width:1160px;text-wrap:balance}
+h1 .office{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.85)}
+.lede{max-width:760px;font-size:clamp(19px,2vw,28px);line-height:1.28;letter-spacing:-.025em;color:#e7ecef;margin:0 0 30px}
+.ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;border-radius:999px;border:1px solid rgba(255,255,255,.33);font-weight:850}
+.cta.primary{background:var(--acid);color:#10150b;border-color:var(--acid)}
+.cta.secondary{background:rgba(7,9,12,.55);backdrop-filter:blur(14px)}
+.heroMeta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:48px;max-width:760px}
+.meta{border-top:1px solid rgba(255,255,255,.34);padding-top:12px}
+.meta b{display:block;font:800 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--acid);text-transform:uppercase;margin-bottom:6px}
+.meta span{font-size:14px;color:#d3dade}
+.section{padding:110px 0;border-top:1px solid var(--line)}
+.kicker{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.kicker:after{content:"";height:1px;background:var(--line);flex:1}
+.sectionTitle{font-size:clamp(44px,7vw,104px);line-height:.88;letter-spacing:-.07em;margin:0 0 54px;max-width:1100px}
+.roomList{border-top:1px solid var(--line)}
+.room{display:grid;grid-template-columns:72px 1fr 1.1fr;gap:24px;align-items:start;padding:28px 0;border-bottom:1px solid var(--line)}
+.room .num{font:800 12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+.room h3{font-size:clamp(26px,3vw,44px);letter-spacing:-.04em;margin:0}
+.room p{font-size:17px;line-height:1.5;color:var(--muted);margin:3px 0 0;max-width:600px}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.step{background:var(--bg);min-height:260px;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+.step .n{font:800 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--cyan)}
+.step h3{font-size:28px;margin:24px 0 10px;letter-spacing:-.04em}
+.step p{color:var(--muted);line-height:1.5;margin:0}
+.manifesto{position:relative;overflow:hidden;background:#d8ff62;color:#10140d;border-top:0}
+.manifesto .wrap{padding-top:108px;padding-bottom:108px}
+.manifesto h2{font-size:clamp(54px,9vw,140px);line-height:.81;letter-spacing:-.08em;margin:0 0 34px;max-width:1180px}
+.manifesto p{font-size:clamp(20px,2.2vw,31px);max-width:770px;line-height:1.25;letter-spacing:-.025em}
+.manifesto .cta{background:#0d110b;color:#f5f7f4;border-color:#0d110b;margin-top:14px}
+.footer{padding:32px 0 54px;border-top:1px solid #21272d}
+.footerRow{display:flex;justify-content:space-between;gap:20px;color:#8e99a3;font-size:12px}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:none}
+@media(max-width:900px){
+ .wrap{width:min(100% - 28px,var(--max))}
+ .nav a:not(.play){display:none}
+ .hero{min-height:780px}
+ .heroContent{padding:128px 0 44px}
+ h1{font-size:clamp(64px,18vw,116px)}
+ .heroMeta{grid-template-columns:1fr}
+ .section{padding:76px 0}
+ .room{grid-template-columns:44px 1fr}
+ .room p{grid-column:2}
+ .loop{grid-template-columns:1fr 1fr}
+ .step:last-child{grid-column:1/-1}
+}
+@media(max-width:560px){
+ .top{height:62px}
+ .hero{min-height:100svh}
+ .heroArt{background-position:58% 50%}
+ .foreground{opacity:.46;background-position:54% bottom}
+ .heroContent{padding:112px 0 34px}
+ h1{font-size:clamp(60px,20.6vw,94px);line-height:.82}
+ .lede{font-size:18px;max-width:94%}
+ .ctas{display:grid;grid-template-columns:1fr;width:100%}
+ .cta{width:100%}
+ .sectionTitle{margin-bottom:36px}
+ .room{grid-template-columns:34px 1fr;gap:12px;padding:22px 0}
+ .room p{font-size:15px}
+ .loop{grid-template-columns:1fr}
+ .step,.step:last-child{grid-column:auto;min-height:190px}
+ .manifesto .wrap{padding-top:76px;padding-bottom:76px}
+ .footerRow{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <a class="brand" href="#top">DARIA<span>.EXE</span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#office">The office</a>
+    <a href="#loop">How it plays</a>
+    <a class="play" href="play.html">Enter current build</a>
+  </nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="heroArt"></div>
+  <div class="heroGrid"></div>
+  <div class="foreground"></div>
+  <div class="heroContent wrap">
+    <div class="eyebrow">product judgment / playable world</div>
+    <h1>DARIA.EXE <span class="office">THE PRODUCT OFFICE</span></h1>
+    <p class="lede">Walk into a broken product. Follow behavior, trace the system, defend focus, run one clean experiment, and come back for the outcome.</p>
+    <div class="ctas">
+      <a class="cta primary" href="play.html">Enter current build</a>
+      <a class="cta secondary" href="#office">Explore the office</a>
+    </div>
+    <div class="heroMeta">
+      <div class="meta"><b>format</b><span>Exploration, not multiple choice</span></div>
+      <div class="meta"><b>skill</b><span>Product judgment under uncertainty</span></div>
+      <div class="meta"><b>loop</b><span>Evidence → decision → outcome</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="office">
+  <div class="wrap">
+    <div class="kicker"><span class="slash">inside-the-office/</span></div>
+    <h2 class="sectionTitle reveal">Every room changes what you’re allowed to believe next.</h2>
+    <div class="roomList">
+      <article class="room reveal"><div class="num">01</div><h3>Research Lab</h3><p>Watch what people actually do. Follow the signal before turning behavior into a story.</p></article>
+      <article class="room reveal"><div class="num">02</div><h3>Analytics</h3><p>Trace the broken flow. Find the pressure point instead of optimizing the loudest metric.</p></article>
+      <article class="room reveal"><div class="num">03</div><h3>Roadmap Room</h3><p>Carry evidence-backed work forward. Reject noise before it becomes a quarter of engineering.</p></article>
+      <article class="room reveal"><div class="num">04</div><h3>Experiment Bay</h3><p>Change one thing. Keep the result interpretable enough to teach you something.</p></article>
+      <article class="room reveal"><div class="num">05</div><h3>Launch Room</h3><p>Shipping isn’t the end. Return to the outcome and find out whether your judgment survived contact with reality.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="wrap">
+    <div class="kicker"><span class="slash">the-loop/</span></div>
+    <h2 class="sectionTitle reveal">You don’t answer a product question. You move through its consequences.</h2>
+    <div class="loop reveal">
+      <article class="step"><div class="n">01 / OBSERVE</div><div><h3>See it</h3><p>Collect behavior before explanation.</p></div></article>
+      <article class="step"><div class="n">02 / TRACE</div><div><h3>Map it</h3><p>Follow the system to the real constraint.</p></div></article>
+      <article class="step"><div class="n">03 / DECIDE</div><div><h3>Choose</h3><p>Protect focus from attractive noise.</p></div></article>
+      <article class="step"><div class="n">04 / TEST</div><div><h3>Change</h3><p>Run one interpretable experiment.</p></div></article>
+      <article class="step"><div class="n">05 / LEARN</div><div><h3>Return</h3><p>Read the result before declaring victory.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <div class="wrap">
+    <div class="slash" style="color:#18200e">why-this-exists/</div>
+    <h2 class="reveal">Product judgment should feel like a world, not a quiz.</h2>
+    <p class="reveal">DARIA.EXE turns ambiguous product work into a place you can explore, test, get wrong, and understand through consequences.</p>
+    <a class="cta reveal" href="play.html">Enter current build</a>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footerRow">
+    <span>DARIA.EXE</span>
+    <span>A product-judgment game by Daria Karpova</span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.16});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
