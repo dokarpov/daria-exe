@@ -5,7 +5,7 @@ async function reset(page:Page,xp=220){await page.goto(u);await page.evaluate(({
 async function noOverflow(page:Page){const x=await page.evaluate(()=>({w:innerWidth,sw:document.documentElement.scrollWidth,bw:document.body.scrollWidth}));expect(Math.max(x.sw,x.bw)).toBeLessThanOrEqual(x.w+1)}
 async function playQuickThreeMoves(page:Page){await page.goto(u);await page.getByRole('button',{name:/Enter case/}).click();for(const a of ['Ask','Check','Compare']){await page.locator('.actionCard').filter({hasText:a}).click();await expect(page.getByText(/NEW INFORMATION/)).toBeVisible();if(a!=='Compare')await page.getByRole('button',{name:/Keep digging/}).click()}await page.getByRole('button',{name:/Decide now/}).click()}
 
-test('production is really served over HTTP',async({page})=>{const r=await page.goto(u);expect(r?.ok()).toBeTruthy();expect(new URL(page.url()).protocol).toBe('http:');await expect(page.locator('meta[name="daria-build"]')).toHaveAttribute('content','3.8.0')});
+test('production is really served over HTTP',async({page})=>{const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const r=await page.goto(u);expect(r?.ok()).toBeTruthy();expect(new URL(page.url()).protocol).toBe('http:');await expect(page.locator('meta[name="daria-build"]')).toHaveAttribute('content','3.8.0');await expect(page.locator('#homeCaseTitle')).not.toHaveText('Something doesn’t add up.');expect(errors).toEqual([])});
 test('home is a game opening, not a progression dashboard',async({page})=>{
   await page.goto(u);
   await expect(page.getByRole('button',{name:/Enter case/})).toBeVisible();
