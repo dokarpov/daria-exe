@@ -74,7 +74,8 @@ test('completion and restart emit measurable events',async({page})=>{
   expect(restarted).toBeTruthy();
 });
 
-test('share has a graceful clipboard fallback',async({page,context})=>{
+test('share has a graceful clipboard fallback',async({page,context,browserName})=>{
+  test.skip(browserName!=='chromium','clipboard fallback is asserted on Chromium');
   await context.grantPermissions(['clipboard-read','clipboard-write']);
   await page.addInitScript(()=>Object.defineProperty(navigator,'share',{value:undefined,configurable:true}));
   await reset(page);
