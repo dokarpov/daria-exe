@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 using DariaExe;
 
@@ -83,6 +84,8 @@ namespace DariaExe.Editor
             CreateWall("Wall Bottom", new Vector2(0, -4.7f), new Vector2(15, .4f));
             CreateWall("Wall Left", new Vector2(-7.3f, 0), new Vector2(.4f, 10));
             CreateWall("Wall Right", new Vector2(7.3f, 0), new Vector2(.4f, 10));
+
+            var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
 
             var canvasGo = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasGo.GetComponent<Canvas>();
