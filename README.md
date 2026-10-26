@@ -8,7 +8,7 @@
 
 DARIA.EXE is deliberately different from the systems/enterprise projects in this portfolio. It tests whether decision quality can become a **playable interaction**, not another dashboard or productivity tool.
 
-**Release boundary:** the public link opens the validated browser-based case game. The more immersive Unity WebGL version is a separate development track; it is **not** the live release or a verified working build. Do not conflate browser test coverage with Unity release acceptance.
+**Stage:** Playable browser game. Unity is a separate R&D track.
 
 ## Product loop
 
@@ -37,19 +37,16 @@ The deeper mode keeps the five-move hypothesis/evidence loop, swipe/tap classifi
 | Investigation loop | implemented |
 | No pre-choice answer-quality hints | covered by browser tests |
 | Chromium / WebKit / iPhone / Android / iPad browser validation | release gate |
-| Retention / repeat play | **not yet proven** |
-| Learning or decision-quality improvement | **not claimed** |
-| Monetisation | **not claimed** |
 
-The current proof is therefore **interaction quality + working game mechanics**, not consumer traction.
+**Next evidence:** voluntary completion, repeat play and learning outcomes.
 
 ### Technology status
 
 - **Browser release:** primary shipping track. Fully testable in CI and deployable to GitHub Pages.
-- **Unity WebGL:** experimental R&D track. Art and interaction scaffolding exist, but no WebGL output is accepted as a release until it is built and played successfully.
+- **Unity WebGL:** separate exploration of richer animation and interaction.
 - **Migration rule:** do not replace the browser product merely for engine prestige. A migration must improve world interaction, animation or authoring enough to justify the added build/runtime cost. The next meaningful product test is whether people voluntarily complete, replay and share cases.
 
-For the next player-evidence stage and the boundary between engagement and learning claims, see [`VALIDATION.md`](VALIDATION.md).
+See [`VALIDATION.md`](VALIDATION.md) for player research and release criteria.
 
 ## Why it belongs in the portfolio
 
