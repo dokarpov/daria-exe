@@ -1,0 +1,48 @@
+name: Night 01 clean-browser validation
+
+on:
+  push:
+    branches:
+      - prototype/narrative-v4-night01
+    paths:
+      - 'v4/night01/**'
+      - 'tests/ui/night01.spec.ts'
+      - '.github/workflows/night01-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Validate live Night 01 on desktop and mobile browsers
+        run: npx playwright test tests/ui/night01.spec.ts
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: night01-qa
+          path: |
+            qa/night01
+            artifacts/playwright-report
+          if-no-files-found: warn
+      - name: Commit QA screenshots
+        if: success()
+        run: |
+          if [ ! -d qa/night01 ]; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f qa/night01
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Add Night 01 desktop and mobile QA screenshots"
+          git push origin HEAD:prototype/narrative-v4-night01
