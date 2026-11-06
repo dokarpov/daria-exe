@@ -6,7 +6,8 @@ const live='https://dokarpov.github.io/daria-exe/preview/night01/';
 async function openLoaded(page){
   const errors:string[]=[];
   page.on('pageerror',e=>errors.push('pageerror: '+e.message));
-  page.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
+  page.on('response',r=>{if(r.status()>=400&&!/favicon|apple-touch-icon/i.test(r.url()))errors.push('http '+r.status()+': '+r.url())});
+  page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('Failed to load resource'))errors.push('console: '+m.text())});
   const response=await page.goto(live,{waitUntil:'domcontentloaded',timeout:30000});
   expect(response?.ok()).toBeTruthy();
   await expect(page.locator('#boot')).toHaveClass(/done/,{timeout:5000});
