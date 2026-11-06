@@ -1,4 +1,5 @@
-// rerun after Pages deploy\nimport {test,expect} from '@playwright/test';
+// rerun after Pages deploy
+import {test,expect} from '@playwright/test';
 
 const live='https://dokarpov.github.io/daria-exe/preview/night01/';
 
