@@ -160,4 +160,4 @@ $('#shareResult').onclick=async()=>{
    else if(navigator.clipboard){await navigator.clipboard.writeText(text+' '+location.origin+location.pathname);method='clipboard';$('#shareResult').textContent='Copied'}
  }catch{method='cancelled'}
  telemetry('result_share',{method});
-};if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js?v=3.8.0').catch(()=>{});renderProfile();renderHomeCase();
+};if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js?v=3.8.0-split').catch(()=>{});renderProfile();renderHomeCase();
