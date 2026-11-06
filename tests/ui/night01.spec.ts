@@ -11,6 +11,7 @@ async function openLoaded(page){
   const response=await page.goto(live,{waitUntil:'domcontentloaded',timeout:30000});
   expect(response?.ok()).toBeTruthy();
   await expect(page.locator('#boot')).toHaveClass(/done/,{timeout:5000});
+  await expect(page.locator('#boot')).toBeHidden({timeout:6000});
   expect(errors).toEqual([]);
   return errors;
 }
