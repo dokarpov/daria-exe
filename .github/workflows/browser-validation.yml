@@ -3,6 +3,9 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'cases.js'
+      - 'game.js'
+      - 'sw.js'
       - 'app/**'
       - 'src/**'
       - 'tests/**'
@@ -13,6 +16,9 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'cases.js'
+      - 'game.js'
+      - 'sw.js'
       - 'app/**'
       - 'src/**'
       - 'tests/**'
