@@ -3,6 +3,12 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'cases.js'
+      - 'game.js'
+      - 'sw.js'
+      - 'cases.js'
+      - 'game.js'
+      - 'sw.js'
       - 'app/**'
       - 'src/**'
       - 'tests/**'
