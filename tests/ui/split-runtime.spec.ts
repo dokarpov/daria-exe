@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 test('scenario catalogue and runtime are separate, served assets',async({page,request})=>{
-  for(const path of ['/cases.js','/game.js']){
+  for(const path of ['/cases.js','/game.js','/styles.css']){
     const response=await request.get(path);
     expect(response.ok(),path).toBeTruthy();
   }
@@ -11,6 +11,8 @@ test('scenario catalogue and runtime are separate, served assets',async({page,re
   await expect(page.getByRole('button',{name:/Enter case/})).toBeVisible();
   await expect(page.locator('#homeCaseTitle')).not.toBeEmpty();
   expect(errors).toEqual([]);
+  const cssApplied=await page.evaluate(()=>[...document.styleSheets].some(sheet=>sheet.href?.includes('styles.css')));
+  expect(cssApplied).toBe(true);
 });
 
 test('runtime still supports an initial action and meaningful response',async({page})=>{
