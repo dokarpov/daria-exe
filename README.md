@@ -48,6 +48,23 @@ The deeper mode keeps the five-move hypothesis/evidence loop, swipe/tap classifi
 
 See [`VALIDATION.md`](VALIDATION.md) for player research and release criteria.
 
+## Source structure and browser resilience
+
+The browser build is deliberately framework-free, but no longer stores game state
+logic and all scenarios inside one HTML file:
+
+- `index.html` — semantic interface and asset entry points;
+- `styles.css` — existing responsive/visual styling, extracted without changing selectors;
+- `cases.js` — scenario catalogue, hypotheses, clues and decisions;
+- `game.js` — runtime, event handlers, progression and local telemetry;
+- `sw.js` — HTML, JS and CSS offline shell using the actual project scope (including GitHub Pages subpaths);
+- `tests/ui/*` — Chromium/WebKit/mobile browser gates.
+
+This is a source-separation change, **not a new game release or evidence of
+improved player retention**. There is no external analytics collection without
+a separately approved privacy/telemetry implementation. Scenario iteration
+can now be reviewed independently of runtime changes.
+
 ## Why it belongs in the portfolio
 
 It demonstrates a different product muscle from the agentic/control-plane work: consumer interaction design, stateful game mechanics, information pacing and designing uncertainty without leaking the “right” answer through the UI.
