@@ -53,10 +53,11 @@ See [`VALIDATION.md`](VALIDATION.md) for player research and release criteria.
 The browser build is deliberately framework-free, but no longer stores game state
 logic and all scenarios inside one HTML file:
 
-- `index.html` — semantic interface and visual styling;
+- `index.html` — semantic interface and asset entry points;
+- `styles.css` — existing responsive/visual styling, extracted without changing selectors;
 - `cases.js` — scenario catalogue, hypotheses, clues and decisions;
 - `game.js` — runtime, event handlers, progression and local telemetry;
-- `sw.js` — offline shell using the actual project scope (including GitHub Pages subpaths);
+- `sw.js` — HTML, JS and CSS offline shell using the actual project scope (including GitHub Pages subpaths);
 - `tests/ui/*` — Chromium/WebKit/mobile browser gates.
 
 This is a source-separation change, **not a new game release or evidence of
