@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'v4.html'
       - 'app/**'
       - 'src/**'
       - 'tests/**'

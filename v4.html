@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#081017">
+<title>DARIA.EXE — Product Office</title>
+<style>
+:root{--bg:#081017;--ink:#f6f8fb;--muted:#8ea0ad;--line:#22313b;--accent:#7ce7ff;--good:#9ceb73;--warn:#ffcf69;--bad:#ff7f86}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit}button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.shell{height:100dvh;display:grid;grid-template-rows:50px 1fr;background:radial-gradient(circle at 50% -20%,#1b334433,transparent 38%),#081017}
+.top{display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #1b2a34;background:#0a131be8;backdrop-filter:blur(12px);z-index:12}.brand{font-size:11px;font-weight:950;letter-spacing:.14em}.hud{display:flex;gap:7px}.chip{border:1px solid #263743;border-radius:999px;padding:6px 9px;background:#0d1922;color:#b8c7d1;font-size:11px}.chip strong{color:#fff}
+.stage{position:relative;min-height:0}.stage canvas{width:100%;height:100%;display:block;touch-action:none}
+.panel{position:absolute;z-index:8;left:14px;top:14px;width:min(350px,calc(100% - 28px));padding:13px 14px;border:1px solid #263844;border-radius:16px;background:#0a151ecc;backdrop-filter:blur(11px);pointer-events:none}.eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:950}.panel strong{display:block;margin-top:4px;font-size:15px}.panel span{display:block;margin-top:4px;color:#98aab5;font-size:12px;line-height:1.4}
+.prompt{position:absolute;z-index:9;left:50%;bottom:18px;transform:translate(-50%,12px);opacity:0;border:1px solid #39505f;border-radius:999px;background:#0b1822e8;padding:10px 14px;font-size:12px;white-space:nowrap;transition:.18s}.prompt.show{opacity:1;transform:translate(-50%,0)}.prompt b{color:white}
+.toast{position:absolute;z-index:10;right:14px;top:14px;width:min(310px,calc(100% - 28px));padding:12px 14px;border:1px solid #344a59;border-radius:15px;background:#0d1922ef;opacity:0;transform:translateY(-10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:none}.toast b{font-size:12px}.toast div{margin-top:3px;font-size:11px;color:#9aabb7}
+.intro,.ending{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(135deg,#071017f2,#071017df)}.intro.hidden{display:none}.ending{display:none}.ending.show{display:grid}.card{width:min(760px,calc(100% - 28px));padding:34px;border:1px solid #29404f;border-radius:28px;background:#0b1720;box-shadow:0 30px 100px #0009}.card h1,.card h2{margin:12px 0 16px;font-size:clamp(42px,7vw,82px);line-height:.92;letter-spacing:-.06em}.card p{max-width:650px;color:#b5c3cc;font-size:16px;line-height:1.5}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.primary,.secondary{padding:13px 16px;border-radius:14px;font-weight:900;cursor:pointer}.primary{border:0;background:#eef5f8;color:#071017}.secondary{border:1px solid #344b5b;background:#10202b;color:#dbe5ea}
+.controlsHint{position:absolute;z-index:8;right:14px;bottom:14px;padding:9px 11px;border:1px solid #263844;border-radius:12px;background:#0a151ee8;color:#aebdc6;font-size:11px;line-height:1.3}.controlsHint b{color:#fff}.nextStep{position:absolute;z-index:8;right:14px;top:14px;max-width:300px;padding:11px 12px;border:1px solid #31505f;border-radius:14px;background:#0c1b24ee;font-size:11px;color:#b8c7d1}.nextStep b{display:block;color:var(--accent);font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}.testState{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.mobile{display:none;position:absolute;z-index:11;left:12px;right:12px;bottom:12px;pointer-events:none}.stick{width:108px;height:108px;border:1px solid #344a59;border-radius:50%;background:#0d1922aa;position:relative;pointer-events:auto}.nub{position:absolute;left:34px;top:34px;width:40px;height:40px;border-radius:50%;background:#e4edf2}.act{position:absolute;right:0;bottom:14px;width:70px;height:70px;border:1px solid #536a78;border-radius:50%;background:#eef5f8;color:#071017;font-weight:950;pointer-events:auto}
+@media(max-width:760px){.hud .chip:first-child{display:none}.panel{top:10px;left:10px;width:calc(100% - 20px)}.nextStep{top:auto;left:10px;right:10px;bottom:154px;max-width:none}.controlsHint{right:10px;bottom:100px}.mobile{display:block}.prompt{bottom:218px}.card{padding:25px}.card p{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><div class="brand">DARIA.EXE / PRODUCT OFFICE</div><div class="hud"><div class="chip" id="roomChip">Lobby</div><div class="chip"><strong id="score">0</strong> / 5 badges</div></div></header>
+<main class="stage" id="stage">
+<canvas id="game"></canvas>
+<div class="panel"><div class="eyebrow" id="chapter">Day one</div><strong id="mission">Enter the office.</strong><span id="hint">Move through the rooms. Product judgement is learned by doing, not by answering quiz cards.</span></div>
+<div class="nextStep" id="nextStep"><b>First objective</b>Go to the Research Lab — top left. Follow users and walk into the signals they drop.</div><div class="controlsHint" id="controlsHint"><b>Move</b> WASD / arrows &nbsp;·&nbsp; <b>Interact</b> E / Space</div><div class="testState" id="playerState" data-x="590" data-y="380" aria-hidden="true"></div><div class="prompt" id="prompt"></div><div class="toast" id="toast"></div>
+<div class="mobile"><div class="stick" id="stick"><div class="nub" id="nub"></div></div><button class="act" id="act">ACT</button></div>
+<section class="intro" id="intro"><div class="card"><div class="eyebrow">Playable product-management adventure</div><h1>Your first day is already on fire.</h1><p>Start in the <strong>Research Lab</strong> at the top left. Move with <strong>WASD or the arrow keys</strong>. Follow users and walk into the signals they drop. Use <strong>E or Space</strong> whenever an interaction prompt appears.</p><div class="actions"><button class="primary" id="start">Enter office</button><button class="secondary" id="controls">Controls</button></div></div></section>
+<section class="ending" id="ending"><div class="card"><div class="eyebrow">Day one complete</div><h2>You shipped less. You learned more.</h2><p>The loop is the point: observe behaviour, trace the system, protect focus, isolate a test, then return to evidence. That is the skill the game is training.</p><div class="actions"><button class="primary" id="again">Play again</button></div></div></section>
+</main></div>
+<script>
+(()=>{
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),stage=document.getElementById('stage');
+const roomChip=document.getElementById('roomChip'),scoreEl=document.getElementById('score'),chapter=document.getElementById('chapter'),mission=document.getElementById('mission'),hint=document.getElementById('hint'),prompt=document.getElementById('prompt'),toast=document.getElementById('toast'),nextStep=document.getElementById('nextStep'),playerState=document.getElementById('playerState');
+let W=1200,H=760,DPR=1,last=0,playing=false,keys={},near=null,toastTimer=0,screenShake=0;
+const world={w:1200,h:760};
+const player={x:590,y:380,r:12,s:225,vx:0,vy:0,dir:1,step:0};
+const done={research:false,analytics:false,roadmap:false,experiment:false,learn:false};
+const state={signals:new Set(),signalOrbs:[],padsLatched:[false,false],repairDone:false,requestTimer:0,requests:[],requestIndex:0,goodShipped:0,badRejected:0,badShipped:0,experiment:null,launched:false,resultReady:false,resultTimer:0,resultCollected:false,outcome:null};
+const rooms=[
+{id:'research',name:'Research Lab',x:28,y:34,w:360,h:264,fill:'#10212b'},
+{id:'analytics',name:'Analytics',x:420,y:34,w:360,h:264,fill:'#171b2a'},
+{id:'experiment',name:'Experiment Bay',x:812,y:34,w:360,h:264,fill:'#14251c'},
+{id:'roadmap',name:'Roadmap Room',x:28,y:462,w:480,h:270,fill:'#261b20'},
+{id:'learn',name:'Launch Room',x:692,y:462,w:480,h:270,fill:'#18232b'}
+];
+const walls=[[0,0,1200,22],[0,738,1200,22],[0,0,22,760],[1178,0,22,760],[400,22,20,276],[792,22,20,276],[22,298,366,20],[432,298,348,20],[824,298,354,20],[22,442,486,20],[692,442,486,20],[508,462,20,276],[672,462,20,276]];
+const users=[
+{id:'u1',x:95,y:112,hx:95,hy:112,ph:.2},
+{id:'u2',x:278,y:180,hx:278,hy:180,ph:2.1},
+{id:'u3',x:165,y:254,hx:165,hy:254,ph:4.3}
+];
+const friction=[{x:145,y:90,type:'delay'},{x:320,y:236,type:'rage'},{x:112,y:236,type:'loop'}];
+const funnel=[{x:465,y:105},{x:545,y:105},{x:625,y:105},{x:705,y:105}];
+const pads=[{x:540,y:205,active:false},{x:705,y:205,active:false}];
+const experimentSwitches=[{id:'steps',x:862,y:126,label:'steps'},{id:'copy',x:986,y:126,label:'copy'},{id:'visual',x:1110,y:126,label:'visual'}];
+const particles=Array.from({length:90},()=>({x:Math.random()*1200,y:Math.random()*760,a:Math.random()*.45+.1,s:Math.random()*1.2+.3}));
+function resize(){const r=stage.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}addEventListener('resize',resize);resize();
+const sx=()=>W/world.w, sy=()=>H/world.h;
+function roomAt(x,y){return rooms.find(r=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h)}
+function collides(x,y){if(x<34||x>1166||y<34||y>726)return true;for(const w of walls){if(x>w[0]-13&&x<w[0]+w[2]+13&&y>w[1]-13&&y<w[1]+w[3]+13)return true}return false}
+function award(id,title,body){if(done[id])return;done[id]=true;scoreEl.textContent=Object.values(done).filter(Boolean).length;showToast(title,body);screenShake=9;if(Object.values(done).every(Boolean))setTimeout(()=>document.getElementById('ending').classList.add('show'),1200)}
+function showToast(a,b){clearTimeout(toastTimer);toast.innerHTML='<b>'+a+'</b><div>'+b+'</div>';toast.classList.add('show');toastTimer=setTimeout(()=>toast.classList.remove('show'),2400)}
+function spawnSignal(x,y,type){if(state.signals.has(type)||state.signalOrbs.some(s=>s.type===type))return;state.signalOrbs.push({x,y,type,t:0})}
+function updateUsers(t){users.forEach((u,i)=>{u.x=u.hx+Math.sin(t*.0011+u.ph)*46;u.y=u.hy+Math.cos(t*.0014+u.ph)*25;const f=friction[i];if(Math.hypot(u.x-f.x,u.y-f.y)<40&&Math.sin(t*.003+u.ph)>.92)spawnSignal(u.x+16,u.y-8,f.type)})}
+function updateSignals(dt){state.signalOrbs.forEach(s=>{s.t+=dt;if(Math.hypot(player.x-s.x,player.y-s.y)<27){state.signals.add(s.type);s.hit=true;showToast('Evidence caught',state.signals.size+' / 3 behaviour signals');if(state.signals.size===3)award('research','Evidence hunter','You followed behaviour instead of asking users to explain everything.')}});state.signalOrbs=state.signalOrbs.filter(s=>!s.hit&&s.t<5)}
+function updateAnalytics(){if(!done.research)return;pads.forEach((p,i)=>{const on=Math.hypot(player.x-p.x,player.y-p.y)<32;if(on&&!state.padsLatched[i]){state.padsLatched[i]=true;showToast('Pressure point traced',(state.padsLatched.filter(Boolean).length)+' / 2 stages verified.')}p.active=state.padsLatched[i]});if(state.padsLatched.every(Boolean)&&!state.repairDone){state.repairDone=true;award('analytics','Flow mechanic','You traced both pressure points and isolated the bottleneck.')}}
+const requestDeck=[['Fix import',true],['Dark theme',false],['Reduce steps',true],['AI avatar',false],['Fix verify',true],['Add confetti',false]];
+function spawnRequest(){const p=requestDeck[state.requestIndex%requestDeck.length];state.requestIndex++;state.requests.push({x:90+(state.requestIndex*61)%300,y:500+(state.requestIndex*47)%150,label:p[0],good:p[1],vx:72,vy:0,held:false})}
+function updateRoadmap(dt){if(!done.analytics)return;state.requestTimer-=dt;if(state.requestTimer<=0&&state.requests.length<5){spawnRequest();state.requestTimer=1.15}for(const r of state.requests){if(r.held){r.x=player.x+18*player.dir;r.y=player.y-6;continue}r.x+=r.vx*dt;if(r.x>455){r.x=70;r.y=500+((state.requestIndex+Math.round(r.y))%150)}}}
+function nearestInteractable(){
+let best=null,d=999;
+const r=roomAt(player.x,player.y);
+if(r?.id==='roadmap'&&done.analytics){for(const q of state.requests){const dd=Math.hypot(player.x-q.x,player.y-q.y);if(dd<d){d=dd;best={type:'request',obj:q,label:q.held?'Drop request':'Grab request'}}}const shipD=Math.hypot(player.x-450,player.y-670);if(shipD<d){d=shipD;best={type:'ship',label:'Drop into release chute'}}const rejectD=Math.hypot(player.x-78,player.y-670);if(rejectD<d){d=rejectD;best={type:'reject',label:'Reject request'}}}
+if(r?.id==='experiment'&&done.roadmap){for(const s of experimentSwitches){const dd=Math.hypot(player.x-s.x,player.y-s.y);if(dd<d){d=dd;best={type:'switch',obj:s,label:(state.experiment===s.id?'Disable ':'Activate ')+s.label}}}const dd=Math.hypot(player.x-1000,player.y-245);if(dd<d){d=dd;best={type:'launch',label:'Run experiment'}}}
+if(r?.id==='learn'&&state.launched){const dd=Math.hypot(player.x-955,player.y-590);if(dd<d){d=dd;best={type:'result',label:'Collect outcome'}}}
+return d<58?best:null;
+}
+function act(){
+if(!near)return;
+if(near.type==='request'){
+const carried=state.requests.find(x=>x.held);if(carried){carried.held=false;return}
+near.obj.held=true;
+}
+if(near.type==='ship'){
+const carried=state.requests.find(x=>x.held);if(!carried)return;
+if(carried.good){state.goodShipped++;showToast('Evidence-backed work shipped',state.goodShipped+' / 2 useful items');state.requests=state.requests.filter(x=>x!==carried);if(state.goodShipped>=2)award('roadmap','Focus defender','You protected the roadmap from attractive noise.')}
+else{state.badShipped++;carried.held=false;carried.x=90;showToast('Weak evidence','This is noise. Take it to REJECT, not SHIP.')}
+}
+if(near.type==='reject'){const carried=state.requests.find(x=>x.held);if(!carried)return;if(carried.good){carried.held=false;showToast('Useful work rejected','This request is backed by evidence.')}else{state.badRejected++;state.requests=state.requests.filter(x=>x!==carried);showToast('Noise rejected',state.badRejected+' distractions removed.')}}
+if(near.type==='switch'){state.experiment=state.experiment===near.obj.id?null:near.obj.id;showToast('Experiment rig',state.experiment?'One variable armed. Keep it clean.':'No variable selected.')}
+if(near.type==='launch'){if(!done.roadmap){showToast('Rig locked','Bring evidence through the roadmap first.');return}if(!state.experiment){showToast('Rig locked','Arm exactly one variable.');return}state.launched=true;state.resultReady=false;state.resultTimer=2.2;state.outcome={steps:{value:18,label:'Activation +18%',note:'Removing friction moved activation.'},copy:{value:6,label:'Activation +6%',note:'Copy helped, but friction remains.'},visual:{value:-2,label:'Activation -2%',note:'Visual polish did not address the bottleneck.'}}[state.experiment];showToast('Experiment running','One variable changed. Wait for the measured outcome.')}
+if(near.type==='result'){if(!state.resultReady){showToast('Nothing to read yet','Let the test run first.');return}if(!state.resultCollected){state.resultCollected=true;award('learn','Closed loop','You returned to evidence after launch instead of declaring victory at shipment.')}}
+}
+function updateMission(){
+const r=roomAt(player.x,player.y);roomChip.textContent=r?r.name:'Hallway';
+if(!r){chapter.textContent='Office';mission.textContent=done.research?'Continue to Analytics.':'Go to the Research Lab.';hint.textContent=done.research?'Analytics is the top-centre room.':'Research Lab is the top-left room. Follow the moving users and walk into the glowing signals they leave behind.';nextStep.innerHTML=done.research?'<b>Next objective</b>Go to Analytics — top centre. Trace the flow and stabilise the broken stage.':'<b>First objective</b>Go to the Research Lab — top left. Follow users and walk into the signals they drop.';return}
+if(r.id==='research'){chapter.textContent='Research Lab';mission.textContent='Research Lab · Catch 3 behaviour signals.';hint.textContent='Follow the moving users. When a glowing signal appears, walk into it to collect it. '+state.signals.size+'/3 collected.';nextStep.innerHTML=done.research?'<b>Room complete</b>Go to Analytics — top centre.':'<b>Current action</b>Follow users → wait for a glowing signal → walk into it. '+state.signals.size+'/3 collected.'}
+if(r.id==='analytics'){chapter.textContent='Analytics';if(!done.research){mission.textContent='Locked · Finish Research first.';hint.textContent='The funnel has no context until you have behaviour evidence.';nextStep.innerHTML='<b>Blocked</b>Return to Research Lab and collect all 3 signals.'}else{mission.textContent='Repair the broken flow.';hint.textContent=state.repairDone?'Flow restored.':'Trace the moving packets. Step onto each PAD once; verified stages stay lit.';nextStep.innerHTML='<b>Current action</b>Step onto PAD 1 → then PAD 2. '+state.padsLatched.filter(Boolean).length+'/2 verified.'}}
+if(r.id==='roadmap'){chapter.textContent='Roadmap Room';if(!done.analytics){mission.textContent='Locked · Repair Analytics first.';hint.textContent='Prioritisation needs traced evidence, not guesses.';nextStep.innerHTML='<b>Blocked</b>Finish Analytics before prioritising work.'}else{mission.textContent='Ship evidence, reject noise.';hint.textContent='Grab a request with E/Space. Evidence-backed work goes to SHIP; distractions go to REJECT. '+state.goodShipped+'/2 useful shipped.';nextStep.innerHTML='<b>Current action</b>Grab request → SHIP evidence / REJECT noise.'}}
+if(r.id==='experiment'){chapter.textContent='Experiment Bay';if(!done.roadmap){mission.textContent='Locked · Protect the roadmap first.';hint.textContent='The experiment needs an evidence-backed target.';nextStep.innerHTML='<b>Blocked</b>Ship 2 evidence-backed roadmap items first.'}else{mission.textContent='Change one thing.';hint.textContent='Approach one switch, press E/Space, then approach LAUNCH and interact again.';nextStep.innerHTML='<b>Current action</b>Choose exactly one switch → E/Space → LAUNCH → E/Space.'}}
+if(r.id==='learn'){chapter.textContent='Launch Room';mission.textContent=state.launched?'Read the outcome.':'Locked · Run an experiment first.';hint.textContent=state.resultReady?(state.outcome?state.outcome.note:'Approach the outcome marker and press E/Space.'):'The board stays dark until an experiment has actually run.';nextStep.innerHTML=state.resultReady?'<b>Current action</b>Read the measured result → E/Space to close the loop.':'<b>Waiting</b>Run one clean experiment; then return for its result.'}
+}
+function update(dt,t){
+let dx=0,dy=0;if(keys.ArrowLeft||keys.a)dx--;if(keys.ArrowRight||keys.d)dx++;if(keys.ArrowUp||keys.w)dy--;if(keys.ArrowDown||keys.s)dy++;
+if(dx||dy){const m=Math.hypot(dx,dy);dx/=m;dy/=m;player.dir=dx||player.dir;player.step+=dt*10;const nx=player.x+dx*player.s*dt,ny=player.y+dy*player.s*dt;if(!collides(nx,player.y))player.x=nx;if(!collides(player.x,ny))player.y=ny}
+updateUsers(t);updateSignals(dt);updateAnalytics();updateRoadmap(dt);
+if(state.launched&&!state.resultReady){state.resultTimer-=dt;if(state.resultTimer<=0){state.resultReady=true;award('experiment','Clean experiment','One variable changed, so the outcome is interpretable.');showToast('Experiment complete','Outcome is waiting in the Launch Room.')}}
+near=nearestInteractable();if(near){prompt.innerHTML='<b>ACT</b> · '+near.label;prompt.classList.add('show')}else prompt.classList.remove('show');
+playerState.dataset.x=player.x.toFixed(1);playerState.dataset.y=player.y.toFixed(1);updateMission();screenShake*=.84;
+}
+function rr(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function label(s,x,y,size=11,color='#95a7b3',weight=700,align='left'){ctx.fillStyle=color;ctx.font=weight+' '+size+'px Inter,system-ui';ctx.textAlign=align;ctx.fillText(s,x,y);ctx.textAlign='left'}
+function dot(x,y,r,c,glow=0){ctx.save();if(glow){ctx.shadowColor=c;ctx.shadowBlur=glow}ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore()}
+function drawPerson(x,y,c='#7ce7ff',selected=false){ctx.save();ctx.translate(x,y);dot(0,-9,9,'#111820');rr(-9,1,18,22,6,c);if(selected){ctx.strokeStyle='#9ceb73';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,3,22,0,Math.PI*2);ctx.stroke()}ctx.restore()}
+function drawPlayer(){ctx.save();ctx.translate(player.x,player.y);const bob=Math.sin(player.step)*2;ctx.shadowColor='#7ce7ff';ctx.shadowBlur=18;dot(0,-10+bob,10,'#dff7ff');rr(-10,1+bob,20,24,7,'#7ce7ff');ctx.shadowBlur=0;ctx.strokeStyle='#7ce7ff';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-6,22+bob);ctx.lineTo(-9+Math.sin(player.step)*4,31);ctx.moveTo(6,22+bob);ctx.lineTo(9-Math.sin(player.step)*4,31);ctx.stroke();ctx.fillStyle='#081017';ctx.fillRect(player.dir>0?3:-6,-12+bob,3,3);ctx.restore()}
+function draw(){
+ctx.save();ctx.clearRect(0,0,W,H);ctx.scale(sx(),sy());if(screenShake)ctx.translate((Math.random()-.5)*screenShake,(Math.random()-.5)*screenShake);
+ctx.fillStyle='#081017';ctx.fillRect(0,0,1200,760);
+particles.forEach(p=>{p.x+=p.s*.15;if(p.x>1200)p.x=0;dot(p.x,p.y,1.1,'rgba(124,231,255,'+p.a+')')});
+rooms.forEach(r=>{rr(r.x,r.y,r.w,r.h,18,r.fill,'#2c3e49');label(r.name.toUpperCase(),r.x+16,r.y+24,10,'#99aab5',900)});
+ctx.fillStyle='#0e1720';walls.forEach(w=>ctx.fillRect(...w));
+[[180,298],[596,298],[990,298],[275,442],[930,442]].forEach(([x,y])=>{ctx.fillStyle='#7ce7ff';ctx.fillRect(x-26,y-3,52,6)});
+rr(535,330,130,84,18,'#0d1821','#253946');label('LOBBY',600,378,10,'#647987',900,'center');
+
+rr(60,72,126,46,10,'#162a35','#31505f');rr(232,72,126,46,10,'#162a35','#31505f');
+friction.forEach((f,i)=>{const active=Math.hypot(users[i].x-f.x,users[i].y-f.y)<46;rr(f.x-24,f.y-18,48,36,8,active?'#2c2024':'#12202a',active?'#ff7f86':'#2b4654');if(active){ctx.strokeStyle='#ff7f86';ctx.lineWidth=2;ctx.beginPath();ctx.arc(f.x,f.y,30+Math.sin(performance.now()/120)*4,0,Math.PI*2);ctx.stroke()}});
+users.forEach(u=>drawPerson(u.x,u.y,'#7ce7ff',false));
+state.signalOrbs.forEach(s=>{const pulse=7+Math.sin(s.t*8)*2;dot(s.x,s.y,pulse,s.type==='rage'?'#ff7f86':s.type==='delay'?'#ffcf69':'#9ceb73',14);label(s.type.toUpperCase(),s.x,s.y-15,8,'#dce8ee',900,'center')});
+for(const s of state.signals){label(s.toUpperCase(),72+[...state.signals].indexOf(s)*88,280,8,'#9ceb73',900)}
+
+ctx.strokeStyle='#405562';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(465,105);ctx.lineTo(705,105);ctx.stroke();
+const tt=(performance.now()/6)%240;for(let i=0;i<5;i++){const px=465+((tt+i*52)%240);if(!state.repairDone&&px>605&&px<655)continue;dot(px,105,4,'#dff7ff',5)}
+funnel.forEach((f,i)=>dot(f.x,f.y,11,i===2&&!state.repairDone?'#ff7f86':'#7ce7ff',i===2?14:5));
+pads.forEach(p=>{rr(p.x-26,p.y-18,52,36,10,p.active?'#223824':'#111d26',p.active?'#9ceb73':'#40515c');label('PAD',p.x,p.y+4,8,p.active?'#bdf49d':'#768a97',900,'center')});
+rr(472,244,238,34,10,'#111d26','#30434f');label(state.repairDone?'FLOW STABLE':'VERIFY LEAK',591,266,10,state.repairDone?'#9ceb73':'#ff7f86',900,'center');
+
+state.requests.forEach(r=>{rr(r.x-52,r.y-18,104,36,9,r.good?'#20312b':'#302126',r.good?'#5b8f72':'#7b4b55');label(r.label,r.x,r.y+4,9,'#eef5f8',800,'center')});
+rr(406,632,82,70,13,'#14271d','#547b5b');label('SHIP',447,672,10,'#9ceb73',950,'center');rr(38,632,82,70,13,'#2a171c','#74434c');label('REJECT',79,672,9,'#ff9ca6',950,'center');label('noise rejected: '+state.badRejected,65,710,9,'#9f7a80',700);
+
+rr(838,78,310,112,16,'#122019','#365344');experimentSwitches.forEach(s=>{const on=state.experiment===s.id;dot(s.x,s.y,17,on?'#9ceb73':'#354650',on?12:0);label(s.label.toUpperCase(),s.x,s.y+38,8,on?'#c5f7aa':'#81939e',900,'center')});
+rr(947,214,108,58,14,state.launched?'#1b3725':'#2b2419',state.launched?'#5f8b67':'#7b6844');label(state.launched?'RUNNING':'LAUNCH',1001,248,10,state.launched?'#9ceb73':'#ffcf69',950,'center');
+
+rr(760,510,340,160,18,'#121d25','#30434f');label('OUTCOME BOARD',785,540,9,'#7f919d',900);
+if(state.resultReady){const vals=state.outcome&&state.outcome.value>10?[38,44,49,58,66]:state.outcome&&state.outcome.value>0?[38,40,41,43,45]:[42,41,40,40,39];ctx.strokeStyle=state.outcome&&state.outcome.value>=0?'#9ceb73':'#ff7f86';ctx.lineWidth=4;ctx.beginPath();vals.forEach((v,i)=>{const x=810+i*56,y=640-v*1.2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();dot(955,590,14,state.resultCollected?'#52705a':'#9ceb73',state.resultCollected?0:18);label(state.outcome?state.outcome.label:'Measured outcome',790,620,12,state.outcome&&state.outcome.value>=0?'#9ceb73':'#ff7f86',900)}else label(state.launched?'TEST RUNNING...':'NO TEST YET',930,595,11,'#748793',900,'center');
+
+drawPlayer();ctx.restore();
+}
+function loop(t){const dt=Math.min(.033,(t-last)/1000||0);last=t;if(playing){update(dt,t);draw();requestAnimationFrame(loop)}}
+addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k==='e'||k===' '){e.preventDefault();act()}});
+addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});const clearInput=()=>{keys={};stickOn=false;if(nub)nub.style.transform=''};addEventListener('blur',clearInput);document.addEventListener('visibilitychange',()=>{if(document.hidden)clearInput()});
+document.getElementById('act').onclick=act;
+const stick=document.getElementById('stick'),nub=document.getElementById('nub');let stickOn=false;
+function moveStick(e){if(!stickOn)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),max=34;if(m>max){dx=dx/m*max;dy=dy/m*max}nub.style.transform='translate('+dx+'px,'+dy+'px)';keys.ArrowLeft=dx<-9;keys.ArrowRight=dx>9;keys.ArrowUp=dy<-9;keys.ArrowDown=dy>9}
+stick.addEventListener('pointerdown',e=>{stickOn=true;stick.setPointerCapture(e.pointerId);moveStick(e)});stick.addEventListener('pointermove',moveStick);const releaseStick=()=>{stickOn=false;nub.style.transform='';keys.ArrowLeft=keys.ArrowRight=keys.ArrowUp=keys.ArrowDown=false};stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);stick.addEventListener('lostpointercapture',releaseStick);
+document.getElementById('start').onclick=()=>{document.getElementById('intro').classList.add('hidden');playing=true;last=performance.now();requestAnimationFrame(loop)};
+document.getElementById('controls').onclick=()=>showToast('Controls','WASD / arrows to move. E or Space to interact. On mobile use the stick and ACT.');
+document.getElementById('again').onclick=()=>location.reload();
+window.__DARIA_TEST__={
+  movePlayer(x,y){player.x=x;player.y=y;updateMission();playerState.dataset.x=String(x);playerState.dataset.y=String(y)},
+  completeResearch(){state.signals=new Set(['delay','rage','loop']);award('research','Evidence hunter','Research complete.');updateMission()},
+  stepAnalytics(i){player.x=pads[i].x;player.y=pads[i].y;updateAnalytics();updateMission()},
+  seedRoadmap(){state.requests=[];state.requestIndex=0;for(let i=0;i<4;i++)spawnRequest();},
+  roadmapState(){return state.requests.map(r=>({label:r.label,good:r.good}))},
+  completeRoadmap(){state.goodShipped=2;award('roadmap','Focus defender','Roadmap complete.');updateMission()},
+  selectExperiment(id){state.experiment=id;},
+  launchNow(){near={type:'launch'};act();},
+  finishExperiment(){state.resultTimer=0;update(.01,performance.now());updateMission()},
+  outcome(){return state.outcome},
+  collectResult(){state.resultReady=true;near={type:'result'};act();updateMission()},
+  done(){return {...done}},
+  pads(){return [...state.padsLatched]}
+};
+draw();
+})();
+</script>
+</body>
+</html>
